@@ -1,35 +1,230 @@
+
+:root {
+  --terminal-text: #008000;
+}
+
+@font-face {
+  font-family: mainFont;
+  src: url('assets/terminal.otf');
+}
+@font-face {
+  font-family: mainFontBold;
+  src: url('assets/terminalBold.otf');
+}
+
 * {
   margin: 0;
   padding: 0;
+
+  font-family: mainFont;
+  color: var(--terminal-text);
+}
+
+h1 {
+  font-family: mainFontBold;
+}
+
+html {
+  background: #191919;
+}
+
+.App {
+  height: calc(100vh - 75px);
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  height: 75px;
 }
 
+.settings {
+  position: absolute;
+  right: 15px;
 
-.board:nth-child(odd) {
-  background: #4b648a;
+  background-image: url('assets/settings.svg');
+  background-color: #00000000;
+  width: 52px;
+  aspect-ratio: 1;
+  border: none;
+  outline: none;
+
+  cursor: pointer;
 }
-.board:nth-child(even) {
-  background: #d0dff4;
+
+.main {
+  position: relative;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  height: 100%;
+}
+
+.blackout {
+  position:absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+
+  display: grid;
+  place-items: center;
+
+  background-color: #0000000A;
+  backdrop-filter: blur(8.7px);
+  -webkit-backdrop-filter: blur(8.7px);
+}
+
+.settingsPanel {
+  padding: 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 15px;
+  background-color: #0A0A0A;
+  width: 750px;
+  height: 350px;
 }
 
 .board {
   display: grid;
   place-items: center;
   grid-template-rows: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+
+  background-image: url("assets/board.png");
+  width: 720px;
+  aspect-ratio: 1;
+
 }
 
-.row {
+.square {
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(8, 1fr);
+  width: 90px;
+  aspect-ratio: 1;
 }
 
+.bp {
+  background-image: url("assets/bp.png");
+}
+
+.bn {
+  background-image: url("assets/bn.png");
+}
+
+.bb {
+  background-image: url("assets/bb.png");
+}
+
+.br {
+  background-image: url("assets/br.png");
+}
+
+.bq {
+  background-image: url("assets/bq.png");
+}
+
+.bk {
+  background-image: url("assets/bk.png");
+}
+
+.wp {
+  background-image: url("assets/wp.png");
+}
+
+.wn {
+  background-image: url("assets/wn.png");
+}
+
+.wb {
+  background-image: url("assets/wb.png");
+}
+
+.wr {
+  background-image: url("assets/wr.png");
+}
+
+.wq {
+  background-image: url("assets/wq.png");
+}
+
+.wk {
+  background-image: url("assets/wk.png");
+}
+
+.terminal {
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow:  17px 17px 40px #0A0A0A,
+              -17px -17px 40px #282828;
+}
+
+.command-history {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+  padding: 1rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  background-color: black;
+
+  width: 50rem;
+  height: 15rem;
+}
+
+.command-history::-webkit-scrollbar {
+  width: 15px;
+}
+
+.command-history::-webkit-scrollbar-track {
+  background: #00000000;
+}
+
+.command-history::-webkit-scrollbar-thumb {
+  background-color: var(--terminal-text);
+}
+
+.typed {
+  overflow: hidden;
+  border-right: none;
+  white-space: nowrap;
+  animation: typing 5s forwards;
+  width: 0;
+}
+
+.delay {
+  animation-delay: 2s;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+    border-right: .15em solid var(--terminal-text);
+  }
+  to {
+    width: 100%;
+    border: none;
+  }
+}
+
+.code-in {
+  width: 100%;
+  padding: 1rem;
+  z-index: 10;
+
+  color: var(--terminal-text);
+  font-size: 1.2rem;
+  background-color: black;
+  border: none;
+  outline: none;
+  border-top: 1px var(--terminal-text) solid;
+}
