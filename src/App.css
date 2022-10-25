@@ -1,6 +1,8 @@
 
 :root {
   --terminal-text: #008000;
+
+  --square-size: 90px;
 }
 
 @font-face {
@@ -78,13 +80,12 @@ html {
   -webkit-backdrop-filter: blur(8.7px);
 }
 
-.settingsPanel {
+.settings-panel {
   padding: 5px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
 
   border-radius: 15px;
   background-color: #0A0A0A;
@@ -92,11 +93,77 @@ html {
   height: 350px;
 }
 
-.board {
+.settings-panel h1,
+.settings-panel h3 {
+  grid-column: 1 / 3;
+}
+
+.theme-picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.theme-options {
   display: grid;
   place-items: center;
-  grid-template-rows: repeat(8, 1fr);
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin: auto;
+}
+
+.theme {
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+.dark   {background-color: #191919}
+.light  {background-color: #ffffff}
+.purple {background-color: #7a0092}
+.blue   {background-color: #006cd1}
+.green  {background-color: #008d2a}
+.orange {background-color: #c76000}
+
+.difficulty-picker {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.difficulty-options {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin: auto;
+}
+
+.difficulty {
+  width: 75px;
+  height: 40px;
+  border-radius: 5px;
+
+  display: grid;
+  place-items: center;
+  color: white;
+  background-color: #c76000;
+
+  cursor: pointer;
+}
+
+.board {
+  position: relative;
 
   background-image: url("assets/board.png");
   width: 720px;
@@ -105,59 +172,47 @@ html {
 }
 
 .square {
-  display: grid;
-  place-items: center;
-  width: 90px;
+  position: absolute;
+  width: var(--square-size);
   aspect-ratio: 1;
 }
 
-.bp {
-  background-image: url("assets/bp.png");
+.selected {
+  background-color: #80008090;
 }
 
-.bn {
-  background-image: url("assets/bn.png");
-}
+.bp {background-image: url("assets/bp.png")}
+.bn {background-image: url("assets/bn.png")}
+.bb {background-image: url("assets/bb.png")}
+.br {background-image: url("assets/br.png")}
+.bq {background-image: url("assets/bq.png")}
+.bk {background-image: url("assets/bk.png")}
 
-.bb {
-  background-image: url("assets/bb.png");
-}
+.wp {background-image: url("assets/wp.png")}
+.wn {background-image: url("assets/wn.png")}
+.wb {background-image: url("assets/wb.png")}
+.wr {background-image: url("assets/wr.png")}
+.wq {background-image: url("assets/wq.png")}
+.wk {background-image: url("assets/wk.png")}
 
-.br {
-  background-image: url("assets/br.png");
-}
+.r1 {top: calc(var(--square-size) * 1)}
+.r2 {top: calc(var(--square-size) * 1)}
+.r3 {top: calc(var(--square-size) * 2)}
+.r4 {top: calc(var(--square-size) * 3)}
+.r5 {top: calc(var(--square-size) * 4)}
+.r6 {top: calc(var(--square-size) * 5)}
+.r7 {top: calc(var(--square-size) * 6)}
+.r8 {top: calc(var(--square-size) * 7)}
 
-.bq {
-  background-image: url("assets/bq.png");
-}
+.c1 {left: calc(var(--square-size) * 1)}
+.c2 {left: calc(var(--square-size) * 2)}
+.c3 {left: calc(var(--square-size) * 3)}
+.c4 {left: calc(var(--square-size) * 4)}
+.c5 {left: calc(var(--square-size) * 5)}
+.c6 {left: calc(var(--square-size) * 6)}
+.c7 {left: calc(var(--square-size) * 7)}
+.c8 {left: calc(var(--square-size) * 8)}
 
-.bk {
-  background-image: url("assets/bk.png");
-}
-
-.wp {
-  background-image: url("assets/wp.png");
-}
-
-.wn {
-  background-image: url("assets/wn.png");
-}
-
-.wb {
-  background-image: url("assets/wb.png");
-}
-
-.wr {
-  background-image: url("assets/wr.png");
-}
-
-.wq {
-  background-image: url("assets/wq.png");
-}
-
-.wk {
-  background-image: url("assets/wk.png");
-}
 
 .terminal {
   overflow: hidden;
@@ -173,9 +228,10 @@ html {
   position: relative;
   padding: 1rem;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   background-color: black;
+  font-size: 1rem;
 
   width: 50rem;
   height: 15rem;
@@ -186,7 +242,7 @@ html {
 }
 
 .command-history::-webkit-scrollbar-track {
-  background: #00000000;
+  background-color: #00000000;
 }
 
 .command-history::-webkit-scrollbar-thumb {
@@ -206,25 +262,33 @@ html {
 }
 
 @keyframes typing {
-  from {
+  0% {
     width: 0;
     border-right: .15em solid var(--terminal-text);
   }
-  to {
+  100% {
     width: 100%;
     border: none;
   }
 }
 
+.terminal-in {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 15px;
+
+  background-color: black;
+  border-top: 1px var(--terminal-text) solid;
+}
+
 .code-in {
   width: 100%;
   padding: 1rem;
-  z-index: 10;
 
   color: var(--terminal-text);
+  background-color: inherit;
   font-size: 1.2rem;
-  background-color: black;
   border: none;
   outline: none;
-  border-top: 1px var(--terminal-text) solid;
 }
