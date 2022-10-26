@@ -181,7 +181,7 @@ html {
   z-index: 0;
 
   background-image: url("assets/board.png");
-  width: 720px;
+  width: 750px;
   aspect-ratio: 1;
 
 }
@@ -210,15 +210,16 @@ html {
 .wq {background-image: url("assets/wq.png")}
 .wk {background-image: url("assets/wk.png")}
 
+.r0 {top: calc(var(--square-size) * 0)}
 .r1 {top: calc(var(--square-size) * 1)}
-.r2 {top: calc(var(--square-size) * 1)}
-.r3 {top: calc(var(--square-size) * 2)}
-.r4 {top: calc(var(--square-size) * 3)}
-.r5 {top: calc(var(--square-size) * 4)}
-.r6 {top: calc(var(--square-size) * 5)}
-.r7 {top: calc(var(--square-size) * 6)}
-.r8 {top: calc(var(--square-size) * 7)}
+.r2 {top: calc(var(--square-size) * 2)}
+.r3 {top: calc(var(--square-size) * 3)}
+.r4 {top: calc(var(--square-size) * 4)}
+.r5 {top: calc(var(--square-size) * 5)}
+.r6 {top: calc(var(--square-size) * 6)}
+.r7 {top: calc(var(--square-size) * 7)}
 
+.c0 {left: calc(var(--square-size) * 0)}
 .c1 {left: calc(var(--square-size) * 1)}
 .c2 {left: calc(var(--square-size) * 2)}
 .c3 {left: calc(var(--square-size) * 3)}
@@ -226,7 +227,6 @@ html {
 .c5 {left: calc(var(--square-size) * 5)}
 .c6 {left: calc(var(--square-size) * 6)}
 .c7 {left: calc(var(--square-size) * 7)}
-.c8 {left: calc(var(--square-size) * 8)}
 
 
 .terminal {

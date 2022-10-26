@@ -13,15 +13,14 @@ function App() {
   const [piecesWhite, updatePiecesWhite] = useState([]);
 
   const [currCommand, setCurrCommand] = useState("");
-  const [commandHistory, updatecommandHistory] = useState([
+  const [commandHistory, updateCommandHistory] = useState([
     'Welcome to code_gambit! We teach coding through playing chess.',
     'type help() for a list of commands.'
   ]);
 
   // Places pieces in their starting positions
   const initGame = () => {
-
-    let black = [
+    updatePiecesBlack([
       {'id': 0 , 'piece':'bp', 'pos':['r1','c0'], 'selected': false},
       {'id': 1 , 'piece':'bp', 'pos':['r1','c1'], 'selected': false},
       {'id': 2 , 'piece':'bp', 'pos':['r1','c2'], 'selected': false},
@@ -38,35 +37,32 @@ function App() {
       {'id': 13, 'piece':'bb', 'pos':['r0','c5'], 'selected': false},
       {'id': 14, 'piece':'bn', 'pos':['r0','c6'], 'selected': false},
       {'id': 15, 'piece':'br', 'pos':['r0','c7'], 'selected': false}
-    ];
-    let white = [
-      {'id': 0 , 'piece':'wp', 'pos':['r7','c0'], 'selected': false},
-      {'id': 1 , 'piece':'wp', 'pos':['r7','c1'], 'selected': false},
-      {'id': 2 , 'piece':'wp', 'pos':['r7','c2'], 'selected': false},
-      {'id': 3 , 'piece':'wp', 'pos':['r7','c3'], 'selected': false},
-      {'id': 4 , 'piece':'wp', 'pos':['r7','c4'], 'selected': false},
-      {'id': 5 , 'piece':'wp', 'pos':['r7','c5'], 'selected': false},
-      {'id': 6 , 'piece':'wp', 'pos':['r7','c6'], 'selected': false},
-      {'id': 7 , 'piece':'wp', 'pos':['r7','c7'], 'selected': false},
-      {'id': 8 , 'piece':'wr', 'pos':['r8','c0'], 'selected': false},
-      {'id': 9 , 'piece':'wn', 'pos':['r8','c1'], 'selected': false},
-      {'id': 10, 'piece':'wb', 'pos':['r8','c2'], 'selected': false},
-      {'id': 11, 'piece':'wq', 'pos':['r8','c3'], 'selected': false},
-      {'id': 12, 'piece':'wk', 'pos':['r8','c4'], 'selected': false},
-      {'id': 13, 'piece':'wb', 'pos':['r8','c5'], 'selected': false},
-      {'id': 14, 'piece':'wn', 'pos':['r8','c6'], 'selected': false},
-      {'id': 15, 'piece':'wr', 'pos':['r8','c7'], 'selected': false}
-    ];
-
-    updatePiecesBlack(black);
-    updatePiecesWhite(white);
+    ]);
+    updatePiecesWhite([
+      {'id': 0 , 'piece':'wp', 'pos':['r6','c0'], 'selected': false},
+      {'id': 1 , 'piece':'wp', 'pos':['r6','c1'], 'selected': false},
+      {'id': 2 , 'piece':'wp', 'pos':['r6','c2'], 'selected': false},
+      {'id': 3 , 'piece':'wp', 'pos':['r6','c3'], 'selected': false},
+      {'id': 4 , 'piece':'wp', 'pos':['r6','c4'], 'selected': false},
+      {'id': 5 , 'piece':'wp', 'pos':['r6','c5'], 'selected': false},
+      {'id': 6 , 'piece':'wp', 'pos':['r6','c6'], 'selected': false},
+      {'id': 7 , 'piece':'wp', 'pos':['r6','c7'], 'selected': false},
+      {'id': 8 , 'piece':'wr', 'pos':['r7','c0'], 'selected': false},
+      {'id': 9 , 'piece':'wn', 'pos':['r7','c1'], 'selected': false},
+      {'id': 10, 'piece':'wb', 'pos':['r7','c2'], 'selected': false},
+      {'id': 11, 'piece':'wq', 'pos':['r7','c3'], 'selected': false},
+      {'id': 12, 'piece':'wk', 'pos':['r7','c4'], 'selected': false},
+      {'id': 13, 'piece':'wb', 'pos':['r7','c5'], 'selected': false},
+      {'id': 14, 'piece':'wn', 'pos':['r7','c6'], 'selected': false},
+      {'id': 15, 'piece':'wr', 'pos':['r7','c7'], 'selected': false}
+    ]);
   }
 
   const updateSettings = () => {
     setSettings(!settings);
   }
 
-  const openDocs = (e) => {
+  const openDocs = () => {
     // open the docs component
     setDocs(!docs);
   }
@@ -76,6 +72,7 @@ function App() {
   }
 
   const checkKey = (e) => {
+    if (currCommand === '') { return }
     var key = e.key;
     // console.log(e.key);
     let rc = "'"+currCommand+"' is not recognized.";
@@ -90,17 +87,17 @@ function App() {
         params = params[0].split(',');
       }
 
+
       switch (method) {
         case 'help':
-          const c1 = "command 1";
-          const c2 = "command 2";
-          const c3 = "command 3";
-          updatecommandHistory([...commandHistory, c1, c2, c3]);
+          const c1 = " - select(r, c) : selects a piece at the given position if one exists. note this method both sets the selected piece and returns it.";
+          const c2 = " - unselect()   : unselects the currently selected piece if one exists.";
+          const c3 = " - move(r, c)   : moves the selected piece to the specified square iff it is a valid move.";
+          updateCommandHistory([...commandHistory, c1, c2, c3]);
           break;
         case 'clear':
-          updatecommandHistory([]);
-          setCurrCommand("");
-          return;
+          updateCommandHistory([]);
+          break;
         case 'select':
           // UPDATE-
           // make this set a state variable but also return it
@@ -124,10 +121,19 @@ function App() {
               rc = 'invalid position ('+params[0]+','+params[1]+'); make sure the coordinates are within the zero-indexed range and a piece is in that position';
             }
           }
+          updateCommandHistory([...commandHistory, rc]);
+          break;
+        case 'selected':
+          if (JSON.stringify(selectedPiece) === '{}'){
+            rc = 'selected = null';
+          } else {
+            rc = 'currently selected = ['+selectedPiece.piece+','+selectedPiece.pos[0]+','+selectedPiece.pos[1]+'].'
+          }
+          updateCommandHistory([...commandHistory, rc]);
           break;
         case 'unselect':
           let unpiece = piecesBlack.find(unpiece => {
-            return unpiece.pos[0] === 'r'+params[0] && unpiece.pos[1] === 'c'+params[1];
+            return unpiece.selected;
           });
           if (unpiece) {
             unpiece.selected = false;
@@ -135,7 +141,7 @@ function App() {
             rc = unpiece.piece + ' on ' + unpiece.pos[0] + ' ' + unpiece.pos[1] + ' unselected.';
           } else {
             unpiece = piecesWhite.find(unpiece => {
-              return unpiece.pos[0] === 'r'+params[0] && unpiece.pos[1] === 'c'+params[1];
+              return unpiece.selected;
             });
             if (unpiece) {
               unpiece.selected = false;
@@ -146,14 +152,52 @@ function App() {
             }
           }
           break;
+        case 'move':
+          if (!selectedPiece) { // set err message and return if no piece is selected
+            rc = 'there is currently no piece selected.';
+            updateCommandHistory([...commandHistory, rc]);
+            return;
+          }
+
+          if (isValidMove(params[0], params[1])) {
+            let temp = piecesBlack.find(piece => {
+              return piece === selectedPiece;
+            });
+            if (temp) {
+              rc = selectedPiece.piece+' moved from ('+temp.pos[0]+','+temp.pos[1]+') to (r'+params[0]+',c'+params[1]+').';
+              temp.pos = ['r'+params[0], 'c'+params[1]];
+              temp.selected = false;
+              setSelectedPiece({});
+              debugger;
+            } else {
+              temp = piecesWhite.find(piece => {
+                return piece === selectedPiece;
+              });
+              if (temp) {
+                rc = selectedPiece.piece+' moved from ('+temp.pos[0]+','+temp.pos[1]+') to (r'+params[0]+',c'+params[1]+').';
+                temp.pos = ['r'+params[0], 'c'+params[1]];
+                temp.selected = false;
+                setSelectedPiece({});
+                debugger;
+              }
+            }
+          } else {
+            rc = 'move('+params[0]+' '+params[1]+') is not a valid move.';
+          }
+          updateCommandHistory([...commandHistory, rc]);
+          debugger;
+          break;
         default:
-          updatecommandHistory([...commandHistory, rc]);
+          updateCommandHistory([...commandHistory, rc]);
           setCurrCommand("");
           return;
       }
-      updatecommandHistory([...commandHistory, rc]);
       setCurrCommand("");
     }
+  }
+
+  const isValidMove = (r, c) => {
+    return true;
   }
 
   const ScrollToBottom = () => {
