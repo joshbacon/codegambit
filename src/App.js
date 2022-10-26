@@ -1,9 +1,12 @@
 import './App.css';
 import React, { useEffect, useState, useRef } from 'react';
+import { Docs } from './Docs.js';
 
 function App() {
 
+  const [docs, setDocs] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [theme, setTheme] = useState('dark');
 
   const [selectedPiece, setSelectedPiece] = useState({});
   const [piecesBlack, updatePiecesBlack] = useState([]);
@@ -59,8 +62,13 @@ function App() {
     updatePiecesWhite(white);
   }
 
-  const updateSettings = (e) => {
+  const updateSettings = () => {
     setSettings(!settings);
+  }
+
+  const openDocs = (e) => {
+    // open the docs component
+    setDocs(!docs);
   }
 
   const updateCommand = (e) => {
@@ -70,25 +78,80 @@ function App() {
   const checkKey = (e) => {
     var key = e.key;
     // console.log(e.key);
+    let rc = "'"+currCommand+"' is not recognized.";
     if (key === 'Enter'){
-      switch (currCommand) {
-        case 'help()':
+
+      //clean input
+      const input = currCommand.split('(');
+      const method = input[0];
+      let params;
+      if (input[1]) {
+        params = input[1].split(')');
+        params = params[0].split(',');
+      }
+
+      switch (method) {
+        case 'help':
           const c1 = "command 1";
           const c2 = "command 2";
           const c3 = "command 3";
           updatecommandHistory([...commandHistory, c1, c2, c3]);
           break;
-        case 'clear()':
+        case 'clear':
           updatecommandHistory([]);
+          setCurrCommand("");
+          return;
+        case 'select':
+          // UPDATE-
+          // make this set a state variable but also return it
+          let piece = piecesBlack.find(piece => {
+            return piece.pos[0] === 'r'+params[0] && piece.pos[1] === 'c'+params[1];
+          });
+          if (piece) {
+            piece.selected = true;
+            setSelectedPiece(piece);
+            rc = piece.piece + ' on ' + piece.pos[0] + ' ' + piece.pos[1] + ' selected.';
+            // debugger;
+          } else {
+            piece = piecesWhite.find(piece => {
+              return piece.pos[0] === 'r'+params[0] && piece.pos[1] === 'c'+params[1];
+            });
+            if (piece) {
+              piece.selected = true;
+              setSelectedPiece(piece);
+              rc = piece.piece + ' on ' + piece.pos[0] + ' ' + piece.pos[1] + ' selected.';
+            } else {
+              rc = 'invalid position ('+params[0]+','+params[1]+'); make sure the coordinates are within the zero-indexed range and a piece is in that position';
+            }
+          }
           break;
-        case 'sel 0 0':
-          // do some actual checking
-          piecesBlack[0].selected = true;
+        case 'unselect':
+          let unpiece = piecesBlack.find(unpiece => {
+            return unpiece.pos[0] === 'r'+params[0] && unpiece.pos[1] === 'c'+params[1];
+          });
+          if (unpiece) {
+            unpiece.selected = false;
+            setSelectedPiece({});
+            rc = unpiece.piece + ' on ' + unpiece.pos[0] + ' ' + unpiece.pos[1] + ' unselected.';
+          } else {
+            unpiece = piecesWhite.find(unpiece => {
+              return unpiece.pos[0] === 'r'+params[0] && unpiece.pos[1] === 'c'+params[1];
+            });
+            if (unpiece) {
+              unpiece.selected = false;
+              setSelectedPiece({});
+              rc = unpiece.piece + ' on ' + unpiece.pos[0] + ' ' + unpiece.pos[1] + ' unselected.';
+            } else {
+              rc = 'invalid position ('+params[0]+','+params[1]+'); make sure the coordinates are within the zero-indexed range and a piece is in that position.';
+            }
+          }
           break;
         default:
-          const err = "'" + currCommand + "' is not recognized.";
-          updatecommandHistory([...commandHistory, err]);
+          updatecommandHistory([...commandHistory, rc]);
+          setCurrCommand("");
+          return;
       }
+      updatecommandHistory([...commandHistory, rc]);
       setCurrCommand("");
     }
   }
@@ -96,7 +159,7 @@ function App() {
   const ScrollToBottom = () => {
     const scrollRef = useRef();
     useEffect(() => scrollRef.current.scrollIntoView());
-    return <div ref={scrollRef} />;
+    return <tr ref={scrollRef} />;
   }
 
   useEffect(() => {
@@ -108,77 +171,84 @@ function App() {
 
       <header className="App-header">
         <h1>{'>'}code_gambit</h1>
-        <button className="settings" onClick={updateSettings}></button>
+        <button className="docs-btn" onClick={openDocs}></button>
+        <button className="settings-btn" onClick={updateSettings}></button>
       </header>
+      { docs ?
+        <Docs theme={theme} /> : <>
 
-      <section className="main">
+        <section className="main">
 
-        { settings &&
-          <div className="blackout" onClick={updateSettings}>
-            <div className="settings-panel">
-              <h1>Settings</h1>
-              <div className="theme-picker">
-                <h2>Color Theme</h2>
-                <div className="theme-options">
-                  <div className="theme dark"></div>
-                  <div className="theme light"></div>
-                  <div className="theme purple"></div>
-                  <div className="theme blue"></div>
-                  <div className="theme green"></div>
-                  <div className="theme orange"></div>
+          { settings &&
+            <div className="blackout" onClick={updateSettings}>
+              <div className="settings-panel">
+                <h1>Settings</h1>
+                <div className="theme-picker">
+                  <h2>Color Theme</h2>
+                  <div className="theme-options">
+                    <div id="dark" className="theme dark"></div>
+                    <div id="light" className="theme light"></div>
+                    <div id="purple" className="theme purple"></div>
+                    <div id="blue" className="theme blue"></div>
+                    <div id="green" className="theme green"></div>
+                    <div id="orange" className="theme orange"></div>
+                  </div>
                 </div>
-              </div>
-              <div className="difficulty-picker">
-                <h2>Difficulty</h2>
-                <div className="difficulty-options">
-                  <div className="difficulty">250</div>
-                  <div className="difficulty">400</div>
-                  <div className="difficulty">500</div>
-                  <div className="difficulty">700</div>
-                  <div className="difficulty">900</div>
-                  <div className="difficulty">1100</div>
-                  <div className="difficulty">1400</div>
-                  <div className="difficulty">1800</div>
-                  <div className="difficulty">2000</div>
+                <div className="difficulty-picker">
+                  <h2>Difficulty</h2>
+                  <div className="difficulty-options">
+                    <div className="difficulty">250</div>
+                    <div className="difficulty">400</div>
+                    <div className="difficulty">500</div>
+                    <div className="difficulty">700</div>
+                    <div className="difficulty">900</div>
+                    <div className="difficulty">1100</div>
+                    <div className="difficulty">1400</div>
+                    <div className="difficulty">1800</div>
+                    <div className="difficulty">2000</div>
+                  </div>
                 </div>
+                <h3>by Josh Bacon</h3>
               </div>
-              <h3>by Josh Bacon</h3>
+            </div>
+          }
+
+          <div className="board">
+            {piecesBlack.map((value, key) => {
+              return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
+            })}
+            {piecesWhite.map((value, key) => {
+              return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
+            })}
+          </div>
+
+          <div className="terminal">
+            <table className="command-history">
+              <tbody>
+                {commandHistory.map((value, key) => {
+                  return <tr key={key}>
+                    <td>{value}</td>
+                  </tr>
+                })}
+                <ScrollToBottom />
+              </tbody>
+            </table>
+            <div className="terminal-in">{'>'}
+              <input
+                type="text"
+                // autoCorrect="off"
+                // autoSuggest="off"
+                // autoComplete="off"
+                // autoCapitalize="off"
+                value={currCommand}
+                onChange={updateCommand}
+                onKeyUp={checkKey}
+                className="code-in">
+              </input>
             </div>
           </div>
-        }
-
-        <div className="board">
-          {piecesBlack.map((value, key) => {
-            return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
-          })}
-          {piecesWhite.map((value, key) => {
-            return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
-          })}
-        </div>
-
-        <div className="terminal">
-          <table className="command-history">
-            <tbody>
-              {commandHistory.map((value, key) => {
-                return <tr key={key}>
-                  <td>{value}</td>
-                </tr>
-              })}
-              <ScrollToBottom />
-            </tbody>
-          </table>
-          <div className="terminal-in">{'>'}
-            <input
-              type="text"
-              value={currCommand}
-              onChange={updateCommand}
-              onKeyUp={checkKey}
-              className="code-in">
-            </input>
-          </div>
-        </div>
-      </section>
-
+        </section>
+      </>}
     </div>
   );
 }

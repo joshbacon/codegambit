@@ -44,7 +44,21 @@ html {
   height: 75px;
 }
 
-.settings {
+.docs-btn {
+  position: absolute;
+  right: 82px;
+
+  background-image: url('assets/docs.svg');
+  background-color: #00000000;
+  width: 52px;
+  aspect-ratio: 1;
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+}
+
+.settings-btn {
   position: absolute;
   right: 15px;
 
@@ -164,6 +178,7 @@ html {
 
 .board {
   position: relative;
+  z-index: 0;
 
   background-image: url("assets/board.png");
   width: 720px;
@@ -215,6 +230,7 @@ html {
 
 
 .terminal {
+  z-index: 5;
   overflow: hidden;
   border-radius: 20px;
   box-shadow:  17px 17px 40px #0A0A0A,
