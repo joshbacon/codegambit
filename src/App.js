@@ -4,7 +4,7 @@ import { Docs } from './Docs.js';
 
 function App() {
 
-  const [docs, setDocs] = useState(false);
+  const [showDocs, setShowDocs] = useState(true);
   const [settings, setSettings] = useState(false);
   const [theme, setTheme] = useState('dark');
 
@@ -15,7 +15,7 @@ function App() {
   const [currCommand, setCurrCommand] = useState("");
   const [commandHistory, updateCommandHistory] = useState([
     'Welcome to code_gambit! We teach coding through playing chess.',
-    'type help() for a list of commands.'
+    'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
   ]);
 
   // Places pieces in their starting positions
@@ -64,7 +64,7 @@ function App() {
 
   const openDocs = () => {
     // open the docs component
-    setDocs(!docs);
+    setShowDocs(!showDocs);
   }
 
   const updateCommand = (e) => {
@@ -215,10 +215,14 @@ function App() {
 
       <header className="App-header">
         <h1>{'>'}code_gambit</h1>
-        <button className="docs-btn" onClick={openDocs}></button>
-        <button className="settings-btn" onClick={updateSettings}></button>
+        { showDocs ? <></> :
+          <button className="settings-btn header-btn" onClick={updateSettings}></button>}
+        { showDocs ?
+          <button className="close-btn header-btn" onClick={openDocs}></button> :
+          <button className="docs-btn header-btn" onClick={openDocs}></button>
+        }
       </header>
-      { docs ?
+      { showDocs ?
         <Docs theme={theme} /> : <>
 
         <section className="main">

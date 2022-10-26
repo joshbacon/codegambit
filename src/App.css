@@ -44,11 +44,9 @@ html {
   height: 75px;
 }
 
-.docs-btn {
+.header-btn {
   position: absolute;
-  right: 82px;
 
-  background-image: url('assets/docs.svg');
   background-color: #00000000;
   width: 52px;
   aspect-ratio: 1;
@@ -58,18 +56,19 @@ html {
   cursor: pointer;
 }
 
+.docs-btn {
+  left: 15px;
+  background-image: url('assets/docs.svg');
+}
+
+.close-btn {
+  left: 15px;
+  background-image: url('assets/close.svg');
+}
+
 .settings-btn {
-  position: absolute;
   right: 15px;
-
   background-image: url('assets/settings.svg');
-  background-color: #00000000;
-  width: 52px;
-  aspect-ratio: 1;
-  border: none;
-  outline: none;
-
-  cursor: pointer;
 }
 
 .main {

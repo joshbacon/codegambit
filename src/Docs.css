@@ -1,6 +1,6 @@
 
 :root {
-    --background: #191919;
+    --background: #0A0A0A;
 }
 
 * {
@@ -9,10 +9,54 @@
 }
 
 .docs {
-    position: absolute;
+    position: sticky;
     background-color: var(--background);
+    height: 100%;
+    width: 100%;
+
+    display: grid;
+    place-items: center;
 }
 
-.header {
-    background-color: black;
+.menu-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #191919;
+    height: 100%;
+    width: 250px;
+    padding: 0 10px 0 10px;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.list-section {
+    border-top: 1px #008000 solid;
+    padding-bottom: 0.5em;
+}
+
+.list-section h2 {
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.method {
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.list-section h2:hover,
+.method:hover {
+    text-decoration: underline #008000;
+}
+
+section {
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+    background: #191919;
+    margin: auto;
 }
