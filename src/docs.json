@@ -4,7 +4,33 @@
     "id": 0,
     "section": "Selection",
     "methods": [
-        {"mid":0, "method":"select(r, c)", "desc":""}
+        {"mid":0, "method":"select(r,c)", "params":"r - row, c - column", "desc":"selects a piece at the given position if one exists and returns or fale otherwise."},
+        {"mid":0, "method":"selected()", "params":"none", "desc":"returns the currently selected piece or false if none exists."},
+        {"mid":0, "method":"unselect()", "params":"none", "desc":"unselects the currently selected piece if one exists and returns false otherwise."}
+    ]
+},
+{
+    "id": 0,
+    "section": "Movement",
+    "methods": [
+        {"mid":0, "method":"move(r,c)", "params":"r - row, c - column", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise."},
+        {"mid":0, "method":"take(r,c)", "params":"r - row, c - column", "desc":"like move but only works when said move captures another piece."}
+    ]
+},
+{
+    "id": 0,
+    "section": "Checking",
+    "methods": [
+        {"mid":0, "method":"isValidMove(r,c)", "params":"r - row, c - column", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise."},
+        {"mid":0, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise."}
+    ]
+},
+{
+    "id": 0,
+    "section": "Gameplay",
+    "methods": [
+        {"mid":0, "method":"offerDraw()", "params":"none", "desc":"offers a draw to the opponent."},
+        {"mid":0, "method":"resign()", "params":"none", "desc":"resigns the game."}
     ]
 }
 

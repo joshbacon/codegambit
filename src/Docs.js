@@ -1,5 +1,6 @@
 import './Docs.css';
 import { DocCard } from './DocCard.js'
+import DocData from './docs.json';
 import React from 'react';
 
 const Docs = (props) => {
@@ -8,7 +9,17 @@ const Docs = (props) => {
         <div className='docs'>
             <div className='menu-bar'>
                 <h1>Documentation</h1>
-                <div className='list-section'>
+                {DocData.map((value, key) => {
+                    return <div className='list-section'>
+                        <h2>{value.section}</h2>
+                        <ul>
+                            {value.methods.map((value, key) => {
+                                return <li className='method'> - {value.method}</li>
+                            })}
+                        </ul>
+                    </div>
+                })}
+                {/* <div className='list-section'>
                     <h2>Selection</h2>
                     <ul>
                         <li className='method'> - select()</li>
@@ -36,7 +47,7 @@ const Docs = (props) => {
                         <li className='method'> - offerDraw()</li>
                         <li className='method'> - resign()</li>
                     </ul>
-                </div>
+                </div> */}
             </div>
 
             <div>
