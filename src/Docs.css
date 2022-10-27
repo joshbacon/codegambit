@@ -1,6 +1,8 @@
 
 :root {
     --background: #0A0A0A;
+    --accent: #191919;
+    --accent2: #111111;
 }
 
 * {
@@ -10,22 +12,25 @@
 
 .docs {
     position: sticky;
-    background-color: var(--background);
-    height: 100%;
-    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
 
     display: grid;
     place-items: center;
 }
 
 .menu-bar {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #191919;
+    z-index: 5;
     height: 100%;
     width: 250px;
     padding: 0 10px 0 10px;
+
+    background-color: var(--accent2);
 }
 
 h1 {
@@ -53,10 +58,35 @@ h1 {
     text-decoration: underline #008000;
 }
 
+.main {
+    position: absolute;
+    top: 0;
+    left: 250px;
+    width: calc(100% - 250px);
+
+    display: grid;
+    place-items: center;
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+
+    background-color: var(--background);
+}
+
 section {
+    display: grid;
+    align-items: center;
     height: 100%;
-    width: 100%;
+    width: 40%;
     border-radius: 25px;
-    background: #191919;
-    margin: auto;
+    background-color: var(--accent2);
+    margin-top: 4em;
+}
+
+section h2 {
+    padding-bottom: 10px;
+}
+
+.card {
+    background-color: var(--background);
+    width: 100%;
 }

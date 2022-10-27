@@ -1,0 +1,14 @@
+:root{
+    --card-width: 100%;
+    --card-height: 100%;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    width: var(--card-width);
+    height: var(--card-height);
+}
