@@ -3,18 +3,31 @@ import DocCard from './DocCard.js'
 import DocData from './docs.json';
 import React from 'react';
 
+
 const Docs = (props) => {
-    // use the props.theme in the 
+
+    const scrollTo = (div) => {
+        document.getElementById(div).scrollIntoView({
+            behavior: "smooth",
+            inline: "center"
+        });
+
+        document.getElementById(div).className = document.getElementById(div).className + ' scrolled'
+        setTimeout(() => {
+            document.getElementById(div).className = document.getElementById(div).className.replace(' scrolled', '');
+        }, 2000);
+    }
+
     return (
         <div className='docs'>
             <div className='menu-bar'>
                 <h1>Documentation</h1>
                 {DocData.map((value, key) => {
                     return <div key={key} className='list-section'>
-                        <h2>{value.section}</h2>
+                        <h2 onClick={() => scrollTo(value.section)}>{value.section}</h2>
                         <ul>
                             {value.methods.map((value, key) => {
-                                return <li key={key} className='method'> - {value.method}</li>
+                                return <li key={key} onClick={() => scrollTo(value.method)} className='method'> - {value.method}</li>
                             })}
                         </ul>
                     </div>
@@ -22,15 +35,11 @@ const Docs = (props) => {
             </div>
 
             <div className='main'>
-                {DocData.map((value, key) => {
-                    // make a section and map on each of the methods for a card.
-                    return <section key={key}>
-                        <h2>{value.section}</h2>
-                        {value.methods.map((value, key) => {
-                            return <DocCard key={key} method={value}/>
-                        })}
-                    </section>
-                })}
+                <div className='doc-column'>
+                    {DocData.map((value, key) => {
+                        return <DocCard key={key} data={value}/>
+                    })}
+                </div>
             </div>
         </div>
     );

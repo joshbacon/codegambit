@@ -5,32 +5,37 @@
     "section": "Selection",
     "methods": [
         {"mid":0, "method":"select(r,c)", "params":"r - row, c - column", "desc":"selects a piece at the given position if one exists and returns or fale otherwise."},
-        {"mid":0, "method":"selected()", "params":"none", "desc":"returns the currently selected piece or false if none exists."},
-        {"mid":0, "method":"unselect()", "params":"none", "desc":"unselects the currently selected piece if one exists and returns false otherwise."}
+        {"mid":1, "method":"selected()", "params":"none", "desc":"returns the currently selected piece or false if none exists."},
+        {"mid":2, "method":"unselect()", "params":"none", "desc":"unselects the currently selected piece if one exists and returns false otherwise."}
     ]
 },
 {
-    "id": 0,
+    "id": 1,
     "section": "Movement",
     "methods": [
         {"mid":0, "method":"move(r,c)", "params":"r - row, c - column", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise."},
-        {"mid":0, "method":"take(r,c)", "params":"r - row, c - column", "desc":"like move but only works when said move captures another piece."}
+        {"mid":1, "method":"take(r,c)", "params":"r - row, c - column", "desc":"like move but only works when said move captures another piece."}
     ]
 },
 {
-    "id": 0,
+    "id": 2,
     "section": "Checking",
     "methods": [
         {"mid":0, "method":"isValidMove(r,c)", "params":"r - row, c - column", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise."},
-        {"mid":0, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise."}
+        {"mid":1, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise."},
+        {"mid":2, "method":"hideValidMoves()", "params":"none", "desc":"hides all the valid moves of the selected piece if one exists and false otherwise."},
+        {"mid":3, "method":"showMoveHistory()", "params":"none", "desc":"prints the move history for both players in the terminal or returns false if no moves have been played."},
+        {"mid":4, "method":"showWhiteHistory()", "params":"none", "desc":"prints the move history for white in the terminal or returns false if no moves have been played."},
+        {"mid":5, "method":"showBlackHistory()", "params":"none", "desc":"prints the move history for black in the terminal or returns false if no moves have been played."}
     ]
 },
 {
-    "id": 0,
+    "id": 3,
     "section": "Gameplay",
     "methods": [
         {"mid":0, "method":"offerDraw()", "params":"none", "desc":"offers a draw to the opponent."},
-        {"mid":0, "method":"resign()", "params":"none", "desc":"resigns the game."}
+        {"mid":1, "method":"resign()", "params":"none", "desc":"resigns the game."},
+        {"mid":2, "method":"getEvaluation()", "params":"none", "desc":"returns a number between "}
     ]
 }
 

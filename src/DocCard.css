@@ -1,4 +1,8 @@
 :root{
+
+    --section-width: 500px;
+    --section-height: 300px;
+
     --card-width: 100%;
     --card-height: 100%;
 }
@@ -8,7 +12,24 @@
     margin: 0;
 }
 
+section {
+    position: relative;
+    width: var(--section-width);
+    height: var(--card-height);
+    display: grid;
+    background-color: #111111;
+    border-radius: 20px;
+    row-gap: 1rem;
+    padding: 15px;
+}
+
 .card {
     width: var(--card-width);
     height: var(--card-height);
+    background-color: #292929;
+    border-radius: 10px;
+}
+
+h3, p {
+    padding-left: 15px;
 }
