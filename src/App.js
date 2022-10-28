@@ -4,7 +4,7 @@ import { Docs } from './Docs.js';
 
 function App() {
 
-  const [showDocs, setShowDocs] = useState(true);
+  const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
   const [theme, setTheme] = useState('dark');
 
@@ -224,11 +224,9 @@ function App() {
       </header>
       { showDocs ?
         <Docs theme={theme} /> : <>
-
         <section className="main">
-
           { settings &&
-            <div className="blackout" onClick={updateSettings}>
+            <div className="settings-section">
               <div className="settings-panel">
                 <h1>Settings</h1>
                 <div className="theme-picker">
@@ -256,8 +254,9 @@ function App() {
                     <div className="difficulty">2000</div>
                   </div>
                 </div>
-                <h3>by Josh Bacon</h3>
+                <h3></h3>
               </div>
+              <div className='background-blur' onClick={updateSettings}></div>
             </div>
           }
 

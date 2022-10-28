@@ -27,14 +27,14 @@ const Docs = (props) => {
                         <h2 onClick={() => scrollTo(value.section)}>{value.section}</h2>
                         <ul>
                             {value.methods.map((value, key) => {
-                                return <li key={key} onClick={() => scrollTo(value.method)} className='method'> - {value.method}</li>
+                                return <li key={key} onClick={() => scrollTo(value.method)} className='list-method'> - {value.method}</li>
                             })}
                         </ul>
                     </div>
                 })}
             </div>
 
-            <div className='main'>
+            <div className='scroll-box'>
                 <div className='doc-column'>
                     {DocData.map((value, key) => {
                         return <DocCard key={key} data={value}/>

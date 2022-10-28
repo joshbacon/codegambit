@@ -12,7 +12,7 @@
     margin: 0;
 }
 
-section {
+.doc-section {
     position: relative;
     width: var(--section-width);
     height: var(--card-height);
@@ -23,13 +23,18 @@ section {
     padding: 15px;
 }
 
-.card {
+.section-title {
+    display: flex;
+    align-items: center;
+}
+
+.method-card {
     width: var(--card-width);
     height: var(--card-height);
     background-color: #292929;
     border-radius: 10px;
 }
 
-h3, p {
+.method-card h3, .method-card p {
     padding-left: 15px;
 }
