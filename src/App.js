@@ -4,6 +4,8 @@ import { Docs } from './Docs.js';
 
 function App() {
 
+  const [secrets, setsecrets] = useState(false);
+
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
   const [theme, setTheme] = useState('dark');
@@ -89,6 +91,9 @@ function App() {
 
 
       switch (method) {
+        case 'revealYourGambit':
+          setsecrets(true);
+          break;
         case 'help':
           const c1 = " - select(r, c) : selects a piece at the given position if one exists. note this method both sets the selected piece and returns it.";
           const c2 = " - unselect()   : unselects the currently selected piece if one exists.";
@@ -223,7 +228,7 @@ function App() {
         }
       </header>
       { showDocs ?
-        <Docs theme={theme} /> : <>
+        <Docs theme={theme} secret={secrets} /> : <>
         <section className="main">
           { settings &&
             <div className="settings-section">
@@ -241,17 +246,14 @@ function App() {
                   </div>
                 </div>
                 <div className="difficulty-picker">
-                  <h2>Difficulty</h2>
+                  <h2>Depth</h2>
                   <div className="difficulty-options">
-                    <div className="difficulty">250</div>
-                    <div className="difficulty">400</div>
-                    <div className="difficulty">500</div>
-                    <div className="difficulty">700</div>
-                    <div className="difficulty">900</div>
-                    <div className="difficulty">1100</div>
-                    <div className="difficulty">1400</div>
-                    <div className="difficulty">1800</div>
-                    <div className="difficulty">2000</div>
+                    <div className="difficulty">1</div>
+                    <div className="difficulty">2</div>
+                    <div className="difficulty">3</div>
+                    <div className="difficulty">4</div>
+                    <div className="difficulty">5</div>
+                    <div className="difficulty">6</div>
                   </div>
                 </div>
                 <h3></h3>
