@@ -8,7 +8,7 @@ function App() {
 
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
-  const [theme, setTheme] = useState('dark');
+  const [boardTheme, setBoardTheme] = useState('bBlue');
 
   const [selectedPiece, setSelectedPiece] = useState({});
   const [piecesBlack, updatePiecesBlack] = useState([]);
@@ -67,6 +67,10 @@ function App() {
   const openDocs = () => {
     // open the docs component
     setShowDocs(!showDocs);
+  }
+
+  const changeTheme = (newTheme) => {
+    setBoardTheme(newTheme);
   }
 
   const updateCommand = (e) => {
@@ -228,25 +232,25 @@ function App() {
         }
       </header>
       { showDocs ?
-        <Docs theme={theme} secret={secrets} /> : <>
+        <Docs secret={secrets} /> : <>
         <section className="main">
           { settings &&
             <div className="settings-section">
               <div className="settings-panel">
-                <h1>Settings</h1>
-                <div className="theme-picker">
-                  <h2>Color Theme</h2>
+                <h1>settings</h1>
+                <div className="picker">
+                  <h2>board theme</h2>
                   <div className="theme-options">
-                    <div id="dark" className="theme dark"></div>
-                    <div id="light" className="theme light"></div>
-                    <div id="purple" className="theme purple"></div>
-                    <div id="blue" className="theme blue"></div>
-                    <div id="green" className="theme green"></div>
-                    <div id="orange" className="theme orange"></div>
+                    <div onClick={() => changeTheme("bDark")}   className="theme dark"></div>
+                    <div onClick={() => changeTheme("bLight")}  className="theme light"></div>
+                    <div onClick={() => changeTheme("bPurple")} className="theme purple"></div>
+                    <div onClick={() => changeTheme("bBlue")}   className="theme blue"></div>
+                    <div onClick={() => changeTheme("bGreen")}  className="theme green"></div>
+                    <div onClick={() => changeTheme("bOrange")} className="theme orange"></div>
                   </div>
                 </div>
-                <div className="difficulty-picker">
-                  <h2>Depth</h2>
+                <div className="picker">
+                  <h2>bot depth</h2>
                   <div className="difficulty-options">
                     <div className="difficulty">1</div>
                     <div className="difficulty">2</div>
@@ -256,13 +260,24 @@ function App() {
                     <div className="difficulty">6</div>
                   </div>
                 </div>
-                <h3></h3>
+                <div className='picker no-light-mode'>
+                  <h2>window theme</h2>
+                  <button><h3>switch to light mode</h3></button>
+                </div>
+                <div className='picker'>
+                  <h2>play as...</h2>
+                  <div className='start-color-options'>
+                    <button className='start-color white'>white</button>
+                    <button className='start-color black'>black</button>
+                    <button className='start-color random'>random</button>
+                  </div>
+                </div>
               </div>
               <div className='background-blur' onClick={updateSettings}></div>
             </div>
           }
 
-          <div className="board">
+          <div className={"board "+boardTheme}>
             {piecesBlack.map((value, key) => {
               return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
             })}

@@ -30,6 +30,10 @@ html {
   background: #191919;
 }
 
+button {
+  cursor: pointer;
+}
+
 .App {
   height: calc(100vh - 75px);
 }
@@ -109,6 +113,7 @@ html {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   place-items: center;
+  row-gap: 15px;
 
   border-radius: 15px;
   background-color: #0A0A0A;
@@ -125,7 +130,7 @@ html {
   grid-column: 1 / 3;
 }
 
-.theme-picker {
+.picker {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -158,16 +163,6 @@ html {
 .green  {background-color: #008d2a}
 .orange {background-color: #c76000}
 
-.difficulty-picker {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: center;
-
-  width: 100%;
-  height: 100%;
-}
-
 .difficulty-options {
   display: grid;
   place-items: center;
@@ -189,15 +184,51 @@ html {
   cursor: pointer;
 }
 
+.no-light-mode button {
+  width: 100px;
+  height: 40px;
+  margin: auto;
+  background-color: #282828;
+  border: none;
+  border-radius: 5px;
+}
+
+.no-light-mode:hover button {
+  display: none;
+}
+
+.start-color-options {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin: auto;
+}
+
+.start-color {
+  width: 75px;
+  height: 40px;
+  font-size: 1.2rem;
+  font-family: mainFontBold;
+  border-radius: 10px;
+}
+.white { background-color: white;}
+.black { background-color: black;}
+.random { background: linear-gradient(90deg, rgba(255,255,255,1) 48%, rgba(0,0,0,1) 48%);}
+
 .board {
   position: relative;
   z-index: 0;
-
-  background-image: url("assets/board.png");
   width: 750px;
   aspect-ratio: 1;
-
 }
+
+.bDark { background-image: url('assets/boardDark.png') }
+.bLight { background-image: url('assets/boardLight.png') }
+.bPurple { background-image: url('assets/boardPurple.png') }
+.bBlue { background-image: url('assets/boardBlue.png') }
+.bGreen { background-image: url('assets/boardGreen.png') }
+.bOrange { background-image: url('assets/boardOrange.png') }
 
 .square {
   position: absolute;
