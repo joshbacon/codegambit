@@ -23,40 +23,40 @@ function App() {
   // Places pieces in their starting positions
   const initGame = () => {
     updatePiecesBlack([
-      {'id': 0 , 'piece':'bp', 'pos':['r1','c0'], 'selected': false},
-      {'id': 1 , 'piece':'bp', 'pos':['r1','c1'], 'selected': false},
-      {'id': 2 , 'piece':'bp', 'pos':['r1','c2'], 'selected': false},
-      {'id': 3 , 'piece':'bp', 'pos':['r1','c3'], 'selected': false},
-      {'id': 4 , 'piece':'bp', 'pos':['r1','c4'], 'selected': false},
-      {'id': 5 , 'piece':'bp', 'pos':['r1','c5'], 'selected': false},
-      {'id': 6 , 'piece':'bp', 'pos':['r1','c6'], 'selected': false},
-      {'id': 7 , 'piece':'bp', 'pos':['r1','c7'], 'selected': false},
-      {'id': 8 , 'piece':'br', 'pos':['r0','c0'], 'selected': false},
-      {'id': 9 , 'piece':'bn', 'pos':['r0','c1'], 'selected': false},
-      {'id': 10, 'piece':'bb', 'pos':['r0','c2'], 'selected': false},
-      {'id': 11, 'piece':'bq', 'pos':['r0','c3'], 'selected': false},
-      {'id': 12, 'piece':'bk', 'pos':['r0','c4'], 'selected': false},
-      {'id': 13, 'piece':'bb', 'pos':['r0','c5'], 'selected': false},
-      {'id': 14, 'piece':'bn', 'pos':['r0','c6'], 'selected': false},
-      {'id': 15, 'piece':'br', 'pos':['r0','c7'], 'selected': false}
+      {'id': 0 , 'piece':'bp', 'pos':'A7', 'selected': false},
+      {'id': 1 , 'piece':'bp', 'pos':'B7', 'selected': false},
+      {'id': 2 , 'piece':'bp', 'pos':'C7', 'selected': false},
+      {'id': 3 , 'piece':'bp', 'pos':'D7', 'selected': false},
+      {'id': 4 , 'piece':'bp', 'pos':'E7', 'selected': false},
+      {'id': 5 , 'piece':'bp', 'pos':'F7', 'selected': false},
+      {'id': 6 , 'piece':'bp', 'pos':'G7', 'selected': false},
+      {'id': 7 , 'piece':'bp', 'pos':'H7', 'selected': false},
+      {'id': 8 , 'piece':'br', 'pos':'A8', 'selected': false},
+      {'id': 9 , 'piece':'bn', 'pos':'B8', 'selected': false},
+      {'id': 10, 'piece':'bb', 'pos':'C8', 'selected': false},
+      {'id': 11, 'piece':'bq', 'pos':'D8', 'selected': false},
+      {'id': 12, 'piece':'bk', 'pos':'E8', 'selected': false},
+      {'id': 13, 'piece':'bb', 'pos':'F8', 'selected': false},
+      {'id': 14, 'piece':'bn', 'pos':'G8', 'selected': false},
+      {'id': 15, 'piece':'br', 'pos':'H8', 'selected': false}
     ]);
     updatePiecesWhite([
-      {'id': 0 , 'piece':'wp', 'pos':['r6','c0'], 'selected': false},
-      {'id': 1 , 'piece':'wp', 'pos':['r6','c1'], 'selected': false},
-      {'id': 2 , 'piece':'wp', 'pos':['r6','c2'], 'selected': false},
-      {'id': 3 , 'piece':'wp', 'pos':['r6','c3'], 'selected': false},
-      {'id': 4 , 'piece':'wp', 'pos':['r6','c4'], 'selected': false},
-      {'id': 5 , 'piece':'wp', 'pos':['r6','c5'], 'selected': false},
-      {'id': 6 , 'piece':'wp', 'pos':['r6','c6'], 'selected': false},
-      {'id': 7 , 'piece':'wp', 'pos':['r6','c7'], 'selected': false},
-      {'id': 8 , 'piece':'wr', 'pos':['r7','c0'], 'selected': false},
-      {'id': 9 , 'piece':'wn', 'pos':['r7','c1'], 'selected': false},
-      {'id': 10, 'piece':'wb', 'pos':['r7','c2'], 'selected': false},
-      {'id': 11, 'piece':'wq', 'pos':['r7','c3'], 'selected': false},
-      {'id': 12, 'piece':'wk', 'pos':['r7','c4'], 'selected': false},
-      {'id': 13, 'piece':'wb', 'pos':['r7','c5'], 'selected': false},
-      {'id': 14, 'piece':'wn', 'pos':['r7','c6'], 'selected': false},
-      {'id': 15, 'piece':'wr', 'pos':['r7','c7'], 'selected': false}
+      {'id': 0 , 'piece':'wp', 'pos':'A2', 'selected': false},
+      {'id': 1 , 'piece':'wp', 'pos':'B2', 'selected': false},
+      {'id': 2 , 'piece':'wp', 'pos':'C2', 'selected': false},
+      {'id': 3 , 'piece':'wp', 'pos':'D2', 'selected': false},
+      {'id': 4 , 'piece':'wp', 'pos':'E2', 'selected': false},
+      {'id': 5 , 'piece':'wp', 'pos':'F2', 'selected': false},
+      {'id': 6 , 'piece':'wp', 'pos':'G2', 'selected': false},
+      {'id': 7 , 'piece':'wp', 'pos':'H2', 'selected': false},
+      {'id': 8 , 'piece':'wr', 'pos':'A1', 'selected': false},
+      {'id': 9 , 'piece':'wn', 'pos':'B1', 'selected': false},
+      {'id': 10, 'piece':'wb', 'pos':'C1', 'selected': false},
+      {'id': 11, 'piece':'wq', 'pos':'D1', 'selected': false},
+      {'id': 12, 'piece':'wk', 'pos':'E1', 'selected': false},
+      {'id': 13, 'piece':'wb', 'pos':'F1', 'selected': false},
+      {'id': 14, 'piece':'wn', 'pos':'G1', 'selected': false},
+      {'id': 15, 'piece':'wr', 'pos':'H1', 'selected': false}
     ]);
   }
 
@@ -279,10 +279,10 @@ function App() {
 
           <div className={"board "+boardTheme}>
             {piecesBlack.map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
+              return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
             })}
             {piecesWhite.map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos[0]+" "+value.pos[1]+" "+(value.selected?'selected':'')}></div>
+              return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
             })}
           </div>
 
