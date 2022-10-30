@@ -23,7 +23,7 @@ const Docs = (props) => {
             <div className='menu-bar'>
                 <h1>Documentation</h1>
                 {DocData.map((value, key) => {
-                    return value.section !== 'Secret' || props.secret ?
+                    return value.section !== 'Secret' ?
                         <div key={key} className='list-section'>
                         <h2 onClick={() => scrollTo(value.section)}>{value.section}</h2>
                         <ul>

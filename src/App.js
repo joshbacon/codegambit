@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState, useRef } from 'react';
-import { Docs } from './Docs.js';
+import { Docs } from './documentation/Docs.js';
 
 function App() {
 
@@ -92,121 +92,8 @@ function App() {
         params = input[1].split(')');
         params = params[0].split(',');
       }
-
-
-      switch (method) {
-        case 'revealYourGambit':
-          setsecrets(true);
-          break;
-        case 'help':
-          const c1 = " - select(r, c) : selects a piece at the given position if one exists. note this method both sets the selected piece and returns it.";
-          const c2 = " - unselect()   : unselects the currently selected piece if one exists.";
-          const c3 = " - move(r, c)   : moves the selected piece to the specified square iff it is a valid move.";
-          updateCommandHistory([...commandHistory, c1, c2, c3]);
-          break;
-        case 'clear':
-          updateCommandHistory([]);
-          break;
-        case 'select':
-          // UPDATE-
-          // make this set a state variable but also return it
-          let piece = piecesBlack.find(piece => {
-            return piece.pos[0] === 'r'+params[0] && piece.pos[1] === 'c'+params[1];
-          });
-          if (piece) {
-            piece.selected = true;
-            setSelectedPiece(piece);
-            rc = piece.piece + ' on ' + piece.pos[0] + ' ' + piece.pos[1] + ' selected.';
-            // debugger;
-          } else {
-            piece = piecesWhite.find(piece => {
-              return piece.pos[0] === 'r'+params[0] && piece.pos[1] === 'c'+params[1];
-            });
-            if (piece) {
-              piece.selected = true;
-              setSelectedPiece(piece);
-              rc = piece.piece + ' on ' + piece.pos[0] + ' ' + piece.pos[1] + ' selected.';
-            } else {
-              rc = 'invalid position ('+params[0]+','+params[1]+'); make sure the coordinates are within the zero-indexed range and a piece is in that position';
-            }
-          }
-          updateCommandHistory([...commandHistory, rc]);
-          break;
-        case 'selected':
-          if (JSON.stringify(selectedPiece) === '{}'){
-            rc = 'selected = null';
-          } else {
-            rc = 'currently selected = ['+selectedPiece.piece+','+selectedPiece.pos[0]+','+selectedPiece.pos[1]+'].'
-          }
-          updateCommandHistory([...commandHistory, rc]);
-          break;
-        case 'unselect':
-          let unpiece = piecesBlack.find(unpiece => {
-            return unpiece.selected;
-          });
-          if (unpiece) {
-            unpiece.selected = false;
-            setSelectedPiece({});
-            rc = unpiece.piece + ' on ' + unpiece.pos[0] + ' ' + unpiece.pos[1] + ' unselected.';
-          } else {
-            unpiece = piecesWhite.find(unpiece => {
-              return unpiece.selected;
-            });
-            if (unpiece) {
-              unpiece.selected = false;
-              setSelectedPiece({});
-              rc = unpiece.piece + ' on ' + unpiece.pos[0] + ' ' + unpiece.pos[1] + ' unselected.';
-            } else {
-              rc = 'invalid position ('+params[0]+','+params[1]+'); make sure the coordinates are within the zero-indexed range and a piece is in that position.';
-            }
-          }
-          break;
-        case 'move':
-          if (!selectedPiece) { // set err message and return if no piece is selected
-            rc = 'there is currently no piece selected.';
-            updateCommandHistory([...commandHistory, rc]);
-            return;
-          }
-
-          if (isValidMove(params[0], params[1])) {
-            let temp = piecesBlack.find(piece => {
-              return piece === selectedPiece;
-            });
-            if (temp) {
-              rc = selectedPiece.piece+' moved from ('+temp.pos[0]+','+temp.pos[1]+') to (r'+params[0]+',c'+params[1]+').';
-              temp.pos = ['r'+params[0], 'c'+params[1]];
-              temp.selected = false;
-              setSelectedPiece({});
-              debugger;
-            } else {
-              temp = piecesWhite.find(piece => {
-                return piece === selectedPiece;
-              });
-              if (temp) {
-                rc = selectedPiece.piece+' moved from ('+temp.pos[0]+','+temp.pos[1]+') to (r'+params[0]+',c'+params[1]+').';
-                temp.pos = ['r'+params[0], 'c'+params[1]];
-                temp.selected = false;
-                setSelectedPiece({});
-                debugger;
-              }
-            }
-          } else {
-            rc = 'move('+params[0]+' '+params[1]+') is not a valid move.';
-          }
-          updateCommandHistory([...commandHistory, rc]);
-          debugger;
-          break;
-        default:
-          updateCommandHistory([...commandHistory, rc]);
-          setCurrCommand("");
-          return;
-      }
       setCurrCommand("");
     }
-  }
-
-  const isValidMove = (r, c) => {
-    return true;
   }
 
   const ScrollToBottom = () => {

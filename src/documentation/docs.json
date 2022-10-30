@@ -13,9 +13,9 @@
     "id": 1,
     "section": "Movement",
     "methods": [
-        {"mid":0, "method":"move(from, to)", "params":"from - square piece to move is on, to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise.", "example":"move(C3,F6)"},
+        {"mid":0, "method":"move(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise.", "example":"move(C3,F6)"},
         {"mid":0, "method":"move(to)", "params":"to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"mid":1, "method":"take(from, to)", "params":"from - square piece to move is on, to - destination square", "desc":"like move but only works when said move captures another piece.", "example":"take(G1,C5)"},
+        {"mid":1, "method":"take(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"like move but only works when said move captures another piece.", "example":"take(G1,C5)"},
         {"mid":1, "method":"take(to)", "params":"to - destination square", "desc":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
     ]
 },
@@ -23,7 +23,7 @@
     "id": 2,
     "section": "Checking",
     "methods": [
-        {"mid":0, "method":"isValidMove(from, to)", "params":"from - square piece to move is on, to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise.", "example":"isValidMove(B2,H3)"},
+        {"mid":0, "method":"isValidMove(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise.", "example":"isValidMove(B2,H3)"},
         {"mid":0, "method":"isValidMove(to)", "params":"to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
         {"mid":1, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
         {"mid":2, "method":"hideValidMoves()", "params":"none", "desc":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
@@ -37,24 +37,28 @@
     "section": "Gameplay",
     "methods": [
         {"mid":0, "method":"offerDraw()", "params":"none", "desc":"offers a draw to the opponent.", "example":"offerDraw()"},
-        {"mid":1, "method":"resign()", "params":"none", "desc":"resigns the game.", "example":"resign()"},
+        {"mid":1, "method":"resign()", "params":"none", "desc":"resigns the game.", "example":"resiasgdfuasoidgn()"},
         {"mid":2, "method":"getEvaluation()", "params":"none", "desc":"returns a number between x and y. more positive is in favour of white, more negative is in favour of black.", "example":"getEvaluation()"}
     ]
 },
 {
     "id": 4,
-    "section": "Other",
+    "section": "Settings",
     "methods": [
-        {"mid":0, "method":"help(method)", "params":"method signature without parameters", "desc":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
-        {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"}
+        {"mid":0, "method":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (dark, light, purple, blue, green, or orange)", "desc":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
+        {"mid":1, "method":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "desc":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
+        {"mid":2, "method":"playAs(color)", "params":"color - the color you want to start as", "desc":"sets the color you play as.", "example":"playAs(white)"}
     ]
 },
 {
-    "id": 4,
-    "section": "Secret",
+    "id": 5,
+    "section": "Other",
     "methods": [
-        {"mid":0, "method":"hint()", "params":"none", "desc":"tells you the square of the piece the current bot would chose if they were you.", "example":"hint()"},
-        {"mid":1, "method":"hint(square)", "params":"square - recommend square to move the piece", "desc":"tells you the square the current bot would move the given piece if they were you.", "example":"hint(G2)"}
+        {"mid":0, "method":"help(method)", "params":"method signature without parameters", "desc":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
+        {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"},
+        {"mid":2, "method":"hint()", "params":"none", "desc":"tells you the square of the piece the current bot would chose if they were you.", "example":"hint()"},
+        {"mid":3, "method":"hint(square)", "params":"square - recommend square to move the piece", "desc":"tells you the square the current bot would move the given piece if they were you.", "example":"hint(G2)"},
+        {"mid":4, "method":"conventions()", "params": "none", "desc": "displays the naming conventions for chess like NxG7", "example": "conventions()"}
     ]
 }
 
