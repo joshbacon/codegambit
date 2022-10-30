@@ -2,7 +2,6 @@ import './DocCard.css';
 import React from 'react';
 
 const DocCard = (props) => {
-    // console.log(props);
     const data = props.data;
 
     return <section id={data.section} className='doc-section'>

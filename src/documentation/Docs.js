@@ -23,16 +23,14 @@ const Docs = (props) => {
             <div className='menu-bar'>
                 <h1>Documentation</h1>
                 {DocData.map((value, key) => {
-                    return value.section !== 'Secret' ?
-                        <div key={key} className='list-section'>
+                    return <div key={key} className='list-section'>
                         <h2 onClick={() => scrollTo(value.section)}>{value.section}</h2>
                         <ul>
                             {value.methods.map((value, key) => {
                                 return <li key={key} onClick={() => scrollTo(value.method)} className='list-method'> - {value.method}</li>
                             })}
                         </ul>
-                    </div> :
-                    <></>
+                    </div>
                 })}
                 <h3 className='author'>by Josh Bacon</h3>
             </div>
@@ -40,7 +38,7 @@ const Docs = (props) => {
             <div className='scroll-box'>
                 <div className='doc-column'>
                     {DocData.map((value, key) => {
-                        return value.section !== 'Secret' || props.secret ? <DocCard key={key} data={value}/> : <></>
+                        return <DocCard key={key} data={value}/>
                     })}
                 </div>
             </div>

@@ -1,18 +1,15 @@
 import './App.css';
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Docs } from './documentation/Docs.js';
+import { Chess } from './chess/chess';
 
 function App() {
 
-  const [secrets, setsecrets] = useState(false);
+  let game = Chess();
 
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
   const [boardTheme, setBoardTheme] = useState('bBlue');
-
-  const [selectedPiece, setSelectedPiece] = useState({});
-  const [piecesBlack, updatePiecesBlack] = useState([]);
-  const [piecesWhite, updatePiecesWhite] = useState([]);
 
   const [currCommand, setCurrCommand] = useState("");
   const [commandHistory, updateCommandHistory] = useState([
@@ -20,52 +17,11 @@ function App() {
     'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
   ]);
 
-  // Places pieces in their starting positions
-  const initGame = () => {
-    updatePiecesBlack([
-      {'id': 0 , 'piece':'bp', 'pos':'A7', 'selected': false},
-      {'id': 1 , 'piece':'bp', 'pos':'B7', 'selected': false},
-      {'id': 2 , 'piece':'bp', 'pos':'C7', 'selected': false},
-      {'id': 3 , 'piece':'bp', 'pos':'D7', 'selected': false},
-      {'id': 4 , 'piece':'bp', 'pos':'E7', 'selected': false},
-      {'id': 5 , 'piece':'bp', 'pos':'F7', 'selected': false},
-      {'id': 6 , 'piece':'bp', 'pos':'G7', 'selected': false},
-      {'id': 7 , 'piece':'bp', 'pos':'H7', 'selected': false},
-      {'id': 8 , 'piece':'br', 'pos':'A8', 'selected': false},
-      {'id': 9 , 'piece':'bn', 'pos':'B8', 'selected': false},
-      {'id': 10, 'piece':'bb', 'pos':'C8', 'selected': false},
-      {'id': 11, 'piece':'bq', 'pos':'D8', 'selected': false},
-      {'id': 12, 'piece':'bk', 'pos':'E8', 'selected': false},
-      {'id': 13, 'piece':'bb', 'pos':'F8', 'selected': false},
-      {'id': 14, 'piece':'bn', 'pos':'G8', 'selected': false},
-      {'id': 15, 'piece':'br', 'pos':'H8', 'selected': false}
-    ]);
-    updatePiecesWhite([
-      {'id': 0 , 'piece':'wp', 'pos':'A2', 'selected': false},
-      {'id': 1 , 'piece':'wp', 'pos':'B2', 'selected': false},
-      {'id': 2 , 'piece':'wp', 'pos':'C2', 'selected': false},
-      {'id': 3 , 'piece':'wp', 'pos':'D2', 'selected': false},
-      {'id': 4 , 'piece':'wp', 'pos':'E2', 'selected': false},
-      {'id': 5 , 'piece':'wp', 'pos':'F2', 'selected': false},
-      {'id': 6 , 'piece':'wp', 'pos':'G2', 'selected': false},
-      {'id': 7 , 'piece':'wp', 'pos':'H2', 'selected': false},
-      {'id': 8 , 'piece':'wr', 'pos':'A1', 'selected': false},
-      {'id': 9 , 'piece':'wn', 'pos':'B1', 'selected': false},
-      {'id': 10, 'piece':'wb', 'pos':'C1', 'selected': false},
-      {'id': 11, 'piece':'wq', 'pos':'D1', 'selected': false},
-      {'id': 12, 'piece':'wk', 'pos':'E1', 'selected': false},
-      {'id': 13, 'piece':'wb', 'pos':'F1', 'selected': false},
-      {'id': 14, 'piece':'wn', 'pos':'G1', 'selected': false},
-      {'id': 15, 'piece':'wr', 'pos':'H1', 'selected': false}
-    ]);
-  }
-
   const updateSettings = () => {
     setSettings(!settings);
   }
 
   const openDocs = () => {
-    // open the docs component
     setShowDocs(!showDocs);
   }
 
@@ -103,7 +59,7 @@ function App() {
   }
 
   useEffect(() => {
-    initGame();
+    // initGame();
   }, [])
 
   return (
@@ -119,7 +75,7 @@ function App() {
         }
       </header>
       { showDocs ?
-        <Docs secret={secrets} /> : <>
+        <Docs/> : <>
         <section className="main">
           { settings &&
             <div className="settings-section">
@@ -165,12 +121,12 @@ function App() {
           }
 
           <div className={"board "+boardTheme}>
-            {piecesBlack.map((value, key) => {
+            {/* {piecesBlack.map((value, key) => {
               return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
             })}
             {piecesWhite.map((value, key) => {
               return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
-            })}
+            })} */}
           </div>
 
           <div className="terminal">

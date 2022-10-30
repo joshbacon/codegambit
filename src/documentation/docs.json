@@ -36,9 +36,10 @@
     "id": 3,
     "section": "Gameplay",
     "methods": [
-        {"mid":0, "method":"offerDraw()", "params":"none", "desc":"offers a draw to the opponent.", "example":"offerDraw()"},
-        {"mid":1, "method":"resign()", "params":"none", "desc":"resigns the game.", "example":"resiasgdfuasoidgn()"},
-        {"mid":2, "method":"getEvaluation()", "params":"none", "desc":"returns a number between x and y. more positive is in favour of white, more negative is in favour of black.", "example":"getEvaluation()"}
+        {"mid":0, "method":"startGame()", "params":"none", "desc":"initiates the start of a game", "example":"startGame()"},
+        {"mid":1, "method":"offerDraw()", "params":"none", "desc":"offers a draw to the opponent.", "example":"offerDraw()"},
+        {"mid":2, "method":"resign()", "params":"none", "desc":"resigns the game.", "example":"resiasgdfuasoidgn()"},
+        {"mid":3, "method":"getEvaluation()", "params":"none", "desc":"returns a number between x and y. more positive is in favour of white, more negative is in favour of black.", "example":"getEvaluation()"}
     ]
 },
 {
