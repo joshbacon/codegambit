@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/joshbacon/codegambit">
-    <img src="src/assets/board.png" alt="Logo" width="150" height="150">
+    <img src="public/logo192.png" alt="Logo" width="150" height="150">
   </a>
 
   <h3 align="center" style="color:#008000;">>code_gambit</h3>
