@@ -9,6 +9,10 @@
 
 
 
+// I believe it just takes in a state and spits out a move
+
+
+
 const PIECE_VALUES = {
     P:  10,   p: -10,
     B:  30,   b: -30,

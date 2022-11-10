@@ -74,8 +74,9 @@ const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 
 //export
-const Chess = function (FEN) {
+const Chess = function(FEN) {
 
+    /* Setup */
     let board = [];
     let moveHistory = [];
 
@@ -85,18 +86,20 @@ const Chess = function (FEN) {
         halfmove,
         fullmove;
     
-    let validation = validateFEN(FEN);
-    if (validation.valid) {
-        gameFromFEN(FEN);
+    let { valid, code, error} = validateFEN(FEN);
+    if (valid) {
+        loadFEN(FEN);
     } else {
-        console.log("FEN error #"+validation.code+": " + validation.error + " Starting with default board.");
-        gameFromFEN(INITIAL_FEN);
+        console.log("FEN error #"+code+": " + error + " Starting with default board.");
+        loadFEN(INITIAL_FEN);
     }
     console.log(board);
     console.log(INITIAL_FEN);
     console.log(generateFEN());
 
-    function gameFromFEN(FEN) {
+
+    /* FEN Functions */
+    function loadFEN(FEN) {
         
         let tokens = FEN.split(' ');
         
@@ -221,6 +224,152 @@ const Chess = function (FEN) {
         return {valid: true, code: 0, error:"No error."};
     }
 
+    /* Move Functions */
+    function makeMove(from, to) {
+        if (isValidMove(from, to)){
+            movePiece(from, to);
+            // need to add the move to the move history
+            // update castling rights if necessary
+            // update enpassant if necessary
+            halfmove += 1
+            let piece = getPiece(to);
+            if (piece.toUpperCase() === piece){
+                fullmove += 1;
+                turn = WHITE;
+            } else turn = BLACK;
+        }
+    }
+
+    function movePiece(from, to) {
+        placePiece(getPiece(from), to);
+        removePiece(from);
+    }
+
+    function getPiece(square) {
+        let cr = square.split('');
+        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        return board[pieceIndex];
+    }
+
+    function placePiece(piece, square) {
+        let cr = square.split('');
+        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        board[pieceIndex] = piece;
+    }
+
+    function removePiece(square) {
+        let cr = square.split('');
+        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        board[pieceIndex] = '';
+    }
+
+    /* State Checking Functions */
+    function isValidMove() {
+        /*
+            - square notations are formatted properly (we grab the piece so it has to be)
+            - given piece color needs to be that of the current players turn
+            - can't put or leave player in mate (i.e. can't be in mate after the fact)
+            - must be to a valid square gven the piece and its current position
+        */
+        return false;
+    }
+
+    function inCheck() {
+
+    }
+
+    function inMate() {
+
+    }
+
+    function inStalemate() {
+
+    }
+
+    function inDraw() {
+
+    }
+
+    function insufficientMaterial() {
+
+    }
+
+    function moveRepetition() {
+
+    }
+
+
+    /* Return functions for use in the terminal */
+    return {
+        loadFEN: function(FEN) {
+            return loadFEN(FEN);
+        },
+
+        generateFEN: function() {
+            return generateFEN();
+        },
+
+        validateFEN: function(FEN) {
+            validateFEN(FEN);
+        },
+
+        makeMove: function(from, to) {
+            return makeMove(from, to);
+        },
+
+        movePiece: function(from, to) {
+            return movePiece(from, to);
+        },
+
+        getPiece: function(square) {
+            return getPiece(square);
+        },
+
+        placePiece: function(piece, square) {
+            return placePiece(piece, square);
+        },
+
+        removePiece: function(square) {
+            return removePiece(square);
+        },
+
+        isValidMove: function() {
+
+        },
+
+        inCheck: function() {
+
+        },
+        
+        inMate: function() {
+
+        },
+        
+        inStalemate: function() {
+
+        },
+        
+        inDraw: function() {
+
+        },
+        
+        insufficientMaterial: function() {
+
+        },
+        
+        moveRepetition: function() {
+
+        },
+
+        /* Getter methods for variables */
+        getBoard: function() { return board; },
+        getMoveHistory: function() { return moveHistory; },
+        getTurn: function() { return turn; },
+        getCastling: function() { return castling; },
+        enpassant: function() { return enpassant; },
+        halfmove: function() { return halfmove; },
+        fullmove: function() { return fullmove; }
+    }
 }
 
 Chess(INITIAL_FEN);
