@@ -240,19 +240,19 @@ button {
   background-color: #80008090;
 }
 
-.bp {background-image: url("assets/bp.png")}
-.bn {background-image: url("assets/bn.png")}
-.bb {background-image: url("assets/bb.png")}
-.br {background-image: url("assets/br.png")}
-.bq {background-image: url("assets/bq.png")}
-.bk {background-image: url("assets/bk.png")}
+.p {background-image: url("assets/bp.png")}
+.n {background-image: url("assets/bn.png")}
+.b {background-image: url("assets/bb.png")}
+.r {background-image: url("assets/br.png")}
+.q {background-image: url("assets/bq.png")}
+.k {background-image: url("assets/bk.png")}
 
-.wp {background-image: url("assets/wp.png")}
-.wn {background-image: url("assets/wn.png")}
-.wb {background-image: url("assets/wb.png")}
-.wr {background-image: url("assets/wr.png")}
-.wq {background-image: url("assets/wq.png")}
-.wk {background-image: url("assets/wk.png")}
+.P {background-image: url("assets/wp.png")}
+.N {background-image: url("assets/wn.png")}
+.B {background-image: url("assets/wb.png")}
+.R {background-image: url("assets/wr.png")}
+.Q {background-image: url("assets/wq.png")}
+.K {background-image: url("assets/wk.png")}
 
 .A1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 0)}
 .A2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 0)}

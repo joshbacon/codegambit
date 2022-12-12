@@ -5,7 +5,7 @@ import { Chess } from './chess/chess';
 
 function App() {
 
-  let game = Chess();
+  let game = Chess('');
 
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
@@ -58,9 +58,9 @@ function App() {
     return <tr ref={scrollRef} />;
   }
 
-  useEffect(() => {
-    // initGame();
-  }, [])
+  // useEffect(() => {
+  //   game = Chess('');
+  // }, [])
 
   return (
     <div className="App">
@@ -121,6 +121,9 @@ function App() {
           }
 
           <div className={"board "+boardTheme}>
+            {game.getPieces().map((value, key) => {
+              return <div key={key} className={"square "+value.piece+" "+value.pos}></div>
+            })}
             {/* {piecesBlack.map((value, key) => {
               return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
             })}
