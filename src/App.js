@@ -2,10 +2,12 @@ import './App.css';
 import { useEffect, useState, useRef } from 'react';
 import { Docs } from './documentation/Docs.js';
 import { Chess } from './chess/chess';
+import { Terminal } from './terminal';
 
 function App() {
 
   let game = Chess('');
+  let tmnl = Terminal();
 
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
