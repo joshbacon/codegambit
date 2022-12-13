@@ -95,7 +95,7 @@ function App() {
       <header className="App-header">
         <h1>{'>'}code_gambit</h1>
         { showDocs ? <></> :
-          <button className="settings-btn header-btn" onClick={updateSettings}></button>}
+          <button className="settings-btn header-btn" onClick={updateSettings}></button> }
         { showDocs ?
           <button className="close-btn header-btn" onClick={openDocs}></button> :
           <button className="docs-btn header-btn" onClick={openDocs}></button>

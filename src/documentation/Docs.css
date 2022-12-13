@@ -22,6 +22,11 @@
     overflow: hidden;
 }
 
+h1 {
+    text-align: center;
+    padding: 20px 0;
+}
+
 .menu-bar {
     display: flex;
     flex-direction: column;
@@ -32,12 +37,13 @@
     height: calc(100vh - 75px);
     width: 250px;
 
+    overflow-y: scroll;
+
     background-color: var(--accent2);
 }
 
-h1 {
-    text-align: center;
-    padding: 20px 0;
+.menu-bar::-webkit-scrollbar {
+    width: 0;
 }
 
 .list-section {
@@ -117,4 +123,25 @@ section .scrolled {
 @keyframes flash-section {
     0% { background-color: #9ACD32 }
     100% { background-color: #292929 }
+}
+
+@media only screen and (max-width: 915px) {
+    .docs {
+        grid-template-columns: 1fr;
+    }
+    .scroll-box {
+        grid-column: 1;
+    }
+    .menu-btn {
+      display: block;
+    }
+    .menu-bar {
+        display: none;
+    }
+}
+
+@media only screen and (max-height: 925px) {
+    .author{
+        display: none;
+    }
 }
