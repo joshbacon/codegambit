@@ -17,6 +17,7 @@
 
     display: grid;
     place-items: center;
+    grid-template-columns: 0.2fr 1fr;
 
     overflow: hidden;
 }
@@ -69,6 +70,7 @@ h1 {
     position: relative;
     width: 100%;
     max-height: calc(100vh - 75px);
+    grid-column: 2;
     display: grid;
     place-items: center;
 

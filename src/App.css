@@ -219,8 +219,10 @@ button {
 .board {
   position: relative;
   z-index: 0;
-  width: 750px;
+  width: 350px;
+  /* min-width: 250px; */
   aspect-ratio: 1;
+  background-size: 100%;
 }
 
 .bDark { background-image: url('assets/boardDark.png') }

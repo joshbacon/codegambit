@@ -16,7 +16,8 @@ function App() {
   const [currCommand, setCurrCommand] = useState("");
   const [commandHistory, updateCommandHistory] = useState([
     'Welcome to code_gambit! We teach coding through playing chess.',
-    'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
+    'type help(method) to see how to use a given method or check out the documentation for a list of commands.',
+    'Currently working on: making the main page dynamic, want a breakpoint to put the terminal under the board at some point.'
   ]);
 
   const updateSettings = () => {
