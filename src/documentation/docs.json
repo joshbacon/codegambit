@@ -5,7 +5,6 @@
     "section": "Selection",
     "methods": [
         {"mid":0, "method":"select(square)", "params":"square - where the piece you want to select is", "desc":"selects a piece at the given position if one exists and returns or fale otherwise.", "example":"select(G5)"},
-        {"mid":1, "method":"selected()", "params":"none", "desc":"returns the currently selected piece or false if none exists.", "example":"select()"},
         {"mid":2, "method":"unselect()", "params":"none", "desc":"unselects the currently selected piece if one exists and returns false otherwise.", "example":"unselect()"}
     ]
 },
@@ -13,9 +12,7 @@
     "id": 1,
     "section": "Movement",
     "methods": [
-        {"mid":0, "method":"move(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise.", "example":"move(C3,F6)"},
         {"mid":1, "method":"move(to)", "params":"to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"mid":2, "method":"take(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"like move but only works when said move captures another piece.", "example":"take(G1,C5)"},
         {"mid":3, "method":"take(to)", "params":"to - destination square", "desc":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
     ]
 },
@@ -28,8 +25,8 @@
         {"mid":2, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
         {"mid":3, "method":"hideValidMoves()", "params":"none", "desc":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
         {"mid":4, "method":"showMoveHistory()", "params":"none", "desc":"prints the move history for both players in the terminal or returns false if no moves have been played.", "example":"showMoveHistory()"},
-        {"mid":5, "method":"showWhiteHistory()", "params":"none", "desc":"prints the move history for white in the terminal or returns false if no moves have been played.", "example":"showWhiteHistory()"},
-        {"mid":6, "method":"showBlackHistory()", "params":"none", "desc":"prints the move history for black in the terminal or returns false if no moves have been played.", "example":"showBlackHistory()"}
+        {"mid":5, "method":"showWhiteMoves()", "params":"none", "desc":"prints the move history for white in the terminal or returns false if no moves have been played.", "example":"showWhiteHistory()"},
+        {"mid":6, "method":"showBlackMoves()", "params":"none", "desc":"prints the move history for black in the terminal or returns false if no moves have been played.", "example":"showBlackHistory()"}
     ]
 },
 {
@@ -41,7 +38,7 @@
         {"mid":2, "method":"resign()", "params":"none", "desc":"resigns the game.", "example":"resiasgdfuasoidgn()"},
         {"mid":3, "method":"getEvaluation()", "params":"none", "desc":"returns a number between x and y. more positive is in favour of white, more negative is in favour of black.", "example":"getEvaluation()"},
         {"mid":4, "method":"getFEN()", "params":"none", "desc":"returns the FEN string denoting the current state of the game", "example":"getFEN()"},
-        {"mid":5, "method":"setFromFEN(FEN)", "params":"FEN - a FEN formatted string", "desc":"sets the board based on the given FEN string (see conventions() for an explanation of a FEN string)", "example":"setFromFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')"}
+        {"mid":5, "method":"setFromFEN(FEN)", "params":"FEN - a FEN formatted string", "desc":"sets the board based on the given FEN string (see conventions() for an explanation of a FEN string)", "example":"setFromFEN(rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1)"}
     ]
 },
 {

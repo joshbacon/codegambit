@@ -92,9 +92,9 @@ export const Chess = function(FEN) {
         console.log("FEN error #"+code+": " + error + " Starting with default board.");
         loadFEN(INITIAL_FEN);
     }
-    console.log(board);
-    console.log(INITIAL_FEN);
-    console.log(generateFEN());
+    // console.log(board);
+    // console.log(INITIAL_FEN);
+    // console.log(generateFEN());
 
 
     /* FEN Functions */
@@ -245,6 +245,7 @@ export const Chess = function(FEN) {
     }
 
     function getPiece(square) {
+        console.log(board);
         let cr = square.split('');
         let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
         return board[pieceIndex];

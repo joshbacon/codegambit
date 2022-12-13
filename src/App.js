@@ -1,23 +1,17 @@
 import './App.css';
 import { useEffect, useState, useRef } from 'react';
 import { Docs } from './documentation/Docs.js';
-import { Chess } from './chess/chess';
 import { Terminal } from './terminal';
 
 function App() {
 
-  let game = Chess('');
-  let tmnl = Terminal();
+  const [tmnl, updateTmnl] = useState(Terminal());
 
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);
   const [boardTheme, setBoardTheme] = useState('bBlue');
 
   const [currCommand, setCurrCommand] = useState("");
-  const [commandHistory, updateCommandHistory] = useState([
-    'Welcome to code_gambit! We teach coding through playing chess.',
-    'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
-  ]);
 
   const updateSettings = () => {
     setSettings(!settings);
@@ -36,20 +30,11 @@ function App() {
   }
 
   const checkKey = (e) => {
-    if (currCommand === '') { return }
     var key = e.key;
+    if (key !== 'Enter'){ return }
     // console.log(e.key);
-    let rc = "'"+currCommand+"' is not recognized.";
     if (key === 'Enter'){
-
-      //clean input
-      const input = currCommand.split('(');
-      const method = input[0];
-      let params;
-      if (input[1]) {
-        params = input[1].split(')');
-        params = params[0].split(',');
-      }
+      tmnl.parseCommand(currCommand);
       setCurrCommand("");
     }
   }
@@ -61,7 +46,7 @@ function App() {
   }
 
   // useEffect(() => {
-  //   game = Chess('');
+  //
   // }, [])
 
   return (
@@ -123,21 +108,15 @@ function App() {
           }
 
           <div className={"board "+boardTheme}>
-            {game.getPieces().map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos}></div>
+            {tmnl.getPieces().map((value, key) => {
+              return <div key={key} className={"square "+value.piece+" "+value.pos+(tmnl.isSelected(value.pos)?' selected':'')}></div>
             })}
-            {/* {piecesBlack.map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
-            })}
-            {piecesWhite.map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
-            })} */}
           </div>
 
           <div className="terminal">
             <table className="command-history">
               <tbody>
-                {commandHistory.map((value, key) => {
+                {tmnl.getCommandHistory().map((value, key) => {
                   return <tr key={key}>
                     <td>{value}</td>
                   </tr>
