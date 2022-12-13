@@ -47,7 +47,7 @@
     "methods": [
         {"mid":0, "method":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (dark, light, purple, blue, green, or orange)", "desc":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
         {"mid":1, "method":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "desc":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
-        {"mid":2, "method":"playAs(color)", "params":"color - the color you want to start as", "desc":"sets the color you play as.", "example":"playAs(white)"}
+        {"mid":2, "method":"playAs(color)", "params":"color - the color you want to start as (w or b)", "desc":"sets the color you play as.", "example":"playAs(b)"}
     ]
 },
 {

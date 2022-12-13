@@ -247,19 +247,19 @@ export const Chess = function(FEN) {
     function getPiece(square) {
         console.log(board);
         let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
         return board[pieceIndex];
     }
 
     function placePiece(piece, square) {
         let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
         board[pieceIndex] = piece;
     }
 
     function removePiece(square) {
         let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
         board[pieceIndex] = '';
     }
 
@@ -386,7 +386,10 @@ export const Chess = function(FEN) {
         getCastling: function() { return castling; },
         enpassant: function() { return enpassant; },
         halfmove: function() { return halfmove; },
-        fullmove: function() { return fullmove; }
+        fullmove: function() { return fullmove; },
+
+        WHITE: WHITE,
+        BLACK: BLACK
     }
 }
 
