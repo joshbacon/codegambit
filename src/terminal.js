@@ -25,10 +25,8 @@ export const Terminal = function() {
         // clean data
         let data = input.split('(');
         let command = data[0];
-        let params = '';
-        if (data.length > 1){
-            params = data[1].split(')')[0].split(',');
-        }
+        let params = data[1].split(')')[0].split(',');
+        params = params.filter((str) => { return str.length > 0; });
         // run the command
         commandHistory.push(input);
         runCommand(command, params)

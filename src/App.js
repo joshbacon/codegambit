@@ -131,6 +131,7 @@ function App() {
                 // autoSuggest="off"
                 // autoComplete="off"
                 // autoCapitalize="off"
+                spellCheck={false}
                 value={currCommand}
                 onChange={updateCommand}
                 onKeyUp={checkKey}
