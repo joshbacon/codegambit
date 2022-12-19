@@ -5,15 +5,15 @@
     "section": "Selection",
     "methods": [
         {"mid":0, "method":"select(square)", "params":"square - where the piece you want to select is", "desc":"selects a piece at the given position if one exists and returns or fale otherwise.", "example":"select(G5)"},
-        {"mid":2, "method":"unselect()", "params":"none", "desc":"unselects the currently selected piece if one exists and returns false otherwise.", "example":"unselect()"}
+        {"mid":1, "method":"unselect()", "params":"none", "desc":"unselects the currently selected piece if one exists and returns false otherwise.", "example":"unselect()"}
     ]
 },
 {
     "id": 1,
     "section": "Movement",
     "methods": [
-        {"mid":1, "method":"move(to)", "params":"to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"mid":3, "method":"take(to)", "params":"to - destination square", "desc":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
+        {"mid":0, "method":"move(to)", "params":"to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
+        {"mid":1, "method":"take(to)", "params":"to - destination square", "desc":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
     ]
 },
 {

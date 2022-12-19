@@ -73,6 +73,10 @@ export const Terminal = function() {
                     commandHistory.push('There is no piece currently selected to take with.');
                 else if (params.length !== 1)
                     commandHistory.push("take() expects 1 argument.");
+                else if (game.getPiece(params[0]) === '')
+                    commandHistory.push('There is no piece to take on this square.');
+                else
+                    commandHistory.push(game.makeMove(selectedSquare, params[0]));
                 break;
             case 'isValidMove':
                 if (!gameStarted)
@@ -81,6 +85,10 @@ export const Terminal = function() {
                     commandHistory.push('There is no piece currently to check if move is valid.');
                 else if (params.length !== 1 && params.length !== 2)
                     commandHistory.push("isValidMove() expects 1 or 2 arguments.");
+                else if (params.length === 1)
+                    commandHistory.push(game.isValidMove(selectedSquare, params[0]));
+                else
+                    commandHistory.push(game.isValidMove(params[0], params[1]));
                 break;
             case 'showValidMoves':
                 if (!gameStarted)

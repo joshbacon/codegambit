@@ -236,7 +236,8 @@ export const Chess = function(FEN) {
                 fullmove += 1;
                 turn = WHITE;
             } else turn = BLACK;
-        }
+            return true;
+        } else return false;
     }
 
     function movePiece(from, to) {
@@ -264,7 +265,7 @@ export const Chess = function(FEN) {
     }
 
     /* State Checking Functions */
-    function isValidMove() {
+    function isValidMove(from, to) {
         /*
             - square notations are formatted properly (we grab the piece so it has to be)
             - given piece color needs to be that of the current players turn
