@@ -5,7 +5,7 @@ import { Chess } from './chess/chess';
 
 function App() {
 
-  let game = Chess();
+  let game = Chess('');
 
   const [showDocs, setShowDocs] = useState(false);
   const [settings, setSettings] = useState(false);

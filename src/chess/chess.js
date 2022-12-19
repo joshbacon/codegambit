@@ -110,12 +110,12 @@ const Chess = function(FEN) {
         fullmove = tokens[5];
 
         let pieces = tokens[0].split('/');
-        for (r in pieces) {
-            for (c in pieces[r]) {
+        for (let r in pieces) {
+            for (let c in pieces[r]) {
                 let piece = pieces[r][c];
                 if (isNaN(piece))
                     board.push(piece);
-                else for (i = 0; i < parseInt(piece); i++)
+                else for (let i = 0; i < parseInt(piece); i++)
                     board.push('');
             }
         }
@@ -127,7 +127,7 @@ const Chess = function(FEN) {
         // add slash separated pieces
         let rowCounter = 0;
         let spaceCounter = 0;
-        for (i in board) {
+        for (let i in board) {
             if (rowCounter === 8) {
                 if (spaceCounter !== 0) {
                     FEN += spaceCounter;
@@ -179,10 +179,10 @@ const Chess = function(FEN) {
         if (pieces.length !== 8)
             return {valid: false, code: 2, error: "Pieces field must consist of 8 rows."};
     
-        for (r in pieces) {
+        for (let r in pieces) {
             let rowSum = 0;
             let lastWasNumber = false;
-            for (p in pieces[r]) {
+            for (let p in pieces[r]) {
                 let piece = pieces[r][p];
                 if (isNaN(piece)){
                     if (/^[KQRBNPkqrbnp]$/.test(piece)) {
