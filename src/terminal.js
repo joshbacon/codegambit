@@ -64,7 +64,7 @@ export const Terminal = function() {
                 else if (params.length !== 1)
                     commandHistory.push("move() expects 1 argument.");
                 else
-                    game.makeMove(selectedSquare, params[0]);
+                    commandHistory.push(game.makeMove(selectedSquare, params[0]));
                 break;
             case 'take':
                 if (!gameStarted)
@@ -107,6 +107,7 @@ export const Terminal = function() {
                     commandHistory.push('A game must be started to show move history.');
                 else if (params.length !== 0)
                     commandHistory.push("showMoveHistory() expects no arguments.");
+                else 
                 break;
             case 'showWhiteMoves':
                 if (!gameStarted)
