@@ -73,11 +73,14 @@ const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 
 
-export const Chess = function(FEN) {
+// export
+const Chess = function(FEN) {
 
     /* Setup */
     let board = [];
     let moveHistory = [];
+
+    let moveRepeats = 0;
 
     let turn,
         castling,
@@ -92,31 +95,38 @@ export const Chess = function(FEN) {
         console.log("FEN error #"+code+": " + error + " Starting with default board.");
         loadFEN(INITIAL_FEN);
     }
-    console.log(board);
-    console.log(INITIAL_FEN);
-    console.log(generateFEN());
+    // console.log(board);
+    // console.log(INITIAL_FEN);
+    // console.log(generateFEN());
 
 
     /* FEN Functions */
     function loadFEN(FEN) {
         
-        let tokens = FEN.split(' ');
+        try {
+            let tokens = FEN.split(' ');
         
-        turn = tokens[1];
-        castling = tokens[2];
-        enpassant = tokens[3];
-        halfmove = tokens[4];
-        fullmove = tokens[5];
+            board = [];
+            turn = tokens[1];
+            castling = tokens[2];
+            enpassant = tokens[3];
+            halfmove = tokens[4];
+            fullmove = tokens[5];
 
-        let pieces = tokens[0].split('/');
-        for (let r in pieces) {
-            for (let c in pieces[r]) {
-                let piece = pieces[r][c];
-                if (isNaN(piece))
-                    board.push(piece);
-                else for (let i = 0; i < parseInt(piece); i++)
-                    board.push('');
+            let pieces = tokens[0].split('/');
+            for (let r in pieces) {
+                for (let c in pieces[r]) {
+                    let piece = pieces[r][c];
+                    if (isNaN(piece))
+                        board.push(piece);
+                    else for (let i = 0; i < parseInt(piece); i++)
+                        board.push('');
+                }
             }
+            console.log(board);
+            return true;
+        } catch (error) {
+            return false;
         }
 
     }
@@ -225,7 +235,8 @@ export const Chess = function(FEN) {
 
     /* Move Functions */
     function makeMove(from, to) {
-        if (isValidMove(from, to)){
+        if (isValidMove(from, to)) {
+            let move = generateMoveNotation(from, to);
             movePiece(from, to);
             // need to add the move to the move history
             // update castling rights if necessary
@@ -236,7 +247,28 @@ export const Chess = function(FEN) {
                 fullmove += 1;
                 turn = WHITE;
             } else turn = BLACK;
-        }
+            return move;
+        } else return false;
+    }
+
+    function generateMoveNotation(from, to) {
+        // need to update this to account for castling
+        let move = '';
+        let piece = getPiece(from);
+        if (piece !== PIECES.PAWN_W && piece !== PIECES.PAWN_B)
+            move += piece;
+        // if more than one (of the same piece) can legally make this move, put the column it is moving from here
+        if (false)
+            move += from.charAt(0);
+        if (getPiece(to) !== '')
+            move += 'x'
+        move += to;
+        if (inMate())
+            move += '#'
+        else if (inCheck())
+            move += '+'
+        // if its a pawn that is promoting put '=PIECE' like '=q' for a queen at the very end
+        return move;
     }
 
     function movePiece(from, to) {
@@ -246,19 +278,23 @@ export const Chess = function(FEN) {
 
     function getPiece(square) {
         let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
         return board[pieceIndex];
     }
 
     function placePiece(piece, square) {
+        document.getElementById(square).classList.add(piece);
+
         let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
         board[pieceIndex] = piece;
     }
 
     function removePiece(square) {
+        document.getElementById(square).classList.remove(getPiece(square));
+
         let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]]*8 + ROWS[cr[1]];
+        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
         board[pieceIndex] = '';
     }
 
@@ -270,33 +306,35 @@ export const Chess = function(FEN) {
             - can't put or leave player in mate (i.e. can't be in mate after the fact)
             - must be to a valid square gven the piece and its current position
         */
-        return false;
+        return true;
     }
 
     function inCheck() {
-
+        return false;
     }
 
     function inMate() {
-
+        return false;
     }
 
     function inStalemate() {
-
+        return false;
     }
 
-    function inDraw() {
-
+    function inDraw() { // what will this function even do???
+        return false;
     }
 
     function insufficientMaterial() {
-
+        return false;
     }
 
     function moveRepetition() {
-
+        return false;
     }
 
+    // might not actully need this function
+    // we already have getFEN and getBoard
     function getPieces() {
         let pieces = [];
         for (let r = 0; r < 8; r++) {
@@ -385,8 +423,40 @@ export const Chess = function(FEN) {
         getCastling: function() { return castling; },
         enpassant: function() { return enpassant; },
         halfmove: function() { return halfmove; },
-        fullmove: function() { return fullmove; }
+        fullmove: function() { return fullmove; },
+
+        clear: function() {
+            let c = 65;
+            let r = 8;
+            for (let p in board) {
+                let square = String.fromCharCode(c)+String(r);
+                try { document.getElementById(square).classList.remove(getPiece(square)); }
+                catch (error) {}
+                c += 1;
+                if (c === 73) {
+                    c = 65;
+                    r -= 1;
+                }
+            }
+        },
+        load: function() {
+            c = 65;
+            r = 8;
+            for (let p in board) {
+                let square = String.fromCharCode(c)+String(r);
+                try {
+                    document.getElementById(square).classList.add(getPiece(square));                    
+                } catch (error) {}
+                c += 1;
+                if (c === 73) {
+                    c = 65;
+                    r -= 1;
+                }
+            }
+        }
     }
 }
 
-// Chess(INITIAL_FEN);
+let game = Chess(INITIAL_FEN);
+
+// game.makeMove('A1','A3');
