@@ -30,6 +30,9 @@
 //    ex. f8=q
 // if two of same piece can move to same position, add 'column of old piece position' after piece but before new position
 //    ex. Rae1
+// Notes:
+// - piece is always uppercase
+// - file(column) is always lowercase
 
 
 
@@ -58,7 +61,7 @@ const PIECES = {
     EMPTY:    ''
 }
 
-const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+const INITIAL_FEN = 'rnbqkbnr/pPppppPp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 // FEN Explanation:
 // first field  : pieces (left to right, top to bottom, from whites perspective)
 // second field : whos turn it is
@@ -77,7 +80,7 @@ const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 const Chess = function(FEN) {
 
     /* Setup */
-    let board = [];
+    let board = {};
     let moveHistory = [];
 
     let moveRepeats = 0;
@@ -106,7 +109,7 @@ const Chess = function(FEN) {
         try {
             let tokens = FEN.split(' ');
         
-            board = [];
+            board = {};
             turn = tokens[1];
             castling = tokens[2];
             enpassant = tokens[3];
@@ -114,13 +117,18 @@ const Chess = function(FEN) {
             fullmove = tokens[5];
 
             let pieces = tokens[0].split('/');
-            for (let r in pieces) {
-                for (let c in pieces[r]) {
+            for (let r = 0; r < pieces.length; r++) {
+                let col = 65;
+                for (let c = 0; c < pieces[r].length; c++){
                     let piece = pieces[r][c];
-                    if (isNaN(piece))
-                        board.push(piece);
-                    else for (let i = 0; i < parseInt(piece); i++)
-                        board.push('');
+                    if (isNaN(piece)){
+                        board[String.fromCharCode(col)+(8-r)] = piece;
+                        col++;
+                    }
+                    else {
+                        col += piece;
+                        c += piece;
+                    }
                 }
             }
             console.log(board);
@@ -237,8 +245,9 @@ const Chess = function(FEN) {
     function makeMove(from, to) {
         if (isValidMove(from, to)) {
             let move = generateMoveNotation(from, to);
+            moveHistory.push(move);
+            console.log(moveHistory);
             movePiece(from, to);
-            // need to add the move to the move history
             // update castling rights if necessary
             // update enpassant if necessary
             halfmove += 1
@@ -256,18 +265,18 @@ const Chess = function(FEN) {
         let move = '';
         let piece = getPiece(from);
         if (piece !== PIECES.PAWN_W && piece !== PIECES.PAWN_B)
-            move += piece;
-        // if more than one (of the same piece) can legally make this move, put the column it is moving from here
+            move += piece.toUpperCase();
         if (false)
+            // if more than one (of the same piece) can legally make this move, insert the column it is moving from here
             move += from.charAt(0);
         if (getPiece(to) !== '')
             move += 'x'
-        move += to;
+        move += to.toLowerCase();
         if (inMate())
             move += '#'
         else if (inCheck())
             move += '+'
-        // if its a pawn that is promoting put '=PIECE' like '=q' for a queen at the very end
+        // if its a pawn that is promoting put '=PIECE' like '=Q' for a queen at the very end (always uppercase)
         return move;
     }
 
@@ -277,25 +286,19 @@ const Chess = function(FEN) {
     }
 
     function getPiece(square) {
-        let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
-        return board[pieceIndex];
+        return board[square];
     }
 
     function placePiece(piece, square) {
         document.getElementById(square).classList.add(piece);
 
-        let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
-        board[pieceIndex] = piece;
+        board[square] = piece;
     }
 
     function removePiece(square) {
         document.getElementById(square).classList.remove(getPiece(square));
 
-        let cr = square.split('');
-        let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
-        board[pieceIndex] = '';
+        delete board[square];
     }
 
     /* State Checking Functions */
