@@ -61,7 +61,7 @@ const PIECES = {
     EMPTY:    ''
 }
 
-const INITIAL_FEN = 'rnbqkbnr/pPppppPp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
 // FEN Explanation:
 // first field  : pieces (left to right, top to bottom, from whites perspective)
 // second field : whos turn it is
@@ -69,10 +69,7 @@ const INITIAL_FEN = 'rnbqkbnr/pPppppPp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 // fourth field : enpassant eligiblility (if e pawn moves two spaces of jump it would be e3, so where taking piece would land)
 // fifth field  : 'halfmove clock' enforces 50 move rule, counts moves without capture or pawn push (draw if == 100)
 // sixth field  : 'fullmove number', number of moves played this game (increments each time black makes a move)
-
-
-
-
+const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RKBQKBNR w KQkq - 0 1'
 
 
 
@@ -125,10 +122,7 @@ const Chess = function(FEN) {
                         board[String.fromCharCode(col)+(8-r)] = piece;
                         col++;
                     }
-                    else {
-                        col += piece;
-                        c += piece;
-                    }
+                    else col += Number(piece);
                 }
             }
             console.log(board);
@@ -142,30 +136,32 @@ const Chess = function(FEN) {
     function generateFEN() {
         let FEN = '';
         // add slash separated pieces
-        let rowCounter = 0;
-        let spaceCounter = 0;
-        for (let i in board) {
-            if (rowCounter === 8) {
-                if (spaceCounter !== 0) {
-                    FEN += spaceCounter;
-                    spaceCounter = 0;
-                }
-                FEN += '/';
-                rowCounter = 0;
-            }
+        let sortedKeys = [];
+        for (let key in board) sortedKeys[sortedKeys.length] = key;
+        sortedKeys.sort();
+        for (let i = 8; i > 0; i--){
+            let row = [];
+            for (let k in sortedKeys)
+                if (sortedKeys[k].includes(i.toString()))
+                    row.push(sortedKeys[k]);
+            if (row.length > 0) console.log(`i == ${i} [${row}]`);
 
-            if (board[i] === '') {
-                spaceCounter += 1;
-            } else {
-                if (spaceCounter !== 0) {
-                    FEN += spaceCounter;
-                    spaceCounter = 0;
+            let spaces = 0;
+            if (row.length === 0) FEN += '8'
+            else for (let lastPos = 65; lastPos < 73; lastPos++) {
+                if (row.includes(String.fromCharCode(lastPos)+i)) {
+                    if (spaces > 0) {
+                        FEN += spaces;
+                        spaces = 0;
+                    }
+                    FEN += board[String.fromCharCode(lastPos)+i];
                 }
-                FEN += board[i];
+                else spaces++;
             }
-
-            rowCounter += 1;
+            if (spaces > 0) FEN += spaces;
+            FEN += '/';
         }
+        FEN = FEN.substring(0, FEN.length -1);
         // add turn
         FEN += " "+turn;
         // add castling
@@ -324,32 +320,87 @@ const Chess = function(FEN) {
         return false;
     }
 
-    function inDraw() { // what will this function even do???
+    function inDraw() {
         return false;
     }
 
     function insufficientMaterial() {
-        return false;
+        let w_pieces = Object.values(getPieces(WHITE));
+        let b_pieces = Object.values(getPieces(BLACK));
+
+        let white = 0, black = 0;
+
+        // If BOTH SIDES have any one of the following, and there are NO PAWNS on the board
+        // - (1) a lone king
+        // - (2) a king and a bishop
+        // - (3) a king and a knight
+        //
+        // - (4) a king and two nights (iff the other side has a lone king)
+
+        // kick out early if possible
+        // both sides must have 3 or less pieces for this to be true
+        if (w_pieces.length > 3 || b_pieces.length > 3) return false;
+        // never true if a queen or rook is on the board
+        if (w_pieces.includes('Q') ||
+            w_pieces.includes('R') ||
+            w_pieces.includes('P') ) return false;
+        if (b_pieces.includes('q') ||
+            b_pieces.includes('r') ||
+            b_pieces.includes('p') ) return false;
+
+        // classify white and black as 1, 2, 3, or 4
+        // check for 1 (must have a king so if length is 1, it's a king)
+        if (w_pieces.length === 1) white = 1;
+        if (b_pieces.length === 1) black = 1;
+        // check for 2 & 3
+        if (w_pieces.length === 2) {
+            if (w_pieces.includes('B')) white = 2;
+            if (w_pieces.includes('N')) white = 3;
+        }
+        if (b_pieces.length === 2) {
+            if (b_pieces.includes('b')) black = 2;
+            if (b_pieces.includes('n')) black = 3;
+        }
+        // check for 4 (we already know length must be 3)
+        // want two knights and already kicked out if it has a queen or rook,
+        // so if it doesn't have a bishop it must be two knights
+        if (w_pieces.length === 3 && !w_pieces.includes('B')) white = 4;
+        if (b_pieces.length === 3 && !b_pieces.includes('b')) black = 4;
+
+        console.log('white = ' + white);
+        console.log('black = ' + black);
+
+        // so return true if
+        // white == 1 && black > 0 or vice versa
+        // if (white === 1 && black > 0) return true;
+        if (white === 1) return true; // already booted out if black isn't > 0... right?
+        // if (black === 1 && white > 0) return true;
+        if (black === 1) return true; // already booted out if white isn't > 0... right?
+        // 0 < white < 4 && 0 < black < 4
+        if (0 < white && white < 4 && 0 < black && black < 4) return true;
+
+        return false; // return false just in case
     }
 
     function moveRepetition() {
         return false;
     }
 
-    // might not actully need this function
-    // we already have getFEN and getBoard
-    function getPieces() {
-        let pieces = [];
-        for (let r = 0; r < 8; r++) {
-            let col = 65;
-            for (let c = 0; c < 8; c++) {
-                let boardIndex = r*8 + c;
-                if (board[boardIndex] === '') continue;
-                pieces.push({'piece':board[boardIndex], 'pos':(String.fromCharCode(col)+(8-r))});
-                col += 1;
-            }
-        }
-        return pieces;
+    function getPieces(color) {
+        if (color === WHITE)
+            return Object.keys(board)
+                .filter( key => board[key] === board[key].toUpperCase() )
+                .reduce((list, key) => {
+                    list[key] = board[key];
+                    return list;
+                }, {});
+        else
+            return Object.keys(board)
+                .filter( key => board[key] === board[key].toLowerCase() )
+                .reduce((list, key) => {
+                    list[key] = board[key];
+                    return list;
+                }, {});
     }
 
 
@@ -387,10 +438,6 @@ const Chess = function(FEN) {
             return removePiece(square);
         },
 
-        getPieces: function() {
-            return getPieces();
-        },
-
         isValidMove: function() {
 
         },
@@ -411,8 +458,8 @@ const Chess = function(FEN) {
 
         },
         
-        insufficientMaterial: function() {
-
+        insufficientMaterial: function(color) {
+            return insufficientMaterial(color);
         },
         
         moveRepetition: function() {
@@ -420,7 +467,7 @@ const Chess = function(FEN) {
         },
 
         /* Getter methods for variables */
-        getBoard: function() { return board; },
+        getPieces: function() { return board; },
         getMoveHistory: function() { return moveHistory; },
         getTurn: function() { return turn; },
         getCastling: function() { return castling; },
@@ -461,5 +508,3 @@ const Chess = function(FEN) {
 }
 
 let game = Chess(INITIAL_FEN);
-
-// game.makeMove('A1','A3');
