@@ -1,0 +1,13 @@
+[
+
+    {
+        "id": 0,
+        "rating": 500,
+        "title": "Wayward Queen Attack",
+        "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "playingAs": "w",
+        "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],
+        "goal": "mate in 4"
+    }
+
+]

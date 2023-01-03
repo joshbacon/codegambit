@@ -5,7 +5,7 @@ const LessonCard = (props) => {
     const data = props.data;
 
     return <div className='lessonInfo'>
-        <p>Write a script to move the pieces using the London System.</p>
+        <p>{data.title} ({data.rating} level)</p>
         <p>Here are the moves for both sides:</p>
         <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
         <ol>
