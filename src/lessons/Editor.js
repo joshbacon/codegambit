@@ -12,6 +12,9 @@ const Editor = (props) => {
     const data = props.data;
     const [script, updateScript] = useState('Testing testing Im just suggesting');
 
+    let numbers = '';
+    for (let i = 1; i < 100; i++) numbers += i+'. ';
+
     function update(e) {
         // Update script in state
         updateScript(e.target.value);
@@ -25,11 +28,14 @@ const Editor = (props) => {
     }
 
     return <div className='editor'>
-    <textarea
-        className='ide'
-        onChange={update}
-        value={script}>
-    </textarea>
+    <div className='scriptScroller'>
+        <div className='numbering'>{numbers}</div>
+        <textarea
+            className='ide'
+            onChange={update}
+            value={script}>
+        </textarea>
+    </div>
     <div className='scriptMenu'>
         <button className='runButton' onClick={runScript}></button>
     </div>

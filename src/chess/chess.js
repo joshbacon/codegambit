@@ -58,7 +58,7 @@ const PIECES = {
     EMPTY:    ''
 }
 
-const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 // FEN Explanation:
 // first field  : pieces (left to right, top to bottom, from whites perspective)
 // second field : whos turn it is
@@ -73,7 +73,7 @@ const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 
 
-export const Chess = function(FEN) {
+export const Chess = function() {
 
     /* Setup */
     let board = [];
@@ -85,13 +85,7 @@ export const Chess = function(FEN) {
         halfmove,
         fullmove;
     
-    let {valid, code, error} = validateFEN(FEN);
-    if (valid) {
-        loadFEN(FEN);
-    } else {
-        console.log("FEN error #"+code+": " + error + " Starting with default board.");
-        loadFEN(INITIAL_FEN);
-    }
+    loadFEN(INITIAL_FEN);
     console.log(board);
     console.log(INITIAL_FEN);
     console.log(generateFEN());

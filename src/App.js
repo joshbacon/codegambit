@@ -7,7 +7,7 @@ import { Lessons } from './lessons/Lessons';
 
 function App() {
 
-  let game = Chess('');
+  let game = Chess();
   let tmnl = Terminal();
 
   const [showDocs, setShowDocs] = useState(false);
