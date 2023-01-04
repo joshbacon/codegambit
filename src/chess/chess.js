@@ -58,7 +58,7 @@ const PIECES = {
     EMPTY:    ''
 }
 
-const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 // FEN Explanation:
 // first field  : pieces (left to right, top to bottom, from whites perspective)
 // second field : whos turn it is

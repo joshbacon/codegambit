@@ -34,11 +34,11 @@ button {
     cursor: pointer;
 }
   
-.App {
+.game {
     height: calc(100vh - 75px);
 }
   
-.App-header {
+.gameHeader {
     background-color: black;
     display: flex;
     flex-direction: column;
@@ -64,18 +64,15 @@ button {
     left: 15px;
     background-image: url('assets/docs.svg');
 }
-  
-.close-btn {
-    left: 15px;
-    background-image: url('assets/close.svg');
-}
-  
-.settings-btn {
+
+.back-btn {
     right: 15px;
-    background-image: url('assets/settings.svg');
 }
-  
-  
+
+.backImg {
+    background-image: url('assets/back.svg');
+}
+
 .main {
     position: relative;
     display: grid;
@@ -88,140 +85,7 @@ button {
 .main::-webkit-scrollbar {
     width: 0;
 }
-  
-.settings-section {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-  
-    display: grid;
-    place-items: center;
-}
-  
-.background-blur {
-    position:absolute;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  
-    display: grid;
-    place-items: center;
-  
-    background-color: #0000000A;
-    backdrop-filter: blur(8.7px);
-    -webkit-backdrop-filter: blur(8.7px);
-}
-  
-.settings-panel {
-    padding: 5px;
-  
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    place-items: center;
-    row-gap: 15px;
-  
-    border-radius: 15px;
-    background-color: #0A0A0A;
-    width: 750px;
-    height: 350px;
-}
-  
-.settings-panel h1 {
-    font-size: 2em;
-}
-  
-.settings-panel h1,
-.settings-panel h3 {
-    grid-column: 1 / 3;
-}
-  
-.picker {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    text-align: center;
-  
-    width: 100%;
-    height: 100%;
-}
-  
-.theme-options {
-    display: grid;
-    place-items: center;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    margin: auto;
-}
-  
-.theme {
-    width: 40px;
-    aspect-ratio: 1;
-    border-radius: 5px;
-  
-    cursor: pointer;
-}
-  
-.dark   {background-color: #191919}
-.light  {background-color: #ffffff}
-.purple {background-color: #7a0092}
-.blue   {background-color: #006cd1}
-.green  {background-color: #008d2a}
-.orange {background-color: #c76000}
-  
-.difficulty-options {
-    display: grid;
-    place-items: center;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    margin: auto;
-}
-  
-.difficulty {
-    width: 75px;
-    height: 40px;
-    border-radius: 5px;
-  
-    display: grid;
-    place-items: center;
-    color: white;
-    background-color: #c76000;
-  
-    cursor: pointer;
-}
-  
-.no-light-mode button {
-    width: 100px;
-    height: 40px;
-    margin: auto;
-    background-color: #282828;
-    border: none;
-    border-radius: 5px;
-}
-  
-.no-light-mode:hover button {
-    display: none;
-}
-  
-.start-color-options {
-    display: grid;
-    place-items: center;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    margin: auto;
-}
-  
-.start-color {
-    width: 75px;
-    height: 40px;
-    font-size: 1.2rem;
-    font-family: mainFontBold;
-    border-radius: 10px;
-}
-.white { background-color: white;}
-.black { background-color: black;}
-.random { background: linear-gradient(90deg, rgba(255,255,255,1) 48%, rgba(0,0,0,1) 48%);}
-  
+
 .board {
     position: relative;
     z-index: 0;
@@ -364,29 +228,6 @@ button {
   
 .command-history::-webkit-scrollbar-thumb {
     background-color: var(--terminal-text);
-}
-  
-.typed {
-    overflow: hidden;
-    border-right: none;
-    white-space: nowrap;
-    animation: typing 5s forwards;
-    width: 0;
-}
-  
-.delay {
-    animation-delay: 2s;
-}
-  
-@keyframes typing {
-    0% {
-        width: 0;
-        border-right: .15em solid var(--terminal-text);
-    }
-    100% {
-        width: 100%;
-        border: none;
-    }
 }
   
 .terminal-in {

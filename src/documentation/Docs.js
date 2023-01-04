@@ -1,10 +1,14 @@
 import './Docs.css';
+import React from 'react';
+import {Link, useLocation} from 'react-router-dom';
 import DocCard from './DocCard.js';
 import DocData from './docs.json';
-import React from 'react';
 
 
 const Docs = (props) => {
+
+    const location = useLocation();
+    const {backPath, FEN} = location.state;
 
     const scrollTo = (div) => {
         document.getElementById(div).scrollIntoView({
@@ -18,30 +22,43 @@ const Docs = (props) => {
         }, 2000);
     }
 
-    return <div className='docs'>
-        <div className='menu-bar'>
-            <h1>Documentation</h1>
-            {DocData.map((value, key) => {
-                return <div key={key} className='list-section'>
-                    <h2 onClick={() => scrollTo(value.section)}>{value.section}</h2>
-                    <ul>
-                        {value.methods.map((value, key) => {
-                            return <li key={key} onClick={() => scrollTo(value.method)} className='list-method'> - {value.method}</li>
-                        })}
-                    </ul>
-                </div>
-            })}
-            <h3 className='author'>by Josh Bacon</h3>
-        </div>
-        
-        <div className='scroll-box'>
-            <div className='doc-column'>
+    return <div className='docPage'>
+        <header>
+            <h1>{'>'}code_gambit</h1>
+            <Link to={backPath} state={{FEN:FEN}} className='back-btn header-btn'>
+                <div className='backImg header-btn'/>
+            </Link>
+        </header>
+        <div className='docs'>
+            <div className='menu-bar'>
+                <h1>Documentation</h1>
                 {DocData.map((value, key) => {
-                    return <DocCard key={key} data={value}/>
+                    return <div key={key} className='list-section'>
+                        <h2 onClick={() => scrollTo(value.section)}>{value.section}</h2>
+                        <ul>
+                            {value.methods.map((value, key) => {
+                                return <li
+                                    key={key}
+                                    onClick={ () => scrollTo(value.method) }
+                                    className='list-method'>
+                                    - {value.method}
+                                </li>
+                            })}
+                        </ul>
+                    </div>
                 })}
+                <h3 className='author'>by Josh Bacon</h3>
+            </div>
+            
+            <div className='scroll-box'>
+                <div className='doc-column'>
+                    {DocData.map((value, key) => {
+                        return <DocCard key={key} data={value}/>
+                    })}
+                </div>
             </div>
         </div>
     </div>
 }
 
-export {Docs};
+export default Docs;
