@@ -1,4 +1,3 @@
-
 :root {
     --background: #0A0A0A;
     --accent: #191919;
@@ -11,14 +10,42 @@
 }
 
 .docs {
-    position: sticky;
-    max-height: 100%;
-    max-width: 100%;
+    position: relative;
+    width: 100%;
+    height: 100%;
 
     display: grid;
     place-items: center;
+    grid-template-columns: 0.2fr 1fr;
 
     overflow: hidden;
+}
+  
+header {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    height: 75px;
+}
+  
+.header-btn {
+    position: absolute;
+  
+    background-color: #00000000;
+    width: 52px;
+    aspect-ratio: 1;
+    border: none;
+    outline: none;
+  
+    cursor: pointer;
+    right: 15px;
+}
+
+.backImg {
+    background-image: url('../assets/back.svg');
 }
 
 .menu-bar {
@@ -31,17 +58,24 @@
     height: calc(100vh - 75px);
     width: 250px;
 
+    overflow-y: scroll;
+
     background-color: var(--accent2);
 }
 
 h1 {
     text-align: center;
     padding: 20px 0;
+    font-size: 2rem;
+}
+
+.menu-bar::-webkit-scrollbar {
+    width: 0;
 }
 
 .list-section {
     border-top: 1px #008000 solid;
-    padding: 0.5em;
+    padding: 0 0.5em 0.5em;
 }
 
 .list-section h2 {
@@ -68,9 +102,11 @@ h1 {
 .scroll-box {
     position: relative;
     width: 100%;
-    max-height: calc(100vh - 75px);
+    height: calc(100vh - 125px);
+    grid-column: 2;
     display: grid;
     place-items: center;
+    padding: 25px 0;
 
     overflow-x: hidden;
     overflow-y: scroll;
@@ -96,7 +132,6 @@ h1 {
     place-items: center;
     row-gap: 3rem;
     align-items: center;
-    margin-top: 3rem;
 }
 
 div .scrolled {
@@ -115,4 +150,25 @@ section .scrolled {
 @keyframes flash-section {
     0% { background-color: #9ACD32 }
     100% { background-color: #292929 }
+}
+
+@media only screen and (max-width: 915px) {
+    .docs {
+        grid-template-columns: 1fr;
+    }
+    .scroll-box {
+        grid-column: 1;
+    }
+    .menu-btn {
+      display: block;
+    }
+    .menu-bar {
+        display: none;
+    }
+}
+
+@media only screen and (max-height: 929px) {
+    .author{
+        display: none;
+    }
 }

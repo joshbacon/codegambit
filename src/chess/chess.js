@@ -58,7 +58,7 @@ const PIECES = {
     EMPTY:    ''
 }
 
-const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 // FEN Explanation:
 // first field  : pieces (left to right, top to bottom, from whites perspective)
 // second field : whos turn it is
@@ -73,8 +73,7 @@ const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 
 
-//export
-const Chess = function(FEN) {
+export const Chess = function(FEN) {
 
     /* Setup */
     let board = [];
@@ -86,7 +85,7 @@ const Chess = function(FEN) {
         halfmove,
         fullmove;
     
-    let { valid, code, error} = validateFEN(FEN);
+    let {valid, code, error} = validateFEN(FEN);
     if (valid) {
         loadFEN(FEN);
     } else {
@@ -298,6 +297,20 @@ const Chess = function(FEN) {
 
     }
 
+    function getPieces() {
+        let pieces = [];
+        for (let r = 0; r < 8; r++) {
+            let col = 65;
+            for (let c = 0; c < 8; c++) {
+                let boardIndex = r*8 + c;
+                if (board[boardIndex] === '') continue;
+                pieces.push({'piece':board[boardIndex], 'pos':(String.fromCharCode(col)+(8-r))});
+                col += 1;
+            }
+        }
+        return pieces;
+    }
+
 
     /* Return functions for use in the terminal */
     return {
@@ -331,6 +344,10 @@ const Chess = function(FEN) {
 
         removePiece: function(square) {
             return removePiece(square);
+        },
+
+        getPieces: function() {
+            return getPieces();
         },
 
         isValidMove: function() {
@@ -372,4 +389,4 @@ const Chess = function(FEN) {
     }
 }
 
-Chess(INITIAL_FEN);
+// Chess(INITIAL_FEN);

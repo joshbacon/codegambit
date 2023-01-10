@@ -13,9 +13,7 @@
     "id": 1,
     "section": "Movement",
     "methods": [
-        {"mid":0, "method":"move(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise.", "example":"move(C3,F6)"},
         {"mid":1, "method":"move(to)", "params":"to - destination square", "desc":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"mid":2, "method":"take(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"like move but only works when said move captures another piece.", "example":"take(G1,C5)"},
         {"mid":3, "method":"take(to)", "params":"to - destination square", "desc":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
     ]
 },
@@ -23,7 +21,6 @@
     "id": 2,
     "section": "Checking",
     "methods": [
-        {"mid":0, "method":"isValidMove(from,to)", "params":"from - square piece to move is on, to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise.", "example":"isValidMove(B2,H3)"},
         {"mid":1, "method":"isValidMove(to)", "params":"to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
         {"mid":2, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
         {"mid":3, "method":"hideValidMoves()", "params":"none", "desc":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
