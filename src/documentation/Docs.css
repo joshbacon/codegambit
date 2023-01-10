@@ -75,7 +75,7 @@ h1 {
 
 .list-section {
     border-top: 1px #008000 solid;
-    padding: 0.5em;
+    padding: 0 0.5em 0.5em;
 }
 
 .list-section h2 {
@@ -167,7 +167,7 @@ section .scrolled {
     }
 }
 
-@media only screen and (max-height: 925px) {
+@media only screen and (max-height: 929px) {
     .author{
         display: none;
     }
