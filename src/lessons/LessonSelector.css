@@ -1,0 +1,46 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.lessonSelector {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.titleBar {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.totalProgress {
+    display: flex;
+    flex-direction: row;
+    float: right;
+}
+
+.progressBar {
+    width: 100px;
+    height: 25px;
+    border-radius: 5px;
+    outline: #555555 solid 1px;
+}
+
+.progress {
+    background-color: green;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.lessonList {
+    display: grid;
+    background-color: #505050;
+    width: 750px;
+    height: 500px;
+    border-radius: 10px;
+}

@@ -2,8 +2,59 @@
 
     {
         "id": 0,
+        "category": "Opening",
         "rating": 500,
         "title": "Wayward Queen Attack",
+        "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "playingAs": "w",
+        "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],
+        "goal": "mate in 4"
+    },
+    {
+        "id": 1,
+        "category": "Opening",
+        "rating": 500,
+        "title": "The London System",
+        "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "playingAs": "w",
+        "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],
+        "goal": "mate in 4"
+    },
+    {
+        "id": 2,
+        "category": "Opening",
+        "rating": 1,
+        "title": "Bong Cloud",
+        "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "playingAs": "w",
+        "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],
+        "goal": "mate in 4"
+    },
+    {
+        "id": 3,
+        "category": "Opening",
+        "rating": 500,
+        "title": "Fried Liver",
+        "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "playingAs": "w",
+        "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],
+        "goal": "mate in 4"
+    },
+    {
+        "id": 3,
+        "category": "Endgame",
+        "rating": 500,
+        "title": "Mate lol",
+        "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "playingAs": "w",
+        "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],
+        "goal": "mate in 4"
+    },
+    {
+        "id": 3,
+        "category": "General",
+        "rating": 500,
+        "title": "Just win",
         "FEN": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         "playingAs": "w",
         "moves": [ "e4", "Qh5", "Bc4", "Qf7#" ],

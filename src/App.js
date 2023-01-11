@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Docs } from './documentation/Docs.js';
 import { Chess } from './chess/chess';
 import { Terminal } from './Terminal';
-import { Lessons } from './lessons/LessonsPage';
+import LessonSelector from './lessons/LessonSelector';
 
 function App() {
 
@@ -90,7 +90,7 @@ function App() {
   //   game = Chess('');
   // }, [])
 
-  return (<Lessons/>);
+  return (<LessonSelector/>);
   // (
   //   <div className="App">
 
