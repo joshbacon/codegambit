@@ -39,12 +39,15 @@
 }
 
 .home {
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    right: 15px;
 }
 
 .homeImg {
-    background-image: url(./assets/menu.svg);
+    background-image: url('./assets/back.svg');
+    background-size: 90%;
+    background-position: top;
+    background-repeat: no-repeat;
     width: 55px;
     aspect-ratio: 1;
 }

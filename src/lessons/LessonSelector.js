@@ -24,7 +24,8 @@ const LessonSelector = (props) => {
     const [active, updateActive] = useState(tabs.All);
 
     return <div className='lessonSelector'>
-        <div className='titleBar'>
+        <Link to='/' className='lessonBackBtn'/>
+        <div className='lessonTitle'>
             <h2>Josh Bacon</h2>
             <div className='totalProgress'>
                 <h3>Total Progress:</h3>
