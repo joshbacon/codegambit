@@ -1,7 +1,7 @@
 [
 
     {
-        "id": 0,
+        "id": 1,
         "category": "Opening",
         "rating": 500,
         "title": "Wayward Queen Attack",
@@ -11,7 +11,7 @@
         "goal": "mate in 4"
     },
     {
-        "id": 1,
+        "id": 2,
         "category": "Opening",
         "rating": 500,
         "title": "The London System",
@@ -21,7 +21,7 @@
         "goal": "mate in 4"
     },
     {
-        "id": 2,
+        "id": 3,
         "category": "Opening",
         "rating": 1,
         "title": "Bong Cloud",
@@ -31,7 +31,7 @@
         "goal": "mate in 4"
     },
     {
-        "id": 3,
+        "id": 4,
         "category": "Opening",
         "rating": 500,
         "title": "Fried Liver",
@@ -41,7 +41,7 @@
         "goal": "mate in 4"
     },
     {
-        "id": 3,
+        "id": 5,
         "category": "Endgame",
         "rating": 500,
         "title": "Mate lol",
@@ -51,7 +51,7 @@
         "goal": "mate in 4"
     },
     {
-        "id": 3,
+        "id": 6,
         "category": "General",
         "rating": 500,
         "title": "Just win",

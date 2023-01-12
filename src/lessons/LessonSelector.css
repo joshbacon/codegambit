@@ -3,6 +3,10 @@
     margin: 0;
 }
 
+html {
+    background-color: #191919;
+}
+
 .lessonSelector {
     width: 100vw;
     height: 100vh;
@@ -15,13 +19,15 @@
 .titleBar {
     display: flex;
     flex-direction: column;
-    width: 500px;
+    align-items: flex-end;
+    width: 50%;
 }
 
 .totalProgress {
     display: flex;
     flex-direction: row;
     float: right;
+    padding-top: 10px;
 }
 
 .progressBar {
@@ -37,10 +43,63 @@
     border-radius: 5px;
 }
 
-.lessonList {
-    display: grid;
-    background-color: #505050;
-    width: 750px;
-    height: 500px;
-    border-radius: 10px;
+.lessonTabs {
+    width: 50%;
+    height: 60%;
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.tabs {
+    list-style: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.tabItem {
+    font-size: clamp(1rem, 1.5rem, 1.5rem);
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 5px 5px 0 0;
+    background-color: #191919;
+    cursor: pointer;
+}
+
+.tabItem:hover {
+    text-decoration: underline;
+}
+
+.active {
+    background-color: #555555;
+}
+
+.tabPanel {
+    font-size: 1.2rem;
+    padding: 15px;
+    background-color: #555555;
+    list-style-position: inside;
+    width: calc(100% - 30px);
+    height: clamp(5rem, 10rem, 80%);
+}
+
+.lessonItem {
+    cursor: pointer;
+}
+
+.lessonItem:hover {
+    background-color: #4b4b4b;
+}
+
+.incomplete {
+    list-style-type: circle;
+}
+
+.complete {
+    list-style-type: none;
+}
+
+.complete::before {
+    content: '\2714\0020';
 }

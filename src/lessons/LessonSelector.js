@@ -1,7 +1,7 @@
 import './LessonSelector.css';
-import 'react-tabs/style/react-tabs.css';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import React, {useState} from 'react';
 import LessonData from './lessons.json';
+import {Link} from 'react-router-dom';
 
 // check here to change the css
 // https://github.com/reactjs/react-tabs
@@ -20,40 +20,37 @@ const LessonSelector = (props) => {
         width: complete+"px"
     };
 
+    const tabs = {All: '', General: 'General', Openings: 'Opening', Endgames: 'Endgame'};
+    const [active, updateActive] = useState(tabs.All);
+
     return <div className='lessonSelector'>
         <div className='titleBar'>
             <h2>Josh Bacon</h2>
             <div className='totalProgress'>
-                <h3>Total Progress: </h3>
+                <h3>Total Progress:</h3>
                 <div className='progressBar'>
                     <div className='progress' style={styleProg}/>
                 </div>
             </div>
         </div>
-        <Tabs>
-            <TabList>
-                <Tab>All</Tab>
-                <Tab>General</Tab>
-                <Tab>Openings</Tab>
-                <Tab>Endgames</Tab>
-            </TabList>
+        <div className='lessonTabs'>
+            <ul className='tabs'>
+                {Object.entries(tabs).map(([key, value]) => {
+                    return <li
+                        key={key}
+                        className={active === value ? 'tabItem active' : 'tabItem'}
+                        onClick={() => {updateActive(value)}}>
+                        {key}
+                    </li>
+                })}
+            </ul>
 
-            <TabPanel>{LessonData.map((value, key) => {
-                return <div key={key}>{value.title} [{value.category}] ({value.rating})</div>
-            })}</TabPanel>
-
-            <TabPanel>{LessonData.filter(value => {return value.category === "General"}).map((value, key) => {
-                return <div key={key}>{value.title} ({value.rating})</div>
-            })}</TabPanel>
-
-            <TabPanel>{LessonData.filter(value => {return value.category === "Opening"}).map((value, key) => {
-                return <div key={key}>{value.title} ({value.rating})</div>
-            })}</TabPanel>
-
-            <TabPanel>{LessonData.filter(value => {return value.category === "Endgame"}).map((value, key) => {
-                return <div key={key}>{value.title} ({value.rating})</div>
-            })}</TabPanel>
-        </Tabs>
+            <ul className='tabPanel'>
+                {LessonData.filter(value => {return active === '' || active === value.category}).map((value, key) => {
+                    return <li key={value.id} className='lessonItem incomplete'>{value.title} ({value.rating})</li>
+                })}
+            </ul>
+        </div>
     </div>
 }
 

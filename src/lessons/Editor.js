@@ -1,7 +1,6 @@
 import './Editor.css';
 import React, {useState} from 'react';
 
-
 // write the script output somewhere...
 // maybe have a run button that brings up a terminal for ouput
 // - should stop script when an error occurs
