@@ -56,7 +56,7 @@ const Game = (props) => {
 
   return (
     <div className="game">
-      <header className="gameHeader">
+      <div className="gameHeader">
         <h1>{'>'}code_gambit</h1>
         <Link to='/' className='back-btn header-btn'>
           <div className='backImg header-btn'/>
@@ -64,7 +64,7 @@ const Game = (props) => {
         <Link to='/documentation'  state={{backPath:'/play', FEN:game.generateFEN()}} className='docs-btn header-btn'>
           <div className='docsImg header-btn'/>
         </Link>
-      </header>
+      </div>
       <section className="main">
         <div className={"board bBlue"}>
           {game.getPieces().map((value, key) => {

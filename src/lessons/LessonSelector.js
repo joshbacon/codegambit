@@ -24,34 +24,40 @@ const LessonSelector = (props) => {
     const [active, updateActive] = useState(tabs.All);
 
     return <div className='lessonSelector'>
-        <Link to='/' className='lessonBackBtn'/>
-        <div className='lessonTitle'>
-            <h2>Josh Bacon</h2>
-            <div className='totalProgress'>
-                <h3>Total Progress:</h3>
-                <div className='progressBar'>
-                    <div className='progress' style={styleProg}/>
+        <header>
+            <h3>Lessons</h3>
+            <Link to='/' className='lessonBackBtn'/>
+        </header>
+        <body className='lessonPage'>
+            <div className='lessonTitle'>
+                <h2>Josh Bacon</h2>
+                <div className='totalProgress'>
+                    <h3>Total Progress: </h3>
+                    <div className='progressBar'>
+                        <div className='progress' style={styleProg}/>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div className='lessonTabs'>
-            <ul className='tabs'>
-                {Object.entries(tabs).map(([key, value]) => {
-                    return <li
-                        key={key}
-                        className={active === value ? 'tabItem active' : 'tabItem'}
-                        onClick={() => {updateActive(value)}}>
-                        {key}
-                    </li>
-                })}
-            </ul>
+            <p>Select a lesson below to get started!</p>
+            <div className='lessonTabs'>
+                <ul className='tabs'>
+                    {Object.entries(tabs).map(([key, value]) => {
+                        return <li
+                            key={key}
+                            className={active === value ? 'tabItem active' : 'tabItem'}
+                            onClick={() => {updateActive(value)}}>
+                            {key}
+                        </li>
+                    })}
+                </ul>
 
-            <ul className='tabPanel'>
-                {LessonData.filter(value => {return active === '' || active === value.category}).map((value, key) => {
-                    return <li key={value.id} className='lessonItem incomplete'>{value.title} ({value.rating})</li>
-                })}
-            </ul>
-        </div>
+                <ul className='tabPanel'>
+                    {LessonData.filter(value => {return active === '' || active === value.category}).map((value, key) => {
+                        return <li key={value.id} className='lessonItem incomplete'>{value.title} ({value.rating})</li>
+                    })}
+                </ul>
+            </div>
+        </body>
     </div>
 }
 
