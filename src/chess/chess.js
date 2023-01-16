@@ -1,16 +1,4 @@
 
-// This file contains all the things needed to play basic chess:
-// - pieces
-// - rules
-
-// also need:
-// - colors
-// - initial game setup
-// - position movements (up, down, left, right, up_left, down_right, up_right, down_left)
-
-
-
-
 // move examples
 // pawn move:       e3   (no piece prefix for pawns)
 // knight move:    nf6
@@ -37,41 +25,22 @@
 
 
 // Constants
-
-const COLUMNS = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7};
-const ROWS = {'1':7, '2':6, '3':5, '4':4, '5':3, '6':2, '7':1, '8':0};
-
-const WHITE = 'w';
-const BLACK = 'b';
-
-const PIECES = {
-    KING_W:   'K',
-    QUEEN_W:  'Q',
-    ROOK_W:   'R',
-    BISHOP_W: 'B',
-    KNIGHT_W: 'N',
-    PAWN_W:   'P',
-    KING_B:   'k',
-    QUEEN_B:  'q',
-    ROOK_B:   'r',
-    BISHOP_B: 'b',
-    KNIGHT_B: 'n',
-    PAWN_B:   'p',
-
-    EMPTY:    ''
-}
-
-
-// FEN Explanation:
-// first field  : pieces (left to right, top to bottom, from whites perspective)
-// second field : whos turn it is
-// third field  : castling right (K means white can castle king side, Q means white can queen side and same for black with lowercase)
-// fourth field : enpassant eligiblility (if e pawn moves two spaces of jump it would be e3, so where taking piece would land)
-// fifth field  : 'halfmove clock' enforces 50 move rule, counts moves without capture or pawn push (draw if == 100)
-// sixth field  : 'fullmove number', number of moves played this game (increments each time black makes a move)
-const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RKBQKBNR w KQkq - 0 1'
-
-
+import {
+    COLUMNS,
+    ROWS,
+    WHITE,
+    BLACK, 
+    PIECES,
+    INITIAL_FEN,
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UPLEFT,
+    UPRIGHT,
+    DOWNLEFT,
+    DOWNRIGHT
+} from './constants.js';
 
 // export
 const Chess = function(FEN) {
@@ -125,7 +94,7 @@ const Chess = function(FEN) {
                     else col += Number(piece);
                 }
             }
-            console.log(board);
+            // console.log(board);
             return true;
         } catch (error) {
             return false;

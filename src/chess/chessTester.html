@@ -4,29 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="chess.js"></script>
+    <script type="module" src="./chess.js"></script>
     <title>Chess Tester</title>
 </head>
 
 <style>
     .board {
-        /* position: absolute;
-        right: 10px; */
         width: 720px;
         aspect-ratio: 1;
-
         display: grid;
         grid-template-columns: repeat(8, 1fr);
-
-        color: white;
-        font-size: 2.5rem;
     }
     .square {
         width: 90px;
         aspect-ratio: 1;
         display: grid;
-        place-items: center;
-        /* background-size: 100%; */
+        background-position: center;
+        background-size: 100%;
     }
     .d {
         background: #1b1a1a;
@@ -35,18 +29,18 @@
         background: #909090;
     }
 
-    .r { background-image: url('myPieces/br.png') }
-    .n { background-image: url('myPieces/bn.png') }
-    .b { background-image: url('myPieces/bb.png') }
-    .q { background-image: url('myPieces/bq.png') }
-    .k { background-image: url('myPieces/bk.png') }
-    .p { background-image: url('myPieces/bp.png') }
-    .R { background-image: url('myPieces/wr.png') }
-    .N { background-image: url('myPieces/wn.png') }
-    .B { background-image: url('myPieces/wb.png') }
-    .Q { background-image: url('myPieces/wq.png') }
-    .K { background-image: url('myPieces/wk.png') }
-    .P { background-image: url('myPieces/wp.png') }
+    .r { background-image: url('./myPieces/br.png') }
+    .n { background-image: url('./myPieces/bn.png') }
+    .b { background-image: url('./myPieces/bb.png') }
+    .q { background-image: url('./myPieces/bq.png') }
+    .k { background-image: url('./myPieces/bk.png') }
+    .p { background-image: url('./myPieces/bp.png') }
+    .R { background-image: url('./myPieces/wr.png') }
+    .N { background-image: url('./myPieces/wn.png') }
+    .B { background-image: url('./myPieces/wb.png') }
+    .Q { background-image: url('./myPieces/wq.png') }
+    .K { background-image: url('./myPieces/wk.png') }
+    .P { background-image: url('./myPieces/wp.png') }
 </style>
 
 <body style="display:grid; place-items: center; height:100vh; padding:0; margin:0">
