@@ -4,33 +4,34 @@ package main
 // for each table in the database
 
 type User struct {
-	id int
-	name string
-	email string
-	password string
+	Id int64 `json:"id"`
+	Name string `json:"name"`
+	Email string `json:"email"`
+	Password string `json:"password"`
 }
 
 type Game struct {
-	id int
-	w_id int
-	b_id int
-	winner int
-	date_played string
+	Id int64 `json:"id"`
+	W_id int64 `json:"w_id"`
+	B_id int64 `json:"b_id"`
+	Winner_id int64 `json:"winner_id"`
+	Date_played string `json:"date_played"`
+	Moves string `json:"moves"`
 }
 
 type CompletedLesson struct {
-	id int
-	lesson_id int
-	user_id int
+	Id int64 `json:"id"`
+	Lesson_id int `json:"lesson_id"`
+	User_id int64 `json:"user_id"`
 }
 
 type Lesson struct {
-	id int
-	category string
-	rating int
-	title string
-	FEN string
-	playing_as string
-	moves string
-	goal string
+	Id int64 `json:"id"`
+	Category string `json:"category"`
+	Rating int `json:"rating"`
+	Title string `json:"title"`
+	FEN string `json:"FEN"`
+	Playing_as string `json:"playing_as"`
+	Moves string `json:"moves"`
+	Goal string `json:"goal"`
 }
