@@ -45,12 +45,21 @@ CREATE TABLE Completed_Lessons (
 
 
 -- @block
-SELECT * FROM Users;
+-- SELECT id, name, email FROM Users WHERE id = 1;
+SELECT * FROM Completed_Lessons
 
 -- @block
-SHOW TABLES
-
+ALTER TABLE temp RENAME Lessons
 
 
 -- @block
-ALTER TABLE Users ADD [COLUMN] name VARCHAR(36) NOT NULL UNIQUE;
+INSERT INTO Completed_Lessons (lesson_id, user_id)
+VALUES (1, 3)
+
+-- @block
+SELECT * FROM Users
+
+
+-- @block
+-- ALTER TABLE Games ADD COLUMN moves VARCHAR(500) NOT NULL;
+ALTER TABLE Games CHANGE COLUMN date_played date_played DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;

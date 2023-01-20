@@ -17,61 +17,19 @@ import (
 var db *sql.DB
 
 func main() {
-
 	// Setup connection to the database
 	setDB()
-
 	// Setup gin for http request and response
 	router := gin.Default();
 	// Set GET routes
 	router.GET("/user/:id", GETuser)
 	router.GET("/games/:id", GETgames)
 	router.GET("/completed_lessons/:id", GETcompletedLessons)
+	router.GET("/lessons", GETlessons)
 	// Set POST routes
 	router.POST("/new_user", POSTcreateUser)
-
 	// Tell the server to start listening
 	router.Run("localhost:8080")
-
-	// var id int64
-	// id = 1
-
-	// user1, userErr := getUserByID(id)
-	// if userErr != nil {
-	// 	fmt.Println("userByID failed: ", userErr)
-	// } else {
-	// 	fmt.Println("User ",id,":", user1)
-	// }
-
-	// myGames, gameErr := getUserGames(id)
-	// if gameErr != nil {
-	// 	fmt.Println("getUserGames failed: ", gameErr)
-	// } else {
-	// 	fmt.Println(len(myGames),"x Games Played:")
-	// 	fmt.Println(myGames)
-	// }
-
-	// myLessons, lessErr := getUserCompletedPuzzles(id)
-	// if lessErr != nil {
-	// 	fmt.Println("getUserCompletedPuzzles failed: ", lessErr)
-	// } else {
-	// 	fmt.Println("\nLessons Completed:")
-	// 	fmt.Println(myLessons)
-	// }
-
-	// newUser := User {
-	// 	id: 0,
-	// 	name: "Mittens",
-	// 	email: "null@null.io",
-	// 	password: "1elo",
-	// }
-
-	// newID, newErr := createUser(newUser)
-	// if newErr != nil {
-	// 	fmt.Println("createUser failed: ", newErr)
-	// } else {
-	// 	fmt.Println(getUserByID(newID))
-	// }
 }
 
 func setDB() (bool){
@@ -106,14 +64,18 @@ func POSTcreateUser(c *gin.Context) {
 	var newUser User
 
 	if err := c.BindJSON(&newUser); if err != nil {
-		c.IndentedJSON(, gin.H{"message":"user could not be created"})
+		c.IndentedJSON(http.StatusUnprocessableEntity, gin.H{"message":"user could not be created"})
 		return
 	}
 
 	// createUser returns the id int64, but check the error
 	newId, err := createUser(newUser)
-	// next run getUserById(newId) to actually return in the IndentedJSON
-	//.... right? do we only need to return the id???
+	if err != nil {
+		c.IndentedJSON(, gin.H{"message": err})
+		return
+	}
+	// Fill user data with returned ID
+	newUser.Id = newId
 	c.IndentedJSON(http.StatusCreated, newUser)
 }
 
@@ -137,16 +99,17 @@ func GETuser(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":"invalid user id"})
-	} else {
-		user, err := getUserByID(id)
-		if err != nil {
-			c.IndentedJSON(http.StatusBadRequest, gin.H{"message":err})
-		} else if user.Id == 0 {
-			c.IndentedJSON(http.StatusNotFound, gin.H{"message":"user not found"})
-		} else {
-			c.IndentedJSON(http.StatusFound, user)
-		}
+		return
 	}
+	user, err := getUserByID(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":err})
+		return
+	if user.Id == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message":"user not found"})
+		return
+	}
+	c.IndentedJSON(http.StatusFound, user)
 }
 
 // Find a user by a given ID
@@ -172,16 +135,17 @@ func GETgames(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":"invalid user id"})
-	} else {
-		games, err := getUserGames(id)
-		if err != nil {
-			c.IndentedJSON(http.StatusBadRequest, gin.H{"message":err})
-		} else if len(games) == 0 {
-			c.IndentedJSON(http.StatusNotFound, gin.H{"message":"no games found"})
-		} else {
-			c.IndentedJSON(http.StatusOK, games)
-		}
+		return
 	}
+	games, err := getUserGames(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":err})
+		return
+	if len(games) == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message":"no games found"})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, games)
 }
 
 // Return a list of structs containing the games a user has played
@@ -221,7 +185,20 @@ func getUserGames(id int64) ([]Game, error){
 }
 
 func GETcompletedLessons(c *gin.Context) {
-
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":"invalid user id"})
+		return
+	}
+	lessons, err := getUserCompletedPuzzles(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":err})
+		return
+	if len(lessons) == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message":"no lessons found"})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, lessons)
 }
 
 func getUserCompletedPuzzles(id int64) ([]CompletedLesson, error) {
@@ -250,6 +227,54 @@ func getUserCompletedPuzzles(id int64) ([]CompletedLesson, error) {
 	// Final error check for incomplete results
 	if err:= rows.Err(); err != nil {
 		return lessons, fmt.Errorf("(id == %d) %v", id, err)
+	}
+	// Else; return the lessons and no error
+	return lessons, nil
+}
+
+func GETlessons(c *gin.Context) {
+	lessons, err := getLessons()
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message":err})
+		return
+	if len(lessons) == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message":"no lessons found"})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, lessons)
+}
+
+func getLessons() ([]Lesson, error) {
+	var lessons []Lesson
+
+	// Query lessons for desired user
+	rows, err := db.Query("SELECT * FROM Lessons")
+	// Return null if error occurs
+	if err != nil {
+		return lessons, fmt.Errorf("getLessons() %v", err)
+	}
+	defer rows.Close() // Release any data being held on close 
+	// Actually store queried data in the lessons variable
+	for rows.Next() {
+		var lesson CompletedLesson
+		// Read in a single row to the lessons variable and check for errors
+		if err := rows.Scan(
+			&lesson.Id,
+			&lesson.Category,
+			&lesson.Rating,
+			&lesson.Title,
+			&lesson.FEN,
+			&lesson.Playing_as,
+			&lesson.Moves,
+			&lesson.Goal,
+		); err != nil {
+			return lessons, fmt.Errorf("getLessons() %v", err)
+		}
+		lessons = append(lessons, lesson)
+	}
+	// Final error check for incomplete results
+	if err:= rows.Err(); err != nil {
+		return lessons, fmt.Errorf("getLessons() %v", err)
 	}
 	// Else; return the lessons and no error
 	return lessons, nil
