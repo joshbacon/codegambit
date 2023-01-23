@@ -56,17 +56,11 @@ const Chess = function(FEN) {
         enpassant,
         halfmove,
         fullmove;
-    
-    let {valid, code, error} = validateFEN(FEN);
-    if (valid) {
-        loadFEN(FEN);
-    } else {
-        console.log("FEN error #"+code+": " + error + " Starting with default board.");
-        loadFEN(INITIAL_FEN);
-    }
-    // console.log(board);
-    // console.log(INITIAL_FEN);
-    // console.log(generateFEN());
+  
+    loadFEN(INITIAL_FEN);
+    console.log(board);
+    console.log(INITIAL_FEN);
+    console.log(generateFEN());
 
 
     /* FEN Functions */
