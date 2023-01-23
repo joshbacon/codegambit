@@ -1,0 +1,262 @@
+:root {
+    --terminal-text: #008000;
+  
+    --square-size: 90px;
+    --square-size: 12%;
+}
+  
+@font-face {
+    font-family: mainFont;
+    src: url('assets/terminal.otf');
+}
+@font-face {
+    font-family: mainFontBold;
+    src: url('assets/terminalBold.otf');
+}
+  
+* {
+    margin: 0;
+    padding: 0;
+  
+    font-family: mainFont;
+    color: var(--terminal-text);
+}
+  
+h1 {
+    font-family: mainFontBold;
+}
+  
+html {
+    background: #191919;
+}
+  
+button {
+    cursor: pointer;
+}
+  
+.game {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+  
+.gameHeader {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    height: 75px;
+}
+  
+.header-btn {
+    position: absolute;
+  
+    background-color: #00000000;
+    width: 52px;
+    aspect-ratio: 1;
+    border: none;
+    outline: none;
+  
+    cursor: pointer;
+}
+  
+.docs-btn {
+    left: 15px;
+    background-image: url('assets/docs.svg');
+}
+
+.back-btn {
+    right: 15px;
+}
+
+.backImg {
+    background-image: url('assets/back.svg');
+}
+
+.main {
+    position: relative;
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100%;
+    overflow-y: scroll;
+}
+  
+.main::-webkit-scrollbar {
+    width: 0;
+}
+
+.board {
+    position: relative;
+    z-index: 0;
+    width: 70%;
+    min-width: 250px;
+    aspect-ratio: 1;
+    background-size: 100%;
+}
+  
+.bDark { background-image: url('assets/boardDark.png') }
+.bLight { background-image: url('assets/boardLight.png') }
+.bPurple { background-image: url('assets/boardPurple.png') }
+.bBlue { background-image: url('assets/boardBlue.png') }
+.bGreen { background-image: url('assets/boardGreen.png') }
+.bOrange { background-image: url('assets/boardOrange.png') }
+  
+.square {
+    position: absolute;
+    width: var(--square-size);
+    aspect-ratio: 1;
+    background-size: 100%;
+}
+  
+.selected {
+    background-color: #80008090;
+}
+  
+.p {background-image: url("./assets/bp.png")}
+.n {background-image: url("./assets/bn.png")}
+.b {background-image: url("./assets/bb.png")}
+.r {background-image: url("./assets/br.png")}
+.q {background-image: url("./assets/bq.png")}
+.k {background-image: url("./assets/bk.png")}
+  
+.P {background-image: url("./assets/wp.png")}
+.N {background-image: url("./assets/wn.png")}
+.B {background-image: url("./assets/wb.png")}
+.R {background-image: url("./assets/wr.png")}
+.Q {background-image: url("./assets/wq.png")}
+.K {background-image: url("./assets/wk.png")}
+  
+.A1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 0)}
+.A2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 0)}
+.A3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 0)}
+.A4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 0)}
+.A5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 0)}
+.A6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 0)}
+.A7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 0)}
+.A8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 0)}
+.B1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 1)}
+.B2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 1)}
+.B3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 1)}
+.B4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 1)}
+.B5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 1)}
+.B6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 1)}
+.B7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 1)}
+.B8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 1)}
+.C1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 2)}
+.C2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 2)}
+.C3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 2)}
+.C4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 2)}
+.C5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 2)}
+.C6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 2)}
+.C7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 2)}
+.C8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 2)}
+.D1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 3)}
+.D2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 3)}
+.D3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 3)}
+.D4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 3)}
+.D5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 3)}
+.D6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 3)}
+.D7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 3)}
+.D8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 3)}
+.E1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 4)}
+.E2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 4)}
+.E3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 4)}
+.E4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 4)}
+.E5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 4)}
+.E6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 4)}
+.E7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 4)}
+.E8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 4)}
+.F1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 5)}
+.F2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 5)}
+.F3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 5)}
+.F4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 5)}
+.F5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 5)}
+.F6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 5)}
+.F7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 5)}
+.F8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 5)}
+.G1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 6)}
+.G2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 6)}
+.G3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 6)}
+.G4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 6)}
+.G5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 6)}
+.G6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 6)}
+.G7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 6)}
+.G8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 6)}
+.H1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 7)}
+.H2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 7)}
+.H3 {top: calc(var(--square-size) * 5); left: calc(var(--square-size) * 7)}
+.H4 {top: calc(var(--square-size) * 4); left: calc(var(--square-size) * 7)}
+.H5 {top: calc(var(--square-size) * 3); left: calc(var(--square-size) * 7)}
+.H6 {top: calc(var(--square-size) * 2); left: calc(var(--square-size) * 7)}
+.H7 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 7)}
+.H8 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 7)}
+  
+.terminal {
+    z-index: 5;
+    overflow: hidden;
+    max-width: 80%;
+    border-radius: 20px;
+    box-shadow:  17px 17px 40px #0A0A0A,
+                -17px -17px 40px #282828;
+}
+  
+.command-history {
+    display: flex;
+    flex-direction: column;
+  
+    position: relative;
+    padding: 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+  
+    background-color: black;
+    font-size: 1rem;
+  
+    width: 100%;
+    height: 15rem;
+}
+  
+.command-history::-webkit-scrollbar {
+    width: 15px;
+}
+  
+.command-history::-webkit-scrollbar-track {
+    background-color: #00000000;
+}
+  
+.command-history::-webkit-scrollbar-thumb {
+    background-color: var(--terminal-text);
+}
+  
+.terminal-in {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 15px;
+  
+    background-color: black;
+    border-top: 1px var(--terminal-text) solid;
+}
+  
+.code-in {
+    width: 100%;
+    padding: 1rem;
+  
+    color: var(--terminal-text);
+    background-color: inherit;
+    font-size: 1.2rem;
+    border: none;
+    outline: none;
+}
+  
+@media only screen and (max-width: 915px){
+    .main {
+      grid-template-columns: 1fr;
+    }
+    .command-history {
+      height: 10rem;
+    }
+}

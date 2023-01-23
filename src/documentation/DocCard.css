@@ -1,5 +1,4 @@
-:root{
-
+:root {
     --section-width: 500px;
     --section-height: 300px;
 
@@ -15,7 +14,7 @@
 .doc-section {
     position: relative;
     width: var(--section-width);
-    height: var(--card-height);
+    min-height: var(--card-height);
     display: grid;
     background-color: #111111;
     border-radius: 20px;
@@ -30,11 +29,17 @@
 
 .method-card {
     width: var(--card-width);
-    height: var(--card-height);
+    min-height: var(--card-height);
     background-color: #292929;
     border-radius: 10px;
 }
 
 .method-card h3, .method-card p {
     padding-left: 15px;
+}
+
+@media only screen and (max-width: 575px) {
+    :root {
+        --section-width: 90%;
+    }
 }
