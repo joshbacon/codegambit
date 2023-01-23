@@ -56,11 +56,17 @@ const Chess = function(FEN) {
         enpassant,
         halfmove,
         fullmove;
-  
-    loadFEN(INITIAL_FEN);
-    console.log(board);
-    console.log(INITIAL_FEN);
-    console.log(generateFEN());
+    
+    let {valid, code, error} = validateFEN(FEN);
+    if (valid) {
+        loadFEN(FEN);
+    } else {
+        console.log("FEN error #"+code+": " + error + " Starting with default board.");
+        loadFEN(INITIAL_FEN);
+    }
+    // console.log(board);
+    // console.log(INITIAL_FEN);
+    // console.log(generateFEN());
 
 
     /* FEN Functions */
@@ -245,6 +251,22 @@ const Chess = function(FEN) {
     }
 
     function getPiece(square) {
+    //    console.log(board);
+    //    let cr = square.split('');
+    //    let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
+    //   return board[pieceIndex];
+    //}
+
+    //function placePiece(piece, square) {
+    //    let cr = square.split('');
+    //    let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
+    //    board[pieceIndex] = piece;
+    //}
+
+    //function removePiece(square) {
+    //    let cr = square.split('');
+    //    let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
+    //    board[pieceIndex] = '';
         return board[square];
     }
 
@@ -261,7 +283,7 @@ const Chess = function(FEN) {
     }
 
     /* State Checking Functions */
-    function isValidMove() {
+    function isValidMove(from, to) {
         /*
             - square notations are formatted properly (we grab the piece so it has to be)
             - given piece color needs to be that of the current players turn
@@ -438,6 +460,8 @@ const Chess = function(FEN) {
         halfmove: function() { return halfmove; },
         fullmove: function() { return fullmove; },
 
+        WHITE: WHITE,
+        BLACK: BLACK,
         clear: function() {
             let c = 65;
             let r = 8;
@@ -466,7 +490,7 @@ const Chess = function(FEN) {
                     r -= 1;
                 }
             }
-        }
+        },
     }
 }
 
