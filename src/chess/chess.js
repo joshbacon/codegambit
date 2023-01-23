@@ -42,8 +42,7 @@ import {
     DOWNRIGHT
 } from './constants.js';
 
-// export
-const Chess = function(FEN) {
+export const Chess = function(FEN) {
 
     /* Setup */
     let board = {};
@@ -94,7 +93,6 @@ const Chess = function(FEN) {
                     else col += Number(piece);
                 }
             }
-            // console.log(board);
             return true;
         } catch (error) {
             return false;
@@ -113,7 +111,6 @@ const Chess = function(FEN) {
             for (let k in sortedKeys)
                 if (sortedKeys[k].includes(i.toString()))
                     row.push(sortedKeys[k]);
-            if (row.length > 0) console.log(`i == ${i} [${row}]`);
 
             let spaces = 0;
             if (row.length === 0) FEN += '8'
@@ -211,7 +208,6 @@ const Chess = function(FEN) {
         if (isValidMove(from, to)) {
             let move = generateMoveNotation(from, to);
             moveHistory.push(move);
-            console.log(moveHistory);
             movePiece(from, to);
             // update castling rights if necessary
             // update enpassant if necessary
@@ -251,22 +247,6 @@ const Chess = function(FEN) {
     }
 
     function getPiece(square) {
-    //    console.log(board);
-    //    let cr = square.split('');
-    //    let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
-    //   return board[pieceIndex];
-    //}
-
-    //function placePiece(piece, square) {
-    //    let cr = square.split('');
-    //    let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
-    //    board[pieceIndex] = piece;
-    //}
-
-    //function removePiece(square) {
-    //    let cr = square.split('');
-    //    let pieceIndex = COLUMNS[cr[0]] + ROWS[cr[1]]*8;
-    //    board[pieceIndex] = '';
         return board[square];
     }
 
@@ -351,9 +331,6 @@ const Chess = function(FEN) {
         // so if it doesn't have a bishop it must be two knights
         if (w_pieces.length === 3 && !w_pieces.includes('B')) white = 4;
         if (b_pieces.length === 3 && !b_pieces.includes('b')) black = 4;
-
-        console.log('white = ' + white);
-        console.log('black = ' + black);
 
         // so return true if
         // white == 1 && black > 0 or vice versa
@@ -477,8 +454,8 @@ const Chess = function(FEN) {
             }
         },
         load: function() {
-            c = 65;
-            r = 8;
+            let c = 65;
+            let r = 8;
             for (let p in board) {
                 let square = String.fromCharCode(c)+String(r);
                 try {
@@ -494,4 +471,4 @@ const Chess = function(FEN) {
     }
 }
 
-let game = Chess(INITIAL_FEN);
+// let game = Chess(INITIAL_FEN);

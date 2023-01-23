@@ -67,15 +67,9 @@ const Game = (props) => {
       </div>
       <section className="main">
         <div className={"board bBlue"}>
-          {game.getPieces().map((value, key) => {
-            return <div key={key} className={"square "+value.piece+" "+value.pos}></div>
+          {Object.entries(game.getPieces()).map(([key, value]) => {
+            return <div key={key} className={"square "+key+" "+value}></div>
           })}
-            {/* {piecesBlack.map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
-            })}
-            {piecesWhite.map((value, key) => {
-              return <div key={key} className={"square "+value.piece+" "+value.pos+(value.selected?'selected':'')}></div>
-            })} */}
         </div>
 
         <div className="terminal">

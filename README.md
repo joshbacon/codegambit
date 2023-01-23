@@ -1,3 +1,4 @@
+<a name="readme-top" />
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -31,15 +32,16 @@
 
 
 
-### Built With (Javascript)
+### Built With
 
-This project makes use of Javascript in a big way, with a frontend written in React and a backend running on Node. This web app is deployed locally so NGINX was used to assist with the setup.
+This project is built with a number of tools. The frontend is built with React JS making use of the Material UI library. For the backend, a Go API communicates with a MySQL database. Next.js and Node.js are used on the server side along with nginx to increase performance.
 
 * [![React][React.js]][React-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
+* [![mui][mui.com]][mui-url]
 * [![Next][Next.js]][Next-url]
 * [![Node][Node.js]][Node-url]
-* [![Express][Express.js]][Express-url]
+* [![MySQL][MySQL]][MySQL-url]
+* [![go][go]][go-url]
 * [![nginx][nginx.com]][nginx-url]
 
 
@@ -49,10 +51,10 @@ This project makes use of Javascript in a big way, with a frontend written in Re
 
 - [x] Frontend Layout
 - [ ] Implement Chess engine
-- [ ] Setup backend
-- [ ] Create REST API
+- [x] Setup backend
+- [x] Create REST API
 - [ ] Add multiplayer
-- [ ] Deploy
+- [ ] !!Deploy
 
 See the [open issues](https://github.com/joshbacon/codegambit/issues) for a full list of proposed features (and known issues).
 
@@ -73,13 +75,15 @@ Distributed under the MIT License. See `LICENSE.txt` for more information. -->
 [product-screenshot]: ./public/example.png
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
+[mui.com]: https://img.shields.io/badge/mui-007FFF?style=for-the-badge&logo=mui&logoColor=white
+[mui-url]: https://mui.com/
 [Node.js]: https://img.shields.io/badge/Node.js-000000?style=for-the-badge&logo=Node.js
 [Node-url]: https://nodejs.org/en/
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
-[Express.js]: https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express
-[Express-url]: https://expressjs.com/
+[MySQL]: https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white
+[MySQL-url]: https://www.mysql.com/
+[go]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=Go&logoColor=white
+[go-url]: https://golang.google.cn/
 [nginx.com]: https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=NGINX
 [nginx-url]: https://nginx.org/en/
