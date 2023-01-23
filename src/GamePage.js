@@ -18,9 +18,7 @@ const Game = (props) => {
   const [currCommand, setCurrCommand] = useState("");
   const [commandHistory, updateCommandHistory] = useState([
     'Welcome to code_gambit! We teach coding through playing chess.',
-    'type help(method) to see how to use a given method or check out the documentation for a list of commands.',
-    'Currently working on: making the main page dynamic, want a breakpoint to put the terminal under the board at some point.',
-    'make the look thing in the docs a hamburger menu at a breakpoint (might have to fudge the cards too)',
+    'type help(method) to see how to use a given method or check out the documentation at the top left for a list of commands.',
   ]);
 
   const updateCommand = (e) => {
@@ -58,7 +56,7 @@ const Game = (props) => {
 
   return (
     <div className="game">
-      <header className="gameHeader">
+      <div className="gameHeader">
         <h1>{'>'}code_gambit</h1>
         <Link to='/' className='back-btn header-btn'>
           <div className='backImg header-btn'/>
@@ -66,7 +64,7 @@ const Game = (props) => {
         <Link to='/documentation'  state={{backPath:'/play', FEN:game.generateFEN()}} className='docs-btn header-btn'>
           <div className='docsImg header-btn'/>
         </Link>
-      </header>
+      </div>
       <section className="main">
         <div className={"board bBlue"}>
           {game.getPieces().map((value, key) => {

@@ -10,17 +10,17 @@ const Account = (props) => {
     // return the account page if one exists
     // otherwise show a login signup page
 
-    const [settings, toggleSettings] = useState(false);
+    // const [settings, toggleSettings] = useState(false);
 
     return <div className='account'>
         <div className='waves'/>
-        { settings && <Settings/> }
+        {/* { settings && <Settings/> } */}
         <Link to='/' className='home button'>
             <div className='homeImg'/>
         </Link>
-        <button onClick={() => toggleSettings(!settings)} className='settings button'>
+        {/* <button onClick={() => toggleSettings(!settings)} className='settings button'>
             <div className='settingsImg' />
-        </button>
+        </button> */}
         <h1>THIS IS YOUR ACCOUNT</h1>
     </div>
 }
