@@ -38,8 +38,6 @@ This project is built with a number of tools. The frontend is built with React J
 
 * [![React][React.js]][React-url]
 * [![mui][mui.com]][mui-url]
-* [![Next][Next.js]][Next-url]
-* [![Node][Node.js]][Node-url]
 * [![MySQL][MySQL]][MySQL-url]
 * [![go][go]][go-url]
 * [![nginx][nginx.com]][nginx-url]
@@ -49,12 +47,9 @@ This project is built with a number of tools. The frontend is built with React J
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Frontend Layout
-- [ ] Implement Chess engine
-- [x] Setup backend
-- [x] Create REST API
+- [x] Finalize base-application
+- [ ] Migrate to Next.js for SSR
 - [ ] Add multiplayer
-- [ ] !!Deploy
 
 See the [open issues](https://github.com/joshbacon/codegambit/issues) for a full list of proposed features (and known issues).
 
