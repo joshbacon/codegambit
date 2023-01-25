@@ -64,7 +64,7 @@ const Chess = function(FEN) {
         console.log("FEN error #"+code+": " + error + " Starting with default board.");
         loadFEN(INITIAL_FEN);
     }
-    // console.log(board);
+    console.log(board);
     // console.log(INITIAL_FEN);
     // console.log(generateFEN());
 
@@ -208,6 +208,9 @@ const Chess = function(FEN) {
 
     /* Move Functions */
     function makeMove(from, to) {
+        if (!/^[A-H][1-8]$/.test(from) || !/^[A-H][1-8]$/.test(to)) {
+            return false;
+        }
         if (isValidMove(from, to)) {
             let move = generateMoveNotation(from, to);
             moveHistory.push(move);
@@ -215,7 +218,7 @@ const Chess = function(FEN) {
             movePiece(from, to);
             // update castling rights if necessary
             // update enpassant if necessary
-            halfmove += 1
+            halfmove += 1;
             let piece = getPiece(to);
             if (piece.toUpperCase() === piece){
                 fullmove += 1;
@@ -251,7 +254,7 @@ const Chess = function(FEN) {
     }
 
     function getPiece(square) {
-        return board[square];
+        return board[square] ? board[square] : '';
     }
 
     function placePiece(piece, square) {
@@ -267,17 +270,191 @@ const Chess = function(FEN) {
     }
 
     /* State Checking Functions */
-    function isValidMove() {
+    function isValidMove(from, to) {
         /*
-            - square notations are formatted properly (we grab the piece so it has to be)
-            - given piece color needs to be that of the current players turn
-            - can't put or leave player in mate (i.e. can't be in mate after the fact)
-            - must be to a valid square gven the piece and its current position
+            FALSE when:
+            [x] nothing at selected square
+            [x] is an invalid movement for that piece
+            [ ] leaves or puts you in check/mate
+            [x] you want to place one of your own pieces ontop of another
         */
+        // Return false if there is no piece to move
+        if (getPiece(from) === '') return false;
+
+        // check if it is a valid movement for the selected piece
+        // if (!pieceMoves(from).includes(to)) return false;
+        
+        // Can't ignore check and can't put yourself in check
+        if (wouldBeCheck(from, to)) return false;
+
+        // Don't move a piece ontop of another of your pieces
+        if (getPiece(to)) {
+            if (turn === WHITE && getPiece(to) === getPiece(to).toUpperCase()) return false;
+            if (turn === BLACK && getPiece(to) === getPiece(to).toLowerCase()) return false;    
+        }
+
+        // Otherwise, return true
         return true;
     }
 
+    function validMoves(square) {
+        let moves = [];
+        let possibles = pieceMoves(square);
+        for (m in possibles) {
+            if (isValidMove(m)) moves.push(m);
+        }
+        return moves;
+    }
+
+    function pieceMoves(square) {
+        let moves = [];
+        switch (getPiece(square)) {
+            // pawns can only move up one (need to change for first move (check the row))
+            case 'p':
+                if (square in DOWN) moves.push(DOWN[square]);
+                break;
+            case 'P':
+                if (square in UP) moves.push(UP[square]);
+                break;
+            case 'r':
+            case 'R':
+                moves = getStraightMoves(square);
+                break;
+            case 'b':
+            case 'B':
+                moves = getDiagonalMoves(square);
+                break;
+            case 'n':
+            case 'N':
+                moves = callBobSeger(square);
+                break;
+            case 'q':
+            case 'Q':
+                moves = getDiagonalMoves(square).concat(getStraightMoves(square));
+                break;
+            case 'k':
+            case 'K':
+                if (square in UP) moves.push(UP[square]);
+                if (square in DOWN) moves.push(DOWN[square]);
+                if (square in LEFT) moves.push(LEFT[square]);
+                if (square in RIGHT) moves.push(RIGHT[square]);
+                if (square in UPLEFT) moves.push(UPLEFT[square]);
+                if (square in UPRIGHT) moves.push(UPRIGHT[square]);
+                if (square in DOWNLEFT) moves.push(DOWNLEFT[square]);
+                if (square in DOWNRIGHT) moves.push(DOWNRIGHT[square]);
+                break;
+        }
+        return moves;
+    }
+
+    function getDiagonalMoves(from) {
+        let moves = [];
+        let next = from;
+        // add moves up and left
+        if (from in UPLEFT) {
+            do {
+                next = UPLEFT[next];
+                moves.push(next);
+            } while (next in UPLEFT);
+        }
+        // add moves up and right
+        if (from in UPRIGHT) {
+            next = from;
+            do {
+                next = UPRIGHT[next];
+                moves.push(next);
+            } while (next in UPRIGHT);
+        }
+        // add moves down and left
+        if (from in DOWNLEFT) {
+            next = from;
+            do {
+                next = DOWNLEFT[next];
+                moves.push(next);
+            } while (next in DOWNLEFT);
+        }
+        // add moves down and right
+        if (from in DOWNRIGHT) {
+            next = from;
+            do {
+                next = DOWNRIGHT[next];
+                moves.push(next);
+            } while (next in DOWNRIGHT);
+        }
+        return moves;
+    }
+
+    function getStraightMoves(from) {
+        let moves = [];
+        let next = from;
+        // add moves above
+        if (from in UP) {
+            do {
+                next = UP[next];
+                moves.push(next);
+            } while (next in UP);
+        }
+        // add moves below
+        if (from in DOWN) {
+            next = from;
+            do {
+                next = DOWN[next];
+                moves.push(next);
+            } while (next in DOWN);
+        }
+        // add moves to left
+        if (from in LEFT) {
+            next = from;
+            do {
+                next = LEFT[next];
+                moves.push(next);
+            } while (next in LEFT);
+        }
+        // add moves to right
+        if (from in RIGHT) {
+            next = from;
+            do {
+                next = RIGHT[next];
+                moves.push(next);
+            } while (next in RIGHT);
+        }
+        return moves;
+    }
+
+    // getKnightMoves
+    function callBobSeger(from) {
+        let moves = [];
+        let temp;
+        if (from in UPLEFT) {
+            temp = UPLEFT[from];
+            if (UP[UPLEFT[from]]) moves.push(UP[UPLEFT[from]]);
+            if (LEFT[UPLEFT[from]]) moves.push(LEFT[UPLEFT[from]]);
+        }
+        if (from in UPRIGHT) {
+            temp = UPRIGHT[from];
+            if (UP[temp]) moves.push(UP[temp]);
+            if (RIGHT[temp]) moves.push(RIGHT[temp]);
+        }
+        if (from in DOWNLEFT) {
+            temp = DOWNLEFT[from];
+            if (DOWN[temp]) moves.push(DOWN[temp]);
+            if (LEFT[temp]) moves.push(LEFT[temp]);
+        }
+        if (from in DOWNRIGHT) {
+            temp = DOWNRIGHT[from];
+            if (DOWN[temp]) moves.push(DOWN[temp]);
+            if (RIGHT[temp]) moves.push(RIGHT[temp]);
+        }
+        return moves;
+    }
+
+    // current check
     function inCheck() {
+        return false;
+    }
+
+    // check one move ahead
+    function wouldBeCheck(from, to) {
         return false;
     }
 
@@ -286,7 +463,20 @@ const Chess = function(FEN) {
     }
 
     function inStalemate() {
-        return false;
+        if (turn === WHITE) {
+            let pieces = getPieces(WHITE);
+            // must have only king left
+            if (len(pieces) > 1) return false;
+            // and he can't have any valid moves
+            if (len(validMoves(Object.keys(pieces)[0])) > 0) return false;
+        }
+        // Must be blacks turn if not whites
+        let pieces = getPieces(BLACK);
+        // must have only king left
+        if (len(pieces) > 1) return false;
+        // and he can't have any valid moves
+        if (len(validMoves(Object.keys(pieces)[0])) > 0) return false;
+        return true;
     }
 
     function inDraw() {
@@ -459,8 +649,8 @@ const Chess = function(FEN) {
             }
         },
         load: function() {
-            c = 65;
-            r = 8;
+            let c = 65;
+            let r = 8;
             for (let p in board) {
                 let square = String.fromCharCode(c)+String(r);
                 try {
@@ -477,3 +667,16 @@ const Chess = function(FEN) {
 }
 
 let game = Chess(INITIAL_FEN);
+console.log(game.makeMove('A2', 'A4'));
+console.log(game.makeMove('A2', 'A3'));
+console.log(game.makeMove('A7', 'A5'));
+console.log(game.makeMove('A7', 'A6'));
+
+console.log(game.makeMove('C8', 'A6'));
+console.log(game.makeMove('H1', 'H4'));
+console.log(game.makeMove('H4', 'D4'));
+console.log(game.makeMove('A1', 'D4'));
+console.log(game.makeMove('D1', 'H5'));
+
+console.log(game.makeMove('B1', 'B3'));
+console.log(game.makeMove('B1', 'C3'));

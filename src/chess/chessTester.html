@@ -16,6 +16,7 @@
         grid-template-columns: repeat(8, 1fr);
     }
     .square {
+        z-index: 10;
         width: 90px;
         aspect-ratio: 1;
         display: grid;
@@ -41,23 +42,30 @@
     .Q { background-image: url('./myPieces/wq.png') }
     .K { background-image: url('./myPieces/wk.png') }
     .P { background-image: url('./myPieces/wp.png') }
+
+    .letters {
+        color: white;
+        font-size: 2rem;
+        width: 720px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        position: absolute;
+        bottom: 50px;
+    }
+    .numbers {
+        color: white;
+        font-size: 2rem;
+        height: 720px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        position: absolute;
+        right: 100px;
+    }
 </style>
 
 <body style="display:grid; place-items: center; height:100vh; padding:0; margin:0">
-    <!-- <ol style="color:white; font-size:1.35rem;">
-        <li>Implement move validation in chess.js</li>
-        <li>Implement custom functions in terminal.js</li>
-        <li>Implement display from board through terminal</li>
-        <li>Refactor css so the board, terminal, and docs are responsive</li>
-        <li>Implement the bot in engine.js</li>
-        <li>Testing!!! woooo</li>
-    </ul>
-    <h3 style="padding:0; margin:20px 0 10px;">Once base functionality is working:</h3>
-    <ol style="color:white; font-size:1.25rem; padding:0; margin:0;">
-        <li>Make sure playing as black actually works (both as user and white for engine)</li>
-        <li>Make bot operate at certain depths (figure out a range)</li>
-    </ol> -->
-
     <div class="board">
         <div id="A8" class="square l r"></div>
         <div id="B8" class="square d n"></div>
@@ -123,6 +131,26 @@
         <div id="F1" class="square l B"></div>
         <div id="G1" class="square d N"></div>
         <div id="H1" class="square l R"></div>
+        <div class="letters">
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+        </div>
+        <div class="numbers">
+            <div>8</div>
+            <div>7</div>
+            <div>6</div>
+            <div>5</div>
+            <div>4</div>
+            <div>3</div>
+            <div>2</div>
+            <div>1</div>
+        </div>
     </div>
 </body>
 </html>
