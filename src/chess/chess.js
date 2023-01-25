@@ -213,14 +213,13 @@ const Chess = function(FEN) {
         }
         if (isValidMove(from, to)) {
             let move = generateMoveNotation(from, to);
-            moveHistory.push(move);
-            console.log(moveHistory);
+            let piece = getPiece(from);
             movePiece(from, to);
+            moveHistory.push(move);
             // update castling rights if necessary
             // update enpassant if necessary
             halfmove += 1;
-            let piece = getPiece(to);
-            if (piece.toUpperCase() === piece){
+            if (piece === piece.toLowerCase()){
                 fullmove += 1;
                 turn = WHITE;
             } else turn = BLACK;
@@ -269,23 +268,30 @@ const Chess = function(FEN) {
         delete board[square];
     }
 
+    function validMoves(square) {
+        let moves = [];
+        let possibles = pieceMoves(square);
+        for (let m in possibles) {
+            if (isValidMove(m)) moves.push(m);
+        }
+        return moves;
+    }
+
     /* State Checking Functions */
     function isValidMove(from, to) {
-        /*
-            FALSE when:
-            [x] nothing at selected square
-            [x] is an invalid movement for that piece
-            [ ] leaves or puts you in check/mate
-            [x] you want to place one of your own pieces ontop of another
-        */
         // Return false if there is no piece to move
         if (getPiece(from) === '') return false;
+        
+        // Return false if trying to move other players piece
+        if (turn === WHITE && getPiece(from) !== getPiece(from).toUpperCase()) return false;
+        if (turn === BLACK && getPiece(from) !== getPiece(from).toLowerCase()) return false;
 
         // check if it is a valid movement for the selected piece
-        // if (!pieceMoves(from).includes(to)) return false;
+        if (!pieceMoves(from).includes(to)) return false;
         
-        // Can't ignore check and can't put yourself in check
+        // Can't ignore check and can't put yourself in check (or mate)
         if (wouldBeCheck(from, to)) return false;
+        if (wouldBeMate(from, to)) return false;
 
         // Don't move a piece ontop of another of your pieces
         if (getPiece(to)) {
@@ -295,15 +301,6 @@ const Chess = function(FEN) {
 
         // Otherwise, return true
         return true;
-    }
-
-    function validMoves(square) {
-        let moves = [];
-        let possibles = pieceMoves(square);
-        for (m in possibles) {
-            if (isValidMove(m)) moves.push(m);
-        }
-        return moves;
     }
 
     function pieceMoves(square) {
@@ -353,6 +350,13 @@ const Chess = function(FEN) {
         // add moves up and left
         if (from in UPLEFT) {
             do {
+                if (getPiece(UPLEFT[next])) {
+                    if (turn === WHITE && getPiece(UPLEFT[next]) !== getPiece(UPLEFT[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(UPLEFT[next]) !== getPiece(UPLEFT[next]).toLowerCase() ){
+                        moves.push(UPLEFT[next]);
+                    }
+                    break;
+                }
                 next = UPLEFT[next];
                 moves.push(next);
             } while (next in UPLEFT);
@@ -361,6 +365,13 @@ const Chess = function(FEN) {
         if (from in UPRIGHT) {
             next = from;
             do {
+                if (getPiece(UPRIGHT[next])) {
+                    if (turn === WHITE && getPiece(UPRIGHT[next]) !== getPiece(UPRIGHT[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(UPRIGHT[next]) !== getPiece(UPRIGHT[next]).toLowerCase() ){
+                        moves.push(UPRIGHT[next]);
+                    }
+                    break;
+                }
                 next = UPRIGHT[next];
                 moves.push(next);
             } while (next in UPRIGHT);
@@ -369,6 +380,13 @@ const Chess = function(FEN) {
         if (from in DOWNLEFT) {
             next = from;
             do {
+                if (getPiece(DOWNLEFT[next])) {
+                    if (turn === WHITE && getPiece(DOWNLEFT[next]) !== getPiece(DOWNLEFT[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(DOWNLEFT[next]) !== getPiece(DOWNLEFT[next]).toLowerCase() ){
+                        moves.push(DOWNLEFT[next]);
+                    }
+                    break;
+                }
                 next = DOWNLEFT[next];
                 moves.push(next);
             } while (next in DOWNLEFT);
@@ -377,6 +395,13 @@ const Chess = function(FEN) {
         if (from in DOWNRIGHT) {
             next = from;
             do {
+                if (getPiece(DOWNRIGHT[next])) {
+                    if (turn === WHITE && getPiece(DOWNRIGHT[next]) !== getPiece(DOWNRIGHT[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(DOWNRIGHT[next]) !== getPiece(DOWNRIGHT[next]).toLowerCase() ){
+                        moves.push(DOWNRIGHT[next]);
+                    }
+                    break;
+                }
                 next = DOWNRIGHT[next];
                 moves.push(next);
             } while (next in DOWNRIGHT);
@@ -390,6 +415,13 @@ const Chess = function(FEN) {
         // add moves above
         if (from in UP) {
             do {
+                if (getPiece(UP[next])) {
+                    if (turn === WHITE && getPiece(UP[next]) !== getPiece(UP[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(UP[next]) !== getPiece(UP[next]).toLowerCase() ){
+                        moves.push(UP[next]);
+                    }
+                    break;
+                }
                 next = UP[next];
                 moves.push(next);
             } while (next in UP);
@@ -398,6 +430,13 @@ const Chess = function(FEN) {
         if (from in DOWN) {
             next = from;
             do {
+                if (getPiece(DOWN[next])) {
+                    if (turn === WHITE && getPiece(DOWN[next]) !== getPiece(DOWN[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(DOWN[next]) !== getPiece(DOWN[next]).toLowerCase() ){
+                        moves.push(DOWN[next]);
+                    }
+                    break;
+                }
                 next = DOWN[next];
                 moves.push(next);
             } while (next in DOWN);
@@ -406,6 +445,13 @@ const Chess = function(FEN) {
         if (from in LEFT) {
             next = from;
             do {
+                if (getPiece(LEFT[next])) {
+                    if (turn === WHITE && getPiece(LEFT[next]) !== getPiece(LEFT[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(LEFT[next]) !== getPiece(LEFT[next]).toLowerCase() ){
+                        moves.push(LEFT[next]);
+                    }
+                    break;
+                }
                 next = LEFT[next];
                 moves.push(next);
             } while (next in LEFT);
@@ -414,6 +460,13 @@ const Chess = function(FEN) {
         if (from in RIGHT) {
             next = from;
             do {
+                if (getPiece(RIGHT[next])) {
+                    if (turn === WHITE && getPiece(RIGHT[next]) !== getPiece(RIGHT[next]).toUpperCase() ||
+                        turn === BLACK && getPiece(RIGHT[next]) !== getPiece(RIGHT[next]).toLowerCase() ){
+                        moves.push(RIGHT[next]);
+                    }
+                    break;
+                }
                 next = RIGHT[next];
                 moves.push(next);
             } while (next in RIGHT);
@@ -667,16 +720,18 @@ const Chess = function(FEN) {
 }
 
 let game = Chess(INITIAL_FEN);
-console.log(game.makeMove('A2', 'A4'));
-console.log(game.makeMove('A2', 'A3'));
-console.log(game.makeMove('A7', 'A5'));
-console.log(game.makeMove('A7', 'A6'));
+// console.log(game.makeMove('A2', 'A4'));
+// console.log(game.makeMove('A2', 'A3'));
+// console.log(game.makeMove('A7', 'A5'));
+// console.log(game.makeMove('A7', 'A6'));
 
-console.log(game.makeMove('C8', 'A6'));
-console.log(game.makeMove('H1', 'H4'));
-console.log(game.makeMove('H4', 'D4'));
-console.log(game.makeMove('A1', 'D4'));
-console.log(game.makeMove('D1', 'H5'));
+// console.log(game.makeMove('C8', 'A6'));
+// console.log(game.makeMove('H1', 'H4'));
+// console.log(game.makeMove('H4', 'D4'));
+// console.log(game.makeMove('A1', 'D4'));
+// console.log(game.makeMove('D1', 'H5'));
 
-console.log(game.makeMove('B1', 'B3'));
-console.log(game.makeMove('B1', 'C3'));
+// console.log(game.makeMove('B1', 'B3'));
+// console.log(game.makeMove('B1', 'D2'));
+
+// console.log(game.makeMove('E1', 'E2'));
