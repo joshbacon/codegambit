@@ -57,16 +57,25 @@ const Chess = function(FEN) {
         halfmove,
         fullmove;
     
-    let {valid, code, error} = validateFEN(FEN);
-    if (valid) {
-        loadFEN(FEN);
-    } else {
-        console.log("FEN error #"+code+": " + error + " Starting with default board.");
+    if (!FEN) {
         loadFEN(INITIAL_FEN);
+    } else {
+        let {valid, code, error} = validateFEN(FEN);
+        console.log(valid);
+        if (valid) {
+            loadFEN(FEN);
+        } else {
+            console.log("FEN error #"+code+": " + error + " Starting with default board.");
+            loadFEN(INITIAL_FEN);
+        }
     }
     console.log(board);
     // console.log(INITIAL_FEN);
     // console.log(generateFEN());
+
+    for (let p in board) {
+        document.getElementById(p).classList.add(getPiece(p));
+    }
 
 
     /* FEN Functions */
@@ -79,8 +88,8 @@ const Chess = function(FEN) {
             turn = tokens[1];
             castling = tokens[2];
             enpassant = tokens[3];
-            halfmove = tokens[4];
-            fullmove = tokens[5];
+            halfmove = Number(tokens[4]);
+            fullmove = Number(tokens[5]);
 
             let pieces = tokens[0].split('/');
             for (let r = 0; r < pieces.length; r++) {
@@ -113,7 +122,6 @@ const Chess = function(FEN) {
             for (let k in sortedKeys)
                 if (sortedKeys[k].includes(i.toString()))
                     row.push(sortedKeys[k]);
-            if (row.length > 0) console.log(`i == ${i} [${row}]`);
 
             let spaces = 0;
             if (row.length === 0) FEN += '8'
@@ -216,13 +224,35 @@ const Chess = function(FEN) {
             let piece = getPiece(from);
             movePiece(from, to);
             moveHistory.push(move);
-            // update castling rights if necessary
             // update enpassant if necessary
-            halfmove += 1;
-            if (piece === piece.toLowerCase()){
+            // reset halfmove counter if a pawn is pushed or a piece is captured
+            if (piece === PIECES.PAWN_W || piece === PIECES.PAWN_B || move.includes('x')) {
+                halfmove = 0;
+            } else halfmove += 1;
+            if (turn === BLACK){
                 fullmove += 1;
                 turn = WHITE;
-            } else turn = BLACK;
+            } else {
+                turn = BLACK;
+            }
+            // update castling rights if necessary
+            if (castling) {
+                if (piece === PIECES.KING_W) {
+                    castling = castling.replace('K', '');
+                    castling = castling.replace('Q', '');
+                }
+                else if (piece === PIECES.KING_B) {
+                    castling = castling.replace('k', '');
+                    castling = castling.replace('q', '');
+                } else if (piece === PIECES.ROOK_W) {
+                    if (from === 'A1') castling = castling.replace('Q', '');
+                    if (from === 'H1') castling = castling.replace('K', '');
+                } else if (piece === PIECES.ROOK_B) {
+                    if (from === 'A8') castling = castling.replace('q', '');
+                    if (from === 'H8') castling = castling.replace('k', '');
+                }
+                if (!castling) castling = '-';
+            }
             return move;
         } else return false;
     }
@@ -306,31 +336,40 @@ const Chess = function(FEN) {
     function pieceMoves(square) {
         let moves = [];
         switch (getPiece(square)) {
-            // pawns can only move up one (need to change for first move (check the row))
-            case 'p':
-                if (square in DOWN) moves.push(DOWN[square]);
+            case PIECES.PAWN_B:
+                if (square in DOWN) {
+                    moves.push(DOWN[square]);
+                    if (square.charAt(1) === '7' && moves[0] in DOWN) {
+                        moves.push(DOWN[moves[0]]);
+                    }
+                }
                 break;
-            case 'P':
-                if (square in UP) moves.push(UP[square]);
+            case PIECES.PAWN_W:
+                if (square in UP) {
+                    moves.push(UP[square]);
+                    if (square.charAt(1) === '2' && moves[0] in UP) {
+                        moves.push(UP[moves[0]]);
+                    }
+                }
                 break;
-            case 'r':
-            case 'R':
+            case PIECES.ROOK_B:
+            case PIECES.ROOK_W:
                 moves = getStraightMoves(square);
                 break;
-            case 'b':
-            case 'B':
+            case PIECES.BISHOP_B:
+            case PIECES.BISHOP_W:
                 moves = getDiagonalMoves(square);
                 break;
-            case 'n':
-            case 'N':
+            case PIECES.KNIGHT_B:
+            case PIECES.KNIGHT_W:
                 moves = callBobSeger(square);
                 break;
-            case 'q':
-            case 'Q':
+            case PIECES.QUEEN_B:
+            case PIECES.QUEEN_W:
                 moves = getDiagonalMoves(square).concat(getStraightMoves(square));
                 break;
-            case 'k':
-            case 'K':
+            case PIECES.KING_B:
+            case PIECES.KING_W:
                 if (square in UP) moves.push(UP[square]);
                 if (square in DOWN) moves.push(DOWN[square]);
                 if (square in LEFT) moves.push(LEFT[square]);
@@ -503,6 +542,8 @@ const Chess = function(FEN) {
 
     // current check
     function inCheck() {
+        let pieces = getPieces(turn);
+        let taget = turn === WHITE ? PIECES.KING_W : PIECES.KING_B;
         return false;
     }
 
@@ -511,20 +552,25 @@ const Chess = function(FEN) {
         return false;
     }
 
+    // current mate
     function inMate() {
         return false;
     }
 
+    // mate one move ahead
+    function wouldBeMate(from, to) {
+        return false;
+    }
+
     function inStalemate() {
+        let pieces = getPieces(turn);
         if (turn === WHITE) {
-            let pieces = getPieces(WHITE);
             // must have only king left
             if (len(pieces) > 1) return false;
             // and he can't have any valid moves
             if (len(validMoves(Object.keys(pieces)[0])) > 0) return false;
         }
         // Must be blacks turn if not whites
-        let pieces = getPieces(BLACK);
         // must have only king left
         if (len(pieces) > 1) return false;
         // and he can't have any valid moves
@@ -533,6 +579,17 @@ const Chess = function(FEN) {
     }
 
     function inDraw() {
+        if (deadPosition() ||
+            insufficientMaterial() ||
+            moveRepetition() ||
+            halfmove >= 100
+        ) return true;
+        return false;
+    }
+
+    function deadPosition() {
+        // true if no progress can be made
+        // ex. '8/1k6/3p4/p1pPp2p/P1P1P1pP/6P1/5K2/8 w KQkq - 0 1'
         return false;
     }
 
@@ -553,12 +610,12 @@ const Chess = function(FEN) {
         // both sides must have 3 or less pieces for this to be true
         if (w_pieces.length > 3 || b_pieces.length > 3) return false;
         // never true if a queen or rook is on the board
-        if (w_pieces.includes('Q') ||
-            w_pieces.includes('R') ||
-            w_pieces.includes('P') ) return false;
-        if (b_pieces.includes('q') ||
-            b_pieces.includes('r') ||
-            b_pieces.includes('p') ) return false;
+        if (w_pieces.includes(PIECES.QUEEN_W) ||
+            w_pieces.includes(PIECES.ROOK_W) ||
+            w_pieces.includes(PIECES.PAWN_W) ) return false;
+        if (b_pieces.includes(PIECES.QUEEN_B) ||
+            b_pieces.includes(PIECES.ROOK_B) ||
+            b_pieces.includes(PIECES.PAWN_B) ) return false;
 
         // classify white and black as 1, 2, 3, or 4
         // check for 1 (must have a king so if length is 1, it's a king)
@@ -566,18 +623,18 @@ const Chess = function(FEN) {
         if (b_pieces.length === 1) black = 1;
         // check for 2 & 3
         if (w_pieces.length === 2) {
-            if (w_pieces.includes('B')) white = 2;
-            if (w_pieces.includes('N')) white = 3;
+            if (w_pieces.includes(PIECES.BISHOP_W)) white = 2;
+            if (w_pieces.includes(PIECES.KNIGHT_W)) white = 3;
         }
         if (b_pieces.length === 2) {
-            if (b_pieces.includes('b')) black = 2;
-            if (b_pieces.includes('n')) black = 3;
+            if (b_pieces.includes(PIECES.BISHOP_B)) black = 2;
+            if (b_pieces.includes(PIECES.KNIGHT_B)) black = 3;
         }
         // check for 4 (we already know length must be 3)
         // want two knights and already kicked out if it has a queen or rook,
         // so if it doesn't have a bishop it must be two knights
-        if (w_pieces.length === 3 && !w_pieces.includes('B')) white = 4;
-        if (b_pieces.length === 3 && !b_pieces.includes('b')) black = 4;
+        if (w_pieces.length === 3 && !w_pieces.includes(PIECES.BISHOP_W)) white = 4;
+        if (b_pieces.length === 3 && !b_pieces.includes(PIECES.BISHOP_B)) black = 4;
 
         console.log('white = ' + white);
         console.log('black = ' + black);
@@ -595,6 +652,13 @@ const Chess = function(FEN) {
     }
 
     function moveRepetition() {
+        // true when the same position is reached at least 3 times
+        // (i.e. generating FEN at each point would return the eact same thing)
+
+        // need at least 8 moves to repeat same position 3 times
+        if (len(moveHistory) > 7) {
+            return true;
+        }
         return false;
     }
 
@@ -686,52 +750,28 @@ const Chess = function(FEN) {
         enpassant: function() { return enpassant; },
         halfmove: function() { return halfmove; },
         fullmove: function() { return fullmove; },
-
-        clear: function() {
-            let c = 65;
-            let r = 8;
-            for (let p in board) {
-                let square = String.fromCharCode(c)+String(r);
-                try { document.getElementById(square).classList.remove(getPiece(square)); }
-                catch (error) {}
-                c += 1;
-                if (c === 73) {
-                    c = 65;
-                    r -= 1;
-                }
-            }
-        },
-        load: function() {
-            let c = 65;
-            let r = 8;
-            for (let p in board) {
-                let square = String.fromCharCode(c)+String(r);
-                try {
-                    document.getElementById(square).classList.add(getPiece(square));                    
-                } catch (error) {}
-                c += 1;
-                if (c === 73) {
-                    c = 65;
-                    r -= 1;
-                }
-            }
-        }
     }
 }
 
-let game = Chess(INITIAL_FEN);
-// console.log(game.makeMove('A2', 'A4'));
-// console.log(game.makeMove('A2', 'A3'));
-// console.log(game.makeMove('A7', 'A5'));
-// console.log(game.makeMove('A7', 'A6'));
+let game = Chess();
 
-// console.log(game.makeMove('C8', 'A6'));
-// console.log(game.makeMove('H1', 'H4'));
-// console.log(game.makeMove('H4', 'D4'));
-// console.log(game.makeMove('A1', 'D4'));
+console.log(game.makeMove('A2', 'A4'));
+console.log(game.makeMove('A7', 'A5'));
+console.log(game.makeMove('H2', 'H3'));
+console.log(game.makeMove('H7', 'H6'));
+console.log(game.makeMove('A1', 'A3'));
+console.log(game.makeMove('A8', 'A6'));
+console.log(game.makeMove('H1', 'H2'));
+console.log(game.makeMove('H8', 'H7'));
+console.log(game.generateFEN());
+
+
+// wayward queen attack
+// console.log(game.makeMove('E2', 'E4'));
+// console.log(game.makeMove('E7', 'E5'));
 // console.log(game.makeMove('D1', 'H5'));
-
-// console.log(game.makeMove('B1', 'B3'));
-// console.log(game.makeMove('B1', 'D2'));
-
-// console.log(game.makeMove('E1', 'E2'));
+// console.log(game.makeMove('B8', 'C6'));
+// console.log(game.makeMove('F1', 'C4'));
+// console.log(game.makeMove('D7', 'D6'));
+// console.log(game.makeMove('H5', 'F7'));
+// console.log(game.generateFEN());

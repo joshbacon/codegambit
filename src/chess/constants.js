@@ -26,7 +26,7 @@ export const PIECES = {
 // FEN Explanation:
 // first field  : pieces (left to right, top to bottom, from whites perspective)
 // second field : whos turn it is
-// third field  : castling right (K means white can castle king side, Q means white can queen side and same for black with lowercase)
+// third field  : castling right (K means white can castle king side, Q means white can queen side and same for black with lowercase) '-' if no one can
 // fourth field : enpassant eligiblility (if e pawn moves two spaces of jump it would be e3, so where taking piece would land)
 // fifth field  : 'halfmove clock' enforces 50 move rule, counts moves without capture or pawn push (draw if == 100)
 // sixth field  : 'fullmove number', number of moves played this game (increments each time black makes a move)
