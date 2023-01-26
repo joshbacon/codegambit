@@ -215,12 +215,12 @@ const Chess = function(FEN) {
     }
 
     /* Move Functions */
-    function makeMove(from, to) {
+    function makeMove(from, to, promoted) {
         if (!/^[A-H][1-8]$/.test(from) || !/^[A-H][1-8]$/.test(to)) {
             return false;
         }
         if (isValidMove(from, to)) {
-            let move = generateMoveNotation(from, to);
+            let move = generateMoveNotation(from, to, promoted);
             let piece = getPiece(from);
             movePiece(from, to);
             moveHistory.push(move);
@@ -257,23 +257,37 @@ const Chess = function(FEN) {
         } else return false;
     }
 
-    function generateMoveNotation(from, to) {
+    function generateMoveNotation(from, to, promoted) {
         // need to update this to account for castling
         let move = '';
         let piece = getPiece(from);
         if (piece !== PIECES.PAWN_W && piece !== PIECES.PAWN_B)
             move += piece.toUpperCase();
-        if (false)
+        let duplicates = Object.keys(getPieces(turn))
+                        .filter(key => getPiece(key) === piece && isValidMove(key, to));
+        if (duplicates.length > 1)
             // if more than one (of the same piece) can legally make this move, insert the column it is moving from here
-            move += from.charAt(0);
-        if (getPiece(to) !== '')
-            move += 'x'
+            move += from.charAt(0).toLowerCase();
+        if (getPiece(to) !== ''){
+            if ((piece === PIECES.PAWN_W || piece === PIECES.PAWN_B) && len(move) < 2)
+                move += from.charAt(0).toLowerCase();
+            move += 'x';
+        }
         move += to.toLowerCase();
         if (inMate())
-            move += '#'
+            move += '#';
         else if (inCheck())
-            move += '+'
+            move += '+';
         // if its a pawn that is promoting put '=PIECE' like '=Q' for a queen at the very end (always uppercase)
+        if (piece === PIECES.PAWN_W) {
+            if (to.includes('8')) {
+                move += '='+promoted.toUpperCase();
+            }
+        } else if (piece === PIECES.PAWN_B) {
+            if (to.includes('1')) {
+                move += '='+promoted.toUpperCase();
+            }
+        }
         return move;
     }
 
@@ -301,9 +315,8 @@ const Chess = function(FEN) {
     function validMoves(square) {
         let moves = [];
         let possibles = pieceMoves(square);
-        for (let m in possibles) {
+        for (let m in possibles)
             if (isValidMove(m)) moves.push(m);
-        }
         return moves;
     }
 
@@ -343,6 +356,12 @@ const Chess = function(FEN) {
                         moves.push(DOWN[moves[0]]);
                     }
                 }
+                if (square in DOWNLEFT && getPiece(DOWNLEFT[square])) {
+                    moves.push(DOWNLEFT[square]);
+                }
+                if (square in DOWNRIGHT && getPiece(DOWNRIGHT[square])) {
+                    moves.push(DOWNRIGHT[square]);
+                }
                 break;
             case PIECES.PAWN_W:
                 if (square in UP) {
@@ -350,6 +369,12 @@ const Chess = function(FEN) {
                     if (square.charAt(1) === '2' && moves[0] in UP) {
                         moves.push(UP[moves[0]]);
                     }
+                }
+                if (square in UPLEFT && getPiece(UPLEFT[square])) {
+                    moves.push(UPLEFT[square]);
+                }
+                if (square in UPRIGHT && getPiece(UPRIGHT[square])) {
+                    moves.push(UPRIGHT[square]);
                 }
                 break;
             case PIECES.ROOK_B:
@@ -549,6 +574,9 @@ const Chess = function(FEN) {
 
     // check one move ahead
     function wouldBeCheck(from, to) {
+        let tempBoard = {...board};
+        tempBoard[to] = getPiece(from);
+        delete tempBoard[from];
         return false;
     }
 
@@ -559,6 +587,9 @@ const Chess = function(FEN) {
 
     // mate one move ahead
     function wouldBeMate(from, to) {
+        let tempBoard = {...board};
+        tempBoard[to] = getPiece(from);
+        delete tempBoard[from];
         return false;
     }
 
@@ -694,8 +725,8 @@ const Chess = function(FEN) {
             validateFEN(FEN);
         },
 
-        makeMove: function(from, to) {
-            return makeMove(from, to);
+        makeMove: function(from, to, promoted) {
+            return makeMove(from, to, promoted);
         },
 
         movePiece: function(from, to) {
@@ -755,23 +786,23 @@ const Chess = function(FEN) {
 
 let game = Chess();
 
-console.log(game.makeMove('A2', 'A4'));
-console.log(game.makeMove('A7', 'A5'));
-console.log(game.makeMove('H2', 'H3'));
-console.log(game.makeMove('H7', 'H6'));
-console.log(game.makeMove('A1', 'A3'));
-console.log(game.makeMove('A8', 'A6'));
-console.log(game.makeMove('H1', 'H2'));
-console.log(game.makeMove('H8', 'H7'));
-console.log(game.generateFEN());
+console.log(game.makeMove('D2', 'D4', ''));
+console.log(game.makeMove('E7', 'E5', ''));
+console.log(game.makeMove('G1', 'F3', ''));
+console.log(game.makeMove('A7', 'A6', ''));
+console.log(game.makeMove('B1', 'D2', ''));
+console.log(game.makeMove('H7', 'H6', ''));
+console.log(game.makeMove('D2', 'C4', ''));
+console.log(game.makeMove('B7', 'B6', ''));
+console.log(game.makeMove('C4', 'E5', ''));
 
 
 // wayward queen attack
-// console.log(game.makeMove('E2', 'E4'));
-// console.log(game.makeMove('E7', 'E5'));
-// console.log(game.makeMove('D1', 'H5'));
-// console.log(game.makeMove('B8', 'C6'));
-// console.log(game.makeMove('F1', 'C4'));
-// console.log(game.makeMove('D7', 'D6'));
-// console.log(game.makeMove('H5', 'F7'));
+// console.log(game.makeMove('E2', 'E4', ''));
+// console.log(game.makeMove('E7', 'E5', ''));
+// console.log(game.makeMove('D1', 'H5', ''));
+// console.log(game.makeMove('B8', 'C6', ''));
+// console.log(game.makeMove('F1', 'C4', ''));
+// console.log(game.makeMove('D7', 'D6', ''));
+// console.log(game.makeMove('H5', 'F7', ''));
 // console.log(game.generateFEN());
