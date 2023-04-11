@@ -4,6 +4,8 @@ import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import Settings from '../components/Settings';
 
+import back from '../assets/icons/back.svg';
+
 const Account = (props) => {
 
     // do something to grab the current account from the localStorage
@@ -13,7 +15,7 @@ const Account = (props) => {
     return <div className='account'>
         <div className='waves'/>
         <Link to='/' className='home button'>
-            <div className='homeImg'/>
+            <img src={back} alt='Back button' className='homeImg'/>
         </Link>
         <div className='userCard'>
             <h2>Josh Bacon</h2>

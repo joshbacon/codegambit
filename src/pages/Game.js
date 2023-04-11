@@ -2,9 +2,12 @@ import '../styles/Game.css';
 import '../styles/Board.css';
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Docs from '../pages/Docs.js';
 import { Terminal } from '../components/Terminal';
+
+import docs from '../assets/icons/docs.svg';
+import back from '../assets/icons/back.svg';
 
 // import { Chess } from '../chess/chess';
 // import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine';
@@ -21,8 +24,8 @@ const Game = (props) => {
   // const jsChessEngine = require('js-chess-engine');
   // const game = new jsChessEngine.Game();
 
-  let tmnl = Terminal();
-
+  // let tmnl = Terminal();
+  const [tmnl, updateTmnl] = useState(Terminal());
 
   const [currCommand, setCurrCommand] = useState("");
   const [commandHistory, updateCommandHistory] = useState([
@@ -64,15 +67,15 @@ const Game = (props) => {
       <div className="gameHeader">
         <h1>{'>'}code_gambit</h1>
         <Link to='/' className='back-btn header-btn'>
-          <div className='backImg header-btn'/>
+          <img src={back} alt='Back button'/>
         </Link>
-        <Link to='/documentation' state={{backPath:'/play', FEN:game.exportFEN()}} className='docs-btn header-btn'>
-          <div className='docsImg header-btn'/>
+        <Link to='/documentation' state={{backPath:'/play', FEN:tmnl.exportFEN()}} className='docs-btn header-btn'>
+          <img src={docs} alt='Documentation button'/>
         </Link>
       </div>
       <section className="main">
         <div className={"board bBlue"}>
-          {Object.entries(game.getPieces()).map(([key, value]) => {
+          {Object.entries(tmnl.getPieces()).map(([key, value]) => {
             return <div key={key} className={"square "+key+" "+value}></div>
           })}
         </div>
@@ -80,7 +83,7 @@ const Game = (props) => {
         <div className="terminal">
           <table className="command-history">
             <tbody>
-              {commandHistory.map((value, key) => {
+              {tmnl.getCommandHistory().map((value, key) => {
                 return <tr key={key}>
                   <td>{value}</td>
                 </tr>

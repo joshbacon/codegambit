@@ -3,12 +3,12 @@
 
 // import { Chess } from '../chess/chess';
 
-import { ChessWrapper } from '../chess/Wrapper';
+import Gambit from '../chess/Gambit';
 
 export const Terminal = function() {
 
     // let game = Chess('');
-    let game = ChessWrapper('');
+    let game = Gambit();
     let gameStarted = false;
     let playingAs = game.WHITE;
 
@@ -166,7 +166,7 @@ export const Terminal = function() {
                 else if (!game.validateFEN(params[0]))
                     commandHistory.push("An invalid FEN string was given.");
                 else
-                    game = Chess(params[0])
+                    game = new Gambit(params[0]);
                 break;
             case 'setBoardTheme':
                 if (params.length !== 1)
@@ -220,7 +220,6 @@ export const Terminal = function() {
     }
 
     return {
-
         getCommandHistory: function() {
             return commandHistory;
         },
@@ -233,10 +232,13 @@ export const Terminal = function() {
             return isSelected(square);
         },
 
+        exportFEN: function() {
+            return game.getFEN();
+        },
+
         parseCommand: function(command) {
             parseCommand(command);
         }
-
     }
 
 }

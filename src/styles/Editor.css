@@ -4,13 +4,8 @@
   --ide-special: #252525;
 }
 
-* {
-  padding: 0;
-  margin: 0;
-}
-
 .editor {
-  position: relation;
+  position: relative;
   height: 80%;
   width: 75%;
   background-color: #252525;
@@ -41,25 +36,22 @@
   background-color: var(--terminal-text);
 }
 
-.numbering {
-  color: #505050;
-  background-color: #202020;
-  width: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  padding-top: 5px;
+
+.script-number {
+  font-size: 1rem;
+  text-align: right;
+  padding: 5px;
+  opacity: 0.75;
 }
 
 .ide {
   padding: 5px;
-  background-color: inherit;
   border: none;
   outline: none;
   resize: none;
-  overflow: none;
-  max-height: 113em;
-  min-height: 113em;
+  width: 100%;
+  background-color: inherit;
+  overflow: auto;
   width: calc(100% - 1.5rem);
   font-size: 1em;
 }
@@ -80,7 +72,6 @@
 .runButton {
   height: 95%;
   aspect-ratio: 1;
-  background-image: url('../assets/icons/run.svg');
   background-size: 100%;
   background-color: inherit;
   border: none;

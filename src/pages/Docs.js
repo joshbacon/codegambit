@@ -4,6 +4,8 @@ import {Link, useLocation} from 'react-router-dom';
 import DocCard from '../components/DocCard.js';
 import DocData from '../data/docs.json';
 
+import back from '../assets/icons/back.svg';
+
 
 const Docs = (props) => {
 
@@ -26,7 +28,7 @@ const Docs = (props) => {
         <header>
             <h1>{'>'}code_gambit</h1>
             <Link to={backPath} state={{FEN:FEN}} className='back-btn header-btn'>
-                <div className='backImg header-btn'/>
+                <img src={back} alt='' className='header-btn'/>
             </Link>
         </header>
         <div className='docs'>

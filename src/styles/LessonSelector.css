@@ -1,8 +1,3 @@
-* {
-    padding: 0;
-    margin: 0;
-}
-
 html {
     background-color: #191919;
 }
@@ -33,13 +28,12 @@ header {
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
-    background-image: url('../assets/icons/back.svg');
     background-size: 90%;
     background-position: top;
     background-repeat: no-repeat;
 }
 
-.lessonPage {
+.lessonList {
     position: relative;
     width: 100%;
     height: 100%;

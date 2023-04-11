@@ -1,7 +1,9 @@
 import '../styles/LessonSelector.css';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import LessonData from '../data/lessons.json';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import back from '../assets/icons/back.svg';
 
 // check here to change the css
 // https://github.com/reactjs/react-tabs
@@ -30,9 +32,11 @@ const LessonSelector = (props) => {
     return <div className='lessonSelector'>
         <header>
             <h3>Lessons</h3>
-            <Link to='/' className='lessonBackBtn'/>
+            <Link to='/' className='lessonBackBtn'>
+                <img src={back} alt='back button'/>
+            </Link>
         </header>
-        <body className='lessonPage'>
+        <div className='lessonList'>
             <div className='lessonTitle'>
                 <h2>Josh Bacon</h2>
                 <div className='totalProgress'>
@@ -61,12 +65,14 @@ const LessonSelector = (props) => {
                             key={value.id}
                             className='lessonItem incomplete'
                             onClick={handleSelect}>
-                            {value.title} ({value.rating})
+                                <Link to={'/lesson/'+value.id} state={{lessonId: value.id}}>
+                                    {value.title} ({value.rating})
+                                </Link>
                         </li>
                     })}
                 </ul>
             </div>
-        </body>
+        </div>
     </div>
 }
 

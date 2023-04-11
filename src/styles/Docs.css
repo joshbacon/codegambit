@@ -4,11 +4,6 @@
     --accent2: #111111;
 }
 
-* {
-    padding: 0;
-    margin: 0;
-}
-
 .docs {
     position: relative;
     width: 100%;
@@ -44,10 +39,6 @@ header {
     right: 15px;
 }
 
-.backImg {
-    background-image: url('../assets/icons/back.svg');
-}
-
 .menu-bar {
     display: flex;
     flex-direction: column;
@@ -74,7 +65,7 @@ h1 {
 }
 
 .list-section {
-    border-top: 1px #008000 solid;
+    border-top: 1px var(--terminal-text) solid;
     padding: 0 0.5em 0.5em;
 }
 
@@ -90,7 +81,7 @@ h1 {
 
 .list-section h2:hover,
 .list-method:hover {
-    text-decoration: underline #008000;
+    text-decoration: underline var(--terminal-text);
 }
 
 .author {
