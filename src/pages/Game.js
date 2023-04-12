@@ -2,8 +2,7 @@ import '../styles/Game.css';
 import '../styles/Board.css';
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import Docs from '../pages/Docs.js';
+import { Link, /*useLocation*/ } from 'react-router-dom';
 import { Terminal } from '../components/Terminal';
 
 import docs from '../assets/icons/docs.svg';
@@ -16,22 +15,12 @@ import back from '../assets/icons/back.svg';
 
 const Game = (props) => {
 
-  const location = useLocation();
-  const {FEN} = location.state;
+  // const location = useLocation();
+  // const {game} = location.state;
 
-  // let game = Chess(FEN);
-  // const game = new Game();
-  // const jsChessEngine = require('js-chess-engine');
-  // const game = new jsChessEngine.Game();
-
-  // let tmnl = Terminal();
-  const [tmnl, updateTmnl] = useState(Terminal());
+  const [tmnl, _updateTmnl] = useState(Terminal());
 
   const [currCommand, setCurrCommand] = useState("");
-  const [commandHistory, updateCommandHistory] = useState([
-    'Welcome to code_gambit! We teach coding through playing chess.',
-    'type help(method) to see how to use a given method or check out the documentation at the top left for a list of commands.',
-  ]);
 
   const updateCommand = (e) => {
     setCurrCommand(e.target.value);
@@ -39,19 +28,9 @@ const Game = (props) => {
 
   const checkKey = (e) => {
     if (currCommand === '') { return }
-    var key = e.key;
-    // console.log(e.key);
-    let rc = "'"+currCommand+"' is not recognized.";
+    let key = e.key;
     if (key === 'Enter'){
-
-      //clean input
-      const input = currCommand.split('(');
-      const method = input[0];
-      let params;
-      if (input[1]) {
-        params = input[1].split(')');
-        params = params[0].split(',');
-      }
+      tmnl.parseCommand(currCommand);
       setCurrCommand("");
     }
   }
@@ -69,14 +48,14 @@ const Game = (props) => {
         <Link to='/' className='back-btn header-btn'>
           <img src={back} alt='Back button'/>
         </Link>
-        <Link to='/documentation' state={{backPath:'/play', FEN:tmnl.exportFEN()}} className='docs-btn header-btn'>
+        <Link to='/documentation' state={{backPath:'/play'}} className='docs-btn header-btn'>
           <img src={docs} alt='Documentation button'/>
         </Link>
       </div>
       <section className="main">
-        <div className={"board bBlue"}>
+        <div className={"board " + (localStorage.getItem('bTheme') ?? 'bBlue')}>
           {Object.entries(tmnl.getPieces()).map(([key, value]) => {
-            return <div key={key} className={"square "+key+" "+value}></div>
+            return <div key={key} className={"square "+key+" "+value+(key === tmnl.getSelected() ? " selected" : "")}></div>
           })}
         </div>
 
@@ -94,10 +73,7 @@ const Game = (props) => {
           <div className="terminal-in">{'>'}
             <input
               type="text"
-              // autoCorrect="off"
-              // autoSuggest="off"
-              // autoComplete="off"
-              // autoCapitalize="off"
+              spellCheck="false"
               value={currCommand}
               onChange={updateCommand}
               onKeyUp={checkKey}

@@ -45,7 +45,7 @@
     "id": 4,
     "section": "Settings",
     "methods": [
-        {"mid":0, "method":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (dark, light, purple, blue, green, or orange)", "desc":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
+        {"mid":0, "method":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (bDark, bLight, bPurple, bBlue, bGreen, or bOrange)", "desc":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
         {"mid":1, "method":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "desc":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
         {"mid":2, "method":"playAs(color)", "params":"color - the color you want to start as (w or b)", "desc":"sets the color you play as.", "example":"playAs(b)"}
     ]
@@ -57,8 +57,7 @@
         {"mid":0, "method":"help(method)", "params":"method signature without parameters", "desc":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
         {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"},
         {"mid":2, "method":"hint()", "params":"none", "desc":"tells you the square of the piece the current bot would chose if they were you.", "example":"hint()"},
-        {"mid":3, "method":"hint(square)", "params":"square - recommend square to move the piece", "desc":"tells you the square the current bot would move the given piece if they were you.", "example":"hint(G2)"},
-        {"mid":4, "method":"conventions()", "params": "none", "desc": "explains the naming conventions for chess like the move NxG7", "example": "conventions()"}
+        {"mid":3, "method":"hint(square)", "params":"square - recommend square to move the piece", "desc":"tells you the square the current bot would move the given piece if they were you.", "example":"hint(G2)"}
     ]
 }
 

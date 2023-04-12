@@ -23,7 +23,7 @@ const Lessons = (props) => {
         </Link>
         <div className='lesson'>
             { running ? 
-                <Board data={{boardTheme: 'bBlue'}}/> : <>
+                <Board /> : <>
                 <div className='lessonVideo' />
                 <LessonCard data={lessons[lessonId-1]}/>
             </> }

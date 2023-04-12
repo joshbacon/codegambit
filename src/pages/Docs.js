@@ -1,6 +1,6 @@
 import '../styles/Docs.css';
 import React from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import {Link, useLocation } from 'react-router-dom';
 import DocCard from '../components/DocCard.js';
 import DocData from '../data/docs.json';
 
@@ -10,7 +10,7 @@ import back from '../assets/icons/back.svg';
 const Docs = (props) => {
 
     const location = useLocation();
-    const {backPath, FEN} = location.state;
+    const {backPath} = location.state;
 
     const scrollTo = (div) => {
         document.getElementById(div).scrollIntoView({
@@ -27,7 +27,7 @@ const Docs = (props) => {
     return <div className='docPage'>
         <header>
             <h1>{'>'}code_gambit</h1>
-            <Link to={backPath} state={{FEN:FEN}} className='back-btn header-btn'>
+            <Link to={backPath} className='back-btn header-btn'>
                 <img src={back} alt='' className='header-btn'/>
             </Link>
         </header>

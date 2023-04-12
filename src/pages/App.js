@@ -20,7 +20,7 @@ function App() {
         <div className='titleImage right'/>
       </div>
       <div className='mainMenu'>
-        <Link to='/play' state={{FEN:''}} className='menuItem'>
+        <Link to='/play' state={{game: null}} className='menuItem'>
           <div className='gameBg menuImg'/>
           <h2>Play a Game</h2>
         </Link>
@@ -28,7 +28,7 @@ function App() {
           <div className='lessonsBg menuImg'/>
           <h2>Lessons</h2>
         </Link>
-        <Link to='/documentation' state={{backPath:'/', FEN:''}} className='menuItem'>
+        <Link to='/documentation' state={{backPath:'/'}} className='menuItem'>
           <div className='docsBg menuImg'/>
           <h2>Documentation</h2>
         </Link>

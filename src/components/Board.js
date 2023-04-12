@@ -4,7 +4,7 @@ import React from 'react';
 const Board = (props) => {
     const data = props.data;
 
-    return <div className={"board "+data.boardTheme}>
+    return <div className={"board " + (localStorage.getItem('bTheme') ?? 'bBlue')}>
         {/* {data.pieces.map((value, key) => {
             return <div key={key} className={"square "+value.piece+" "+value.pos}></div>
         })} */}

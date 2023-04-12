@@ -4,17 +4,30 @@ const Gambit = () => {
   const game = new jsChessEngine.Game();
 
   let gameStarted = false;
+  let singlePlayer = true;
+  let playingAs = game.WHITE;
+
+  let selectedSquare = '';
 
   let select = (square) => {
-    
+    selectedSquare = square;
   }
 
   let unselect = () => {
-    
+    selectedSquare = '';
   }
 
   let move = (dest) => {
-    
+    try {
+      return game.move(selectedSquare, dest);
+    } catch (e) {
+      return e;
+    }
+  }
+
+  let playAiMove = () => {
+    console.log('this is definetely the error');
+    // game.aiMove(localStorage.getItem('botDepth')??2);
   }
 
   let take = (dest) => {
@@ -54,7 +67,7 @@ const Gambit = () => {
   }
 
   let startGame = () => {
-    
+    gameStarted = true;
   }
 
   let offerDraw = () => {
@@ -77,9 +90,9 @@ const Gambit = () => {
     
   }
 
-  let getFEN = () => {
-    
-  }
+  let getJson = () => game.exportJson();
+
+  let getFEN = () => game.exportFEN();
 
   let setFromFEN = (FEN) => {
     
@@ -118,7 +131,12 @@ const Gambit = () => {
   }
 
   return {
-    select: function() { return select(); },
+    isStarted: function() { return gameStarted; },
+    isSingle: function() { return singlePlayer; },
+    playAiMove: function() { return playAiMove(); },
+    startGame: function() { gameStarted = true; },
+    selected: function() { return selectedSquare},
+    select: function(square) { return select(square); },
     unselect: function() { return unselect(); },
     move: function(dest) { return move(dest); },
     take: function(dest) { return take(dest); },
@@ -136,10 +154,12 @@ const Gambit = () => {
     getPiece: function(square) { return getPiece(square); },
     getPieces: function() { return getPieces(); },
     getEvaluation: function() { return getEvaluation(); },
+    getJson: function() { return getJson(); },
     getFEN: function() { return getFEN(); },
     setFromFEN: function(FEN) { return setFromFEN(FEN); },
     setBoardTheme: function(theme) { return setBoardTheme(theme); },
     setBotDepth: function(depth) { return setBotDepth(depth); },
+    playingAs: function() { return playingAs; },
     playAs: function(clr) { return playAs(clr); },
     help: function(cmnd) { return help(cmnd); },
     clear: function() { return clear(); },
