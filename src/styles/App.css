@@ -118,3 +118,30 @@ h2 {
 .lessonsBg {background-image: url('../assets/icons/puzzle.svg')}
 .docsBg {background-image: url('../assets/icons/docs.svg')}
 .accountBg {background-image: url('../assets/icons/user.svg')}
+
+
+.popup {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  background-color: #111111;
+  padding: 1rem;
+  border-radius: 15px;
+  box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+  -webkit-box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+  -moz-box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+}
+
+.popup .showing {
+  display: block;
+  animation: fadeOut 4s;
+  -moz-animation: fadeOut 4s;
+  -webkit-animation: fadeOut 4s;
+  -o-animation: fadeOut 4s;
+}
+
+@keyframes fadeOut {
+  0%   { opacity: 100% }
+  50%  { opacity: 100% }
+  100% { opacity: 0% }
+}

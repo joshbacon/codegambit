@@ -51,8 +51,10 @@ export const Terminal = function() {
                     commandHistory.push('A game must be started to unselect a piece.');
                 else if (params.length !== 0)
                     commandHistory.push("unselect() expects no arguments.");
+                else if (game.selected() === '')
+                    commandHistory.push("A square must be selected to unselect.");
                 else
-                game.select('');
+                    game.select('');
                 break;
             case 'move':
                 if (!game.isStarted())
@@ -63,8 +65,8 @@ export const Terminal = function() {
                     commandHistory.push("move() expects 1 argument.");
                 else 
                     commandHistory.push(game.move(params[0]));
-                if (game.isSingle())
-                    game.playAiMove();                
+                // if (game.isSingle())
+                //     game.playAiMove();              
                 break;
             case 'take':
                 if (!game.isStarted())
@@ -82,7 +84,7 @@ export const Terminal = function() {
                 if (!game.isStarted())
                     commandHistory.push('A game must be started to select a piece.');
                 else if (game.selected() === '')
-                    commandHistory.push('There is no piece currently to check if move is valid.');
+                    commandHistory.push('There is no piece currently selected to check if move is valid.');
                 else if (params.length !== 1 && params.length !== 2)
                     commandHistory.push("isValidMove() expects 1 or 2 arguments.");
                 else if (params.length === 1)
@@ -93,12 +95,16 @@ export const Terminal = function() {
             case 'showValidMoves':
                 if (!game.isStarted())
                     commandHistory.push('A game must be started to show valid moves.');
+                else if (game.selected() === '')
+                    commandHistory.push('There is no piece currently selected to show valid moves.');
                 else if (params.length !== 0)
                     commandHistory.push("showValidMoves() expects no arguments.");
                 break;
             case 'hideValidMoves':
                 if (!game.isStarted())
                     commandHistory.push('A game must be started to hide valid moves.');
+                else if (game.selected() === '')
+                    commandHistory.push('There is no piece currently selected.');
                 else if (params.length !== 0)
                     commandHistory.push("hideValidMoves() expects no arguments.");
                 break;
@@ -153,17 +159,7 @@ export const Terminal = function() {
                 if (params.length !== 0)
                     commandHistory.push("getFEN() expects no argument.");
                 else
-                    commandHistory.push(game.generateFEN());
-                break;
-            case 'setFromFEN':
-                if (game.isStarted())
-                    commandHistory.push('You can\'t change the board setup during a game');
-                else if (params.length !== 1)
-                    commandHistory.push("setFromFEN() expects 1 argument.");
-                else if (!game.validateFEN(params[0]))
-                    commandHistory.push("An invalid FEN string was given.");
-                else
-                    game = new Gambit(params[0]);
+                    commandHistory.push(game.getFEN());
                 break;
             case 'setBoardTheme':
                 if (params.length !== 1)
@@ -184,7 +180,7 @@ export const Terminal = function() {
                     commandHistory.push('You can\'t change who you are playing as during a game');
                 else if (params.length !== 1)
                     commandHistory.push("playAs() expects 1 argument.");
-                else if (params[0] !== game.WHITE && params[0] !== game.BLACK)
+                else if (params[0] !== game.WHITE() && params[0] !== game.BLACK())
                     commandHistory.push("Valid paramaters are w for white or b for black.");
                 else
                     game.playAs(params[0]);
@@ -192,16 +188,6 @@ export const Terminal = function() {
             case 'help':
                 if (params.length !== 1)
                     commandHistory.push("help() expects 1 argument.");
-                break;
-            case 'hint':
-                if (!game.isStarted())
-                    commandHistory.push('A game must be started to get a hint.');
-                else if (params.length !== 0 && params.length !== 1)
-                    commandHistory.push("hint() expects 1 or no arguments.");
-                break;
-            case 'conventions':
-                if (params.length !== 0)
-                    commandHistory.push("select() expects no arguments.");
                 break;
             case 'clear':
                 commandHistory = [];

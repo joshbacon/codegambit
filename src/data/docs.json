@@ -37,8 +37,7 @@
         {"mid":1, "method":"offerDraw()", "params":"none", "desc":"offers a draw to the opponent.", "example":"offerDraw()"},
         {"mid":2, "method":"resign()", "params":"none", "desc":"resigns the game.", "example":"resiasgdfuasoidgn()"},
         {"mid":3, "method":"getEvaluation()", "params":"none", "desc":"returns a number between x and y. more positive is in favour of white, more negative is in favour of black.", "example":"getEvaluation()"},
-        {"mid":4, "method":"getFEN()", "params":"none", "desc":"returns the FEN string denoting the current state of the game", "example":"getFEN()"},
-        {"mid":5, "method":"setFromFEN(FEN)", "params":"FEN - a FEN formatted string", "desc":"sets the board based on the given FEN string (see conventions() for an explanation of a FEN string)", "example":"setFromFEN(rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1)"}
+        {"mid":4, "method":"getFEN()", "params":"none", "desc":"returns the FEN string denoting the current state of the game", "example":"getFEN()"}
     ]
 },
 {
@@ -55,9 +54,7 @@
     "section": "Other",
     "methods": [
         {"mid":0, "method":"help(method)", "params":"method signature without parameters", "desc":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
-        {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"},
-        {"mid":2, "method":"hint()", "params":"none", "desc":"tells you the square of the piece the current bot would chose if they were you.", "example":"hint()"},
-        {"mid":3, "method":"hint(square)", "params":"square - recommend square to move the piece", "desc":"tells you the square the current bot would move the given piece if they were you.", "example":"hint(G2)"}
+        {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"}
     ]
 }
 

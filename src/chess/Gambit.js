@@ -7,6 +7,8 @@ const Gambit = () => {
   let singlePlayer = true;
   let playingAs = game.WHITE;
 
+  let aiLevel = 2;
+
   let selectedSquare = '';
 
   let select = (square) => {
@@ -19,7 +21,9 @@ const Gambit = () => {
 
   let move = (dest) => {
     try {
-      return game.move(selectedSquare, dest);
+      console.log('made it here')
+      game.move(selectedSquare, dest);
+      console.log('moved');
     } catch (e) {
       return e;
     }
@@ -103,7 +107,7 @@ const Gambit = () => {
   }
 
   let setBotDepth = (depth) => {
-    
+    if (depth >= 0 && depth <=3) aiLevel = depth;
   }
 
   let playAs = (clr) => {
@@ -131,6 +135,9 @@ const Gambit = () => {
   }
 
   return {
+    WHITE: function() { return game.WHITE; },
+    BLACK: function() { return game.BLACK; },
+
     isStarted: function() { return gameStarted; },
     isSingle: function() { return singlePlayer; },
     playAiMove: function() { return playAiMove(); },
@@ -156,16 +163,12 @@ const Gambit = () => {
     getEvaluation: function() { return getEvaluation(); },
     getJson: function() { return getJson(); },
     getFEN: function() { return getFEN(); },
-    setFromFEN: function(FEN) { return setFromFEN(FEN); },
     setBoardTheme: function(theme) { return setBoardTheme(theme); },
     setBotDepth: function(depth) { return setBotDepth(depth); },
     playingAs: function() { return playingAs; },
     playAs: function(clr) { return playAs(clr); },
     help: function(cmnd) { return help(cmnd); },
     clear: function() { return clear(); },
-    hint: function() { return hint(); },
-    selectedHint: function(square) { return selectedHint(square); },
-    conventions: function() { return conventions(); },
   }
 
 }
