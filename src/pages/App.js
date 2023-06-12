@@ -1,6 +1,7 @@
 import '../styles/App.css';
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 function App() {
 
@@ -56,4 +57,4 @@ function App() {
 
 }
 
-export default App;
+export default connect(store => store)(App);

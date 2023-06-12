@@ -54,7 +54,8 @@
     "section": "Other",
     "methods": [
         {"mid":0, "method":"help(method)", "params":"method signature without parameters", "desc":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
-        {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"}
+        {"mid":1, "method":"clear()", "params":"none", "desc":"clears the terminal.", "example":"clear()"},
+        {"mid":2, "method":"writeGame()", "params":"none", "desc":"saves the current game position of a single player game.", "example":"writeGame()"}
     ]
 }
 

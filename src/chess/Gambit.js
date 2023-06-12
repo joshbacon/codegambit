@@ -1,7 +1,16 @@
+import {useDispatch} from 'react-redux';
+
 const Gambit = () => {
-    
+
+  // const game = new Game()
+  
+  // const position = useSelector(state => state.position);
+  const dispatch = useDispatch();
+  let action = {};
+
   const jsChessEngine = require('js-chess-engine');
   const game = new jsChessEngine.Game();
+  // game.printToConsole()
 
   let gameStarted = false;
   let singlePlayer = true;
@@ -10,6 +19,220 @@ const Gambit = () => {
   let aiLevel = 2;
 
   let selectedSquare = '';
+
+  let parseCommand = (input) => {
+    if (!/^[a-z]+[a-zA-Z]*\([a-zA-Z0-9]*(\,[a-zA-Z0-9]*)*\)$/.test(input)){
+      return "Invalid function format.";
+    }
+    // clean data
+    let data = input.split('(');
+    let command = data[0];
+    let params = data[1].split(')')[0].split(',');
+    params = params.filter((str) => { return str.length > 0; });
+
+    return runCommand(command, params);
+  }
+
+  let runCommand = (command, params) => {
+    switch(command) {
+        case 'select':
+            if (!gameStarted)
+                return 'A game must be started to select a piece.';
+            else if (params.length !== 1)
+                return "select() expects 1 argument.";
+            else if (getPiece(params[0]) === '')
+                return "There is no piece on this square.";
+            else if (!/^[A-H][1-8]$/.test(params[0]))
+                return "An invalid square was given.";
+            else if (!isOwnPiece(params[0]))
+                return "You can only select your own pieces.";
+            else {
+                select(params[0].trim().toUpperCase());
+                const action = {
+                    type: 'SET_POSITION',
+                    inGame: true,
+                    position: getJson()
+                }
+                dispatch(action);
+            }
+            break;
+        case 'unselect':
+            if (!gameStarted)
+                return 'A game must be started to unselect a piece.';
+            else if (params.length !== 0)
+                return "unselect() expects no arguments.";
+            else if (selectedSquare === '')
+                return "A square must be selected to unselect.";
+            else
+                select('');
+            break;
+        case 'move':
+            if (!gameStarted)
+                return 'A game must be started to move a piece.';
+            else if (selectedSquare === '')
+                return 'There is no piece currently selected to move.';
+            else if (params.length !== 1)
+                return "move() expects 1 argument.";
+            else if (singlePlayer){
+                let result = move(params[0]);
+                playAiMove();
+                return result;
+            }       
+            else
+                return move(params[0]);
+            break;
+        case 'take':
+            if (!gameStarted)
+                return 'A game must be started to take a piece.';
+            else if (selectedSquare === '')
+                return 'There is no piece currently selected to take with.';
+            else if (params.length !== 1)
+                return "take() expects 1 argument.";
+            else if (getPiece(params[0]) === '')
+                return 'There is no piece to take on this square.';
+            else
+                return move(selectedSquare, params[0]);
+            break;
+        case 'isValidMove':
+            if (!gameStarted)
+                return 'A game must be started to select a piece.';
+            else if (selectedSquare === '')
+                return 'There is no piece currently selected to check if move is valid.';
+            else if (params.length !== 1 && params.length !== 2)
+                return "isValidMove() expects 1 or 2 arguments.";
+            else if (params.length === 1)
+                return isValidMove(selectedSquare, params[0]);
+            else
+                return isValidMove(params[0], params[1]);
+            break;
+        case 'showValidMoves':
+            if (!gameStarted)
+                return 'A game must be started to show valid moves.';
+            else if (selectedSquare === '')
+                return 'There is no piece currently selected to show valid moves.';
+            else if (params.length !== 0)
+                return "showValidMoves() expects no arguments.";
+            break;
+        case 'hideValidMoves':
+            if (!gameStarted)
+                return 'A game must be started to hide valid moves.';
+            else if (selectedSquare === '')
+                return 'There is no piece currently selected.';
+            else if (params.length !== 0)
+                return "hideValidMoves() expects no arguments.";
+            break;
+        case 'showMoveHistory':
+            if (!gameStarted)
+                return 'A game must be started to show move history.';
+            else if (params.length !== 0)
+                return "showMoveHistory() expects no arguments.";
+            else 
+            break;
+        case 'showWhiteMoves':
+            if (!gameStarted)
+                return 'A game must be started to show white\'s move history.';
+            else if (params.length !== 0)
+                return "showWhiteMoves() expects no arguments.";
+            break;
+        case 'showBlackMoves':
+            if (!gameStarted)
+                return 'A game must be started to show black\'s move history.';
+            else if (params.length !== 0)
+                return "showBlackMoves() expects no arguments.";
+            break;
+        case 'startGame':
+            if (gameStarted)
+                return 'You can\'t start a new game with an existing instance.';
+            else if (params.length !== 0)
+                return "startGame() expects no arguments.";
+            else
+                startGame();
+                action = {
+                    type: 'SET_POSITION',
+                    inGame: true,
+                    position: getJson()
+                }
+                dispatch(action);
+                return '';
+            break;
+        case 'offerDraw':
+            if (!gameStarted)
+                return 'A game must be started to offer a draw.';
+            else if (params.length !== 0)
+                return "offerDraw() expects no arguments.";
+            break;
+        case 'resign':
+            if (!gameStarted)
+                return 'A game must be started to resign.';
+            else if (params.length !== 0)
+                return "resign() expects no arguments.";
+            break;
+        case 'getEvaluation':
+            if (true)
+                return 'This command is a work in progress...';
+            else if (!gameStarted)
+                return 'A game must be started to get the evaluation';
+            else if (params.length !== 0)
+                return "getEvaluation() expects no arguments.";
+            break;
+        case 'getFEN':
+            if (params.length !== 0)
+                return "getFEN() expects no argument.";
+            else
+                return getFEN();
+            break;
+        case 'setBoardTheme':
+            if (params.length !== 1)
+                return "setBoardTheme() expects 1 argument.";
+            else if (!['bDark', 'bLight', 'bPurple', 'bBlue', 'bGreen', 'bOrange'].includes(params[0]))
+                return '';
+            else 
+                localStorage.setItem('bTheme', params[0]);
+            break;
+        case 'setBotDepth':
+            if (gameStarted)
+                return 'You can\'t change the bot depth during a game';
+            else if (params.length !== 1)
+                return "setBotDepth() expects 1 argument.";
+            break;
+        case 'playAs':
+            if (gameStarted)
+                return 'You can\'t change who you are playing as during a game';
+            else if (params.length !== 1)
+                return "playAs() expects 1 argument.";
+            else if (params[0] !== game.WHITE() && params[0] !== game.BLACK())
+                return "Valid paramaters are w for white or b for black.";
+            else
+                playAs(params[0]);
+            break;
+        case 'help':
+            if (params.length !== 1)
+                return "help() expects 1 argument.";
+            break;
+        case 'clear':
+            return [];
+            break;
+        case 'writeGame': 
+            // save the game to the store
+            action = {
+                type: 'SET_POSITION',
+                inGame: true,
+                position: getJson()
+            }
+            dispatch(action);
+            break;
+        default:
+            return "This command is not recognized.";
+      }
+  }
+
+  function isOwnPiece(square) {
+      let piece =getPiece(square);
+      if (playingAs === game.WHITE){
+          return piece === piece.toUpperCase();
+      }else
+          return piece === piece.toLowerCase();
+  }
 
   let select = (square) => {
     selectedSquare = square;
@@ -30,7 +253,9 @@ const Gambit = () => {
   }
 
   let playAiMove = () => {
-    console.log('this is definetely the error');
+    // console.log('this is definetely the error');
+    console.log(game.exportJson());
+    game.aiMove(aiLevel);
     // game.aiMove(localStorage.getItem('botDepth')??2);
   }
 
@@ -135,14 +360,9 @@ const Gambit = () => {
   }
 
   return {
-    WHITE: function() { return game.WHITE; },
-    BLACK: function() { return game.BLACK; },
-
-    isStarted: function() { return gameStarted; },
-    isSingle: function() { return singlePlayer; },
-    playAiMove: function() { return playAiMove(); },
+    enterCommand: function(input) { return parseCommand(input); },
     startGame: function() { gameStarted = true; },
-    selected: function() { return selectedSquare},
+    selected: function() { return selectedSquare; },
     select: function(square) { return select(square); },
     unselect: function() { return unselect(); },
     move: function(dest) { return move(dest); },
@@ -165,7 +385,6 @@ const Gambit = () => {
     getFEN: function() { return getFEN(); },
     setBoardTheme: function(theme) { return setBoardTheme(theme); },
     setBotDepth: function(depth) { return setBotDepth(depth); },
-    playingAs: function() { return playingAs; },
     playAs: function(clr) { return playAs(clr); },
     help: function(cmnd) { return help(cmnd); },
     clear: function() { return clear(); },
