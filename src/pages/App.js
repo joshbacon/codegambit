@@ -32,10 +32,10 @@ function App() {
           <div className='gameBg menuImg'/>
           <h2>Play a Game</h2>
         </Link>
-        {/* <Link to='/lessons' className='menuItem'> */}
+        {/* <Link to='/puzzles' className='menuItem'> */}
         <div className='menuItem' onClick={showPopup}>
-          <div className='lessonsBg menuImg'/>
-          <h2>Lessons</h2>
+          <div className='puzzlesBg menuImg'/>
+          <h2>Puzzles</h2>
         </div>
         {/* </Link> */}
         <Link to='/documentation' state={{backPath:'/'}} className='menuItem'>

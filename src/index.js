@@ -6,8 +6,8 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import App from './pages/App';
 import Game from './pages/Game';
-import LessonSelector from './pages/LessonSelector';
-import Lesson from './pages/Lesson';
+import PuzzleSelector from './pages/PuzzleSelector';
+import Puzzle from './pages/Puzzle';
 import Docs from './pages/Docs';
 import Account from './pages/Account';
 
@@ -19,8 +19,8 @@ root.render(
         <Routes>
           <Route path='/' element={<App/>} />
           <Route path='/play' element={<Game/>} />
-          <Route path='/lessons' element={<LessonSelector/>} />
-          <Route path='/lesson/:id' element={<Lesson/>} />
+          <Route path='/puzzles' element={<PuzzleSelector/>} />
+          <Route path='/puzzle/:id' element={<Puzzle/>} />
           <Route path='/documentation' element={<Docs/>} />
           <Route path='/account' element={<Account/>} />
         </Routes>

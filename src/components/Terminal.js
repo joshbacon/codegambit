@@ -1,8 +1,3 @@
-// implement all the custom terminal commands here
-// (so everything in the docs json, note alot will pass off directly to Chess instance)
-
-// import { Chess } from '../chess/chess';
-
 import Gambit from '../chess/Gambit';
 
 export const Terminal = function() {
@@ -18,10 +13,11 @@ export const Terminal = function() {
         commandHistory.push(command);
 
         let result = game.enterCommand(command);
+        // console.log(result);
         if (typeof result == '')
           if (result !== '') commandHistory.push(result)
-        else if ( typeof result == [])
-          commandHistory = []
+        else if ( result === [])
+          commandHistory = [];
         else 
           commandHistory.push("Segmentation fault (core dumped)")
     }
@@ -41,6 +37,10 @@ export const Terminal = function() {
 
         getSelected: function() {
             return game.selected();
+        },
+
+        getPlayingAs: function() {
+            return game.playingAs();
         },
 
         parseCommand: function(command) {

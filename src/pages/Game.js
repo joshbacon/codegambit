@@ -5,12 +5,10 @@ import { useEffect, useState, useRef } from 'react';
 import { Link, /*useLocation*/ } from 'react-router-dom';
 import { Terminal } from '../components/Terminal';
 
+import Board from '../components/Board';
+
 import docs from '../assets/icons/docs.svg';
 import back from '../assets/icons/back.svg';
-
-// import { Chess } from '../chess/chess';
-// import { Game, move, status, moves, aiMove, getFen } from 'js-chess-engine';
-
 
 
 const Game = (props) => {
@@ -55,11 +53,16 @@ const Game = (props) => {
         </Link>
       </div>
       <section className="main">
-        <div className={"board " + (localStorage.getItem('bTheme') ?? 'bBlue')}>
+        {/* <div className={"board " + (localStorage.getItem('bTheme') ?? 'bBlue')}>
           {Object.entries(tmnl.getPieces()).map(([key, value]) => {
-            return <div key={key} className={"square "+key+" "+value+(key === tmnl.getSelected() ? " selected" : "")}></div>
+            return <div
+              key={key}
+              className={"square "+key+" "+value+(key === tmnl.getSelected() ? " selected" : "")}
+            />
           })}
-        </div>
+        </div> */}
+
+        <Board data={{select: tmnl.getSelected(), playingAs: tmnl.getPlayingAs()??'w'}}/>
 
         <div className="terminal">
           <table className="command-history">

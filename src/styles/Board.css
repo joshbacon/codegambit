@@ -8,13 +8,19 @@
     aspect-ratio: 1;
     background-size: 100%;
 }
-  
-.bDark { background-image: url('../assets/images/boardDark.png') }
-.bLight { background-image: url('../assets/images/boardLight.png') }
-.bPurple { background-image: url('../assets/images/boardPurple.png') }
-.bBlue { background-image: url('../assets/images/boardBlue.png') }
-.bGreen { background-image: url('../assets/images/boardGreen.png') }
-.bOrange { background-image: url('../assets/images/boardOrange.png') }
+
+.wbDark { background-image: url('../assets/images/wboardDark.png') }
+.wbLight { background-image: url('../assets/images/wboardLight.png') }
+.wbPurple { background-image: url('../assets/images/wboardPurple.png') }
+.wbBlue { background-image: url('../assets/images/wboardBlue.png') }
+.wbGreen { background-image: url('../assets/images/wboardGreen.png') }
+.wbOrange { background-image: url('../assets/images/wboardOrange.png') }
+.bbDark { background-image: url('../assets/images/bboardDark.png') }
+.bbLight { background-image: url('../assets/images/bboardLight.png') }
+.bbPurple { background-image: url('../assets/images/bboardPurple.png') }
+.bbBlue { background-image: url('../assets/images/bboardBlue.png') }
+.bbGreen { background-image: url('../assets/images/bboardGreen.png') }
+.bbOrange { background-image: url('../assets/images/bboardOrange.png') }
   
 .square {
     position: absolute;

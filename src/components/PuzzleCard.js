@@ -1,10 +1,10 @@
-import '../styles/LessonCard.css';
+import '../styles/PuzzleCard.css';
 import React from 'react';
 
-const LessonCard = (props) => {
+const PuzzleCard = (props) => {
     const data = props.data;
 
-    return <div className='lessonInfo'>
+    return <div className='puzzleInfo'>
         <p>{data.title} ({data.rating} level)</p>
         <p>Here are the moves for both sides:</p>
         <p>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
@@ -18,4 +18,4 @@ const LessonCard = (props) => {
     </div>
 }
 
-export default LessonCard;
+export default PuzzleCard;

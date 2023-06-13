@@ -1,19 +1,21 @@
 import '../styles/Board.css';
 import React from 'react';
+import {useSelector} from 'react-redux';
 
 const Board = (props) => {
-    const data = props.data;
 
-    return <div className={"board " + (localStorage.getItem('bTheme') ?? 'bBlue')}>
-        {/* {data.pieces.map((value, key) => {
-            return <div key={key} className={"square "+value.piece+" "+value.pos}></div>
-        })} */}
+    let {selected, playingAs} = props.data;    
+    const position = useSelector(state => state.position);
+
+    return <div className={"board " + (playingAs+localStorage.getItem('bTheme') ?? playingAs+'bBlue')}>
+        {Object.entries(position.pieces).map(([key, value]) => {
+            return <div
+                key={key}
+                className={"square "+key+" "+value+(key === selected ? " selected" : "")}
+            />
+        })}
     </div>
 
 }
 
 export default Board;
-
-
-
-// get the theme and piece data through props

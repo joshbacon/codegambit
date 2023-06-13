@@ -2,19 +2,30 @@ import {useDispatch} from 'react-redux';
 
 const Gambit = () => {
 
+
   // const game = new Game()
   
   // const position = useSelector(state => state.position);
-  const dispatch = useDispatch();
-  let action = {};
 
   const jsChessEngine = require('js-chess-engine');
   const game = new jsChessEngine.Game();
   // game.printToConsole()
+  
+  const dispatch = useDispatch();
+  let action = {
+      type: 'SET_POSITION',
+      inGame: true,
+      position: game.exportJson()
+  }
+  dispatch(action);
+  action = {}
+
+  const WHITE = 'w';
+  const BLACK = 'b';
 
   let gameStarted = false;
   let singlePlayer = true;
-  let playingAs = game.WHITE;
+  let playingAs = WHITE;
 
   let aiLevel = 2;
 
@@ -30,7 +41,10 @@ const Gambit = () => {
     let params = data[1].split(')')[0].split(',');
     params = params.filter((str) => { return str.length > 0; });
 
-    return runCommand(command, params);
+    let result = runCommand(command, params);
+    // console.log(result);
+    return result;
+    // return runCommand(command, params);
   }
 
   let runCommand = (command, params) => {
@@ -54,6 +68,7 @@ const Gambit = () => {
                     position: getJson()
                 }
                 dispatch(action);
+                return '';
             }
             break;
         case 'unselect':
@@ -65,6 +80,7 @@ const Gambit = () => {
                 return "A square must be selected to unselect.";
             else
                 select('');
+                return '';
             break;
         case 'move':
             if (!gameStarted)
@@ -188,6 +204,7 @@ const Gambit = () => {
                 return '';
             else 
                 localStorage.setItem('bTheme', params[0]);
+                return '';
             break;
         case 'setBotDepth':
             if (gameStarted)
@@ -200,18 +217,17 @@ const Gambit = () => {
                 return 'You can\'t change who you are playing as during a game';
             else if (params.length !== 1)
                 return "playAs() expects 1 argument.";
-            else if (params[0] !== game.WHITE() && params[0] !== game.BLACK())
+            else if (params[0] !== WHITE && params[0] !== BLACK)
                 return "Valid paramaters are w for white or b for black.";
             else
                 playAs(params[0]);
-            break;
+                return '';
         case 'help':
             if (params.length !== 1)
                 return "help() expects 1 argument.";
             break;
         case 'clear':
-            return [];
-            break;
+            return clear();
         case 'writeGame': 
             // save the game to the store
             action = {
@@ -220,7 +236,7 @@ const Gambit = () => {
                 position: getJson()
             }
             dispatch(action);
-            break;
+            return '';
         default:
             return "This command is not recognized.";
       }
@@ -228,7 +244,7 @@ const Gambit = () => {
 
   function isOwnPiece(square) {
       let piece =getPiece(square);
-      if (playingAs === game.WHITE){
+      if (playingAs === WHITE){
           return piece === piece.toUpperCase();
       }else
           return piece === piece.toLowerCase();
@@ -244,9 +260,7 @@ const Gambit = () => {
 
   let move = (dest) => {
     try {
-      console.log('made it here')
       game.move(selectedSquare, dest);
-      console.log('moved');
     } catch (e) {
       return e;
     }
@@ -254,7 +268,7 @@ const Gambit = () => {
 
   let playAiMove = () => {
     // console.log('this is definetely the error');
-    console.log(game.exportJson());
+    console.log("game: " + game.exportJson());
     game.aiMove(aiLevel);
     // game.aiMove(localStorage.getItem('botDepth')??2);
   }
@@ -297,6 +311,7 @@ const Gambit = () => {
 
   let startGame = () => {
     gameStarted = true;
+    if (singlePlayer && playingAs === BLACK) playAiMove();
   }
 
   let offerDraw = () => {
@@ -324,7 +339,7 @@ const Gambit = () => {
   let getFEN = () => game.exportFEN();
 
   let setFromFEN = (FEN) => {
-    
+    // need to make custom function to convert json position to FEN
   }
 
   let setBoardTheme = (theme) => {
@@ -336,7 +351,7 @@ const Gambit = () => {
   }
 
   let playAs = (clr) => {
-    
+    if (clr === WHITE || clr === BLACK) playingAs = clr;
   }
 
   let help = (cmnd) => {
@@ -344,19 +359,7 @@ const Gambit = () => {
   }
 
   let clear = () => {
-    
-  }
-
-  let hint = () => {
-    
-  }
-
-  let selectedHint = (square) => {
-    
-  }
-
-  let conventions = () => {
-    
+    return [];
   }
 
   return {
@@ -385,9 +388,9 @@ const Gambit = () => {
     getFEN: function() { return getFEN(); },
     setBoardTheme: function(theme) { return setBoardTheme(theme); },
     setBotDepth: function(depth) { return setBotDepth(depth); },
+    playingAs: function() { return playingAs; },
     playAs: function(clr) { return playAs(clr); },
     help: function(cmnd) { return help(cmnd); },
-    clear: function() { return clear(); },
   }
 
 }

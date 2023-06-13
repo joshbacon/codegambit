@@ -1,6 +1,6 @@
-import '../styles/LessonSelector.css';
+import '../styles/PuzzleSelector.css';
 import React, { useState } from 'react';
-import LessonData from '../data/lessons.json';
+import PuzzleData from '../data/puzzles.json';
 import { Link } from 'react-router-dom';
 
 import back from '../assets/icons/back.svg';
@@ -11,11 +11,11 @@ import back from '../assets/icons/back.svg';
 // need to set some constant sizing
 // make it a list with some items having checkmarks and others... well not
 // have individual progress bars for each section
-// need actual lessons to fill the data with
+// need actual puzzles to fill the data with
 // hopefully need to implement scrolling cause there will be so many
-// make the list items actual buttons to bring the user to the lesson page
+// make the list items actual buttons to bring the user to the puzzle page
 
-const LessonSelector = (props) => {
+const PuzzleSelector = (props) => {
 
     let complete = 90;
     let styleProg = {
@@ -31,7 +31,7 @@ const LessonSelector = (props) => {
 
     return <div className='lessonSelector'>
         <header>
-            <h3>Lessons</h3>
+            <h3>Puzzles</h3>
             <Link to='/' className='lessonBackBtn'>
                 <img src={back} alt='back button'/>
             </Link>
@@ -60,7 +60,7 @@ const LessonSelector = (props) => {
                 </ul>
 
                 <ul className='tabPanel'>
-                    {LessonData.filter(value => {return active === '' || active === value.category}).map((value, key) => {
+                    {PuzzleData.filter(value => {return active === '' || active === value.category}).map((value, key) => {
                         return <li
                             key={value.id}
                             className='lessonItem incomplete'
@@ -76,4 +76,4 @@ const LessonSelector = (props) => {
     </div>
 }
 
-export default LessonSelector;
+export default PuzzleSelector;
