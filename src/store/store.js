@@ -2,6 +2,8 @@ import {createStore} from "redux"
 
 const initialState = {
     inGame: false,
+    playingAs: 'w',
+    selected: '',
     position: {}
 }
 

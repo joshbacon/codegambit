@@ -1,24 +1,26 @@
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 const Gambit = () => {
 
 
   // const game = new Game()
   
-  // const position = useSelector(state => state.position);
+  const position = useSelector(state => state.position);
 
   const jsChessEngine = require('js-chess-engine');
-  const game = new jsChessEngine.Game();
-  // game.printToConsole()
+  const game = new jsChessEngine.Game(Object.keys(position).length>0?position:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+//   console.log(game.exportJson());
   
+  let action = {};
   const dispatch = useDispatch();
-  let action = {
-      type: 'SET_POSITION',
-      inGame: true,
-      position: game.exportJson()
+  if (position === {}) {
+    action = {
+        type: 'SET_POSITION',
+        inGame: true,
+        position: getJson()
+    }
+    dispatch(action);
   }
-  dispatch(action);
-  action = {}
 
   const WHITE = 'w';
   const BLACK = 'b';
@@ -163,12 +165,6 @@ const Gambit = () => {
                 return "startGame() expects no arguments.";
             else
                 startGame();
-                action = {
-                    type: 'SET_POSITION',
-                    inGame: true,
-                    position: getJson()
-                }
-                dispatch(action);
                 return '';
             break;
         case 'offerDraw':
@@ -182,6 +178,8 @@ const Gambit = () => {
                 return 'A game must be started to resign.';
             else if (params.length !== 0)
                 return "resign() expects no arguments.";
+            else
+                gameStarted = false;
             break;
         case 'getEvaluation':
             if (true)
@@ -230,19 +228,25 @@ const Gambit = () => {
             return clear();
         case 'writeGame': 
             // save the game to the store
-            action = {
-                type: 'SET_POSITION',
-                inGame: true,
-                position: getJson()
-            }
-            dispatch(action);
+            updatePosition();
             return '';
         default:
             return "This command is not recognized.";
       }
   }
 
-  function isOwnPiece(square) {
+  let updatePosition = () => {
+    action = {
+        type: 'SET_POSITION',
+        inGame: gameStarted,
+        selected: selectedSquare,
+        playingAs: playingAs,
+        position: getJson()
+    }
+    dispatch(action);
+  }
+
+  let isOwnPiece = (square) => {
       let piece =getPiece(square);
       if (playingAs === WHITE){
           return piece === piece.toUpperCase();
@@ -268,7 +272,7 @@ const Gambit = () => {
 
   let playAiMove = () => {
     // console.log('this is definetely the error');
-    console.log("game: " + game.exportJson());
+    console.log("game: " + getJson());
     game.aiMove(aiLevel);
     // game.aiMove(localStorage.getItem('botDepth')??2);
   }
@@ -312,6 +316,15 @@ const Gambit = () => {
   let startGame = () => {
     gameStarted = true;
     if (singlePlayer && playingAs === BLACK) playAiMove();
+    action = {
+        type: 'START_GAME',
+        inGame: gameStarted,
+        selected: selectedSquare,
+        playingAs: playingAs,
+        position: getJson()
+    }
+    dispatch(action);
+    updatePosition();
   }
 
   let offerDraw = () => {
@@ -323,11 +336,11 @@ const Gambit = () => {
   }
 
   let getPiece = (square) => {
-    return game.exportJson().pieces[square];
+    return getJson().pieces[square];
   }
 
   let getPieces = () => {
-    return game.exportJson().pieces;
+    return getJson().pieces;
   }
 
   let getEvaluation = () => {

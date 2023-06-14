@@ -25,13 +25,15 @@ const Game = (props) => {
   }
 
   const checkKey = (e) => {
-    if (currCommand === '') { return }
     let key = e.key;
-    if (key === 'Enter') {
+    if (key === 'ArrowUp') {
+      setCurrCommand(tmnl.getPreviousCommand());
+    } else if (currCommand === '') {
+      return;
+    }
+      else if (key === 'Enter') {
       tmnl.parseCommand(currCommand);
       setCurrCommand("");
-    } else if (key === 'ArrowUp') {
-      setCurrCommand(tmnl.getPreviousCommand());
     }
   }
 
