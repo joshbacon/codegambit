@@ -1,6 +1,6 @@
 import '../styles/Docs.css';
 import React from 'react';
-import {Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DocCard from '../components/DocCard.js';
 import DocData from '../data/docs.json';
 

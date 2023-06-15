@@ -2,18 +2,17 @@ import {useSelector, useDispatch} from 'react-redux';
 
 const Gambit = () => {
 
-
   // const game = new Game()
   
   const position = useSelector(state => state.position);
 
   const jsChessEngine = require('js-chess-engine');
-  const game = new jsChessEngine.Game(Object.keys(position).length>0?position:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-//   console.log(game.exportJson());
+  const game = new jsChessEngine.Game(position??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+  console.log(game.exportJson());
   
   let action = {};
   const dispatch = useDispatch();
-  if (position === {}) {
+  if (Object.keys(position).length === 0) {
     action = {
         type: 'SET_POSITION',
         inGame: true,

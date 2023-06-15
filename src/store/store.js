@@ -1,34 +1,13 @@
-import {createStore} from "redux"
+import { createStore, combineReducers } from "redux"
+import { createBrowserHistory } from "@remix-run/router"
+import { routerReducer, syncHistoryWithStore } from 'react-router-redux'
 
-const initialState = {
-    inGame: false,
-    playingAs: 'w',
-    selected: '',
-    position: {}
-}
+import game from '../reducers/game';
 
-function handleState(state = initialState, action) {
-    switch (action.type) {
-        case 'START_GAME':
-            return  {
-                ...state,
-                inGame: true
-            }
-        case 'FINISH_GAME':
-            return  {
-                ...state,
-                inGame: false
-            }
-        case 'SET_POSITION':
-            return  {
-                ...state,
-                position: action.position
-            }
-        default:
-            return state;
-    }
-}
+export const store = createStore(combineReducers({
+    game,
+    routing: routerReducer
+}));
 
-const store = createStore(handleState)
-
-export default store;
+const browserHistory = createBrowserHistory();
+export const history = syncHistoryWithStore(browserHistory, store);
