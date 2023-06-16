@@ -8,14 +8,14 @@ const Gambit = () => {
 
   const jsChessEngine = require('js-chess-engine');
   const game = new jsChessEngine.Game(position??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-  console.log(game.exportJson());
+//   console.log(game.exportJson());
   
+
   let action = {};
   const dispatch = useDispatch();
-  if (Object.keys(position).length === 0) {
+  if (position) {
     action = {
         type: 'SET_POSITION',
-        inGame: true,
         position: getJson()
     }
     dispatch(action);
@@ -64,9 +64,8 @@ const Gambit = () => {
             else {
                 select(params[0].trim().toUpperCase());
                 const action = {
-                    type: 'SET_POSITION',
-                    inGame: true,
-                    position: getJson()
+                    type: 'SET_SELECTED',
+                    selected: selectedSquare
                 }
                 dispatch(action);
                 return '';
@@ -180,13 +179,11 @@ const Gambit = () => {
             else
                 gameStarted = false;
             break;
-        case 'getEvaluation':
-            if (true)
-                return 'This command is a work in progress...';
-            else if (!gameStarted)
-                return 'A game must be started to get the evaluation';
-            else if (params.length !== 0)
-                return "getEvaluation() expects no arguments.";
+        case 'setFromFEN()':
+            if (params.length !== 1)
+                return "setFromFEN() expects 1 argument.";
+            else
+                setFromFEN(params[0]);
             break;
         case 'getFEN':
             if (params.length !== 0)
@@ -351,7 +348,7 @@ const Gambit = () => {
   let getFEN = () => game.exportFEN();
 
   let setFromFEN = (FEN) => {
-    // need to make custom function to convert json position to FEN
+    game = new jsChessEngine.Game(FEN??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
   }
 
   let setBoardTheme = (theme) => {
