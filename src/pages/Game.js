@@ -4,6 +4,7 @@ import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { Link, /*useLocation*/ } from 'react-router-dom';
 import { Terminal } from '../components/Terminal';
+import { useSelector } from 'react-redux';
 
 import Board from '../components/Board';
 
@@ -16,6 +17,8 @@ const Game = (props) => {
   // const location = useLocation();
   // const {game} = location.state;
 
+  let backAmount = 0;
+
   const [tmnl, _updateTmnl] = useState(Terminal());
 
   const [currCommand, setCurrCommand] = useState("");
@@ -26,15 +29,21 @@ const Game = (props) => {
 
   const checkKey = (e) => {
     let key = e.key;
+    console.log(key);
     if (key === 'ArrowUp') {
-      setCurrCommand(tmnl.getPreviousCommand());
-    } else if (currCommand === '') {
-      return;
-    }
-      else if (key === 'Enter') {
+      backAmount += 1;
+      let newCommand = tmnl.getPreviousCommand(backAmount);
+      if (newCommand !== currCommand)
+        setCurrCommand(newCommand);
+      else
+        backAmount -= 1;
+    } else if (key === 'Enter') {
       tmnl.parseCommand(currCommand);
       setCurrCommand("");
+      backAmount = 0;
+      console.log("I RAN")
     }
+    console.log(backAmount)
   }
 
   const ScrollToBottom = () => {
@@ -64,7 +73,7 @@ const Game = (props) => {
           })}
         </div> */}
 
-        <Board data={{select: tmnl.getSelected(), playingAs: tmnl.getPlayingAs()??'w'}}/>
+        <Board />
 
         <div className="terminal">
           <table className="command-history">
@@ -78,7 +87,8 @@ const Game = (props) => {
             </tbody>
           </table>
           <div className="terminal-in">{'>'}
-            <input
+            <input 
+              autoFocus={true}
               type="text"
               spellCheck="false"
               value={currCommand}

@@ -14,11 +14,7 @@ const Gambit = () => {
   let action = {};
   const dispatch = useDispatch();
   if (position) {
-    action = {
-        type: 'SET_POSITION',
-        position: getJson()
-    }
-    dispatch(action);
+    dispatchToStore('SET_POSITION');
   }
 
   const WHITE = 'w';
@@ -63,11 +59,7 @@ const Gambit = () => {
                 return "You can only select your own pieces.";
             else {
                 select(params[0].trim().toUpperCase());
-                const action = {
-                    type: 'SET_SELECTED',
-                    selected: selectedSquare
-                }
-                dispatch(action);
+                dispatchToStore('SET_SELECTED');
                 return '';
             }
             break;
@@ -231,6 +223,35 @@ const Gambit = () => {
       }
   }
 
+  let dispatchToStore = (type) => {
+    let action = {type: ""};
+    if (type === "START_GAME") {
+        action = {
+            type: 'START_GAME',
+            inGame: gameStarted,
+            selected: selectedSquare,
+            playingAs: playingAs,
+            position: getJson()
+        };
+    } else if (type === "FINISH_GAME") {
+        action = {
+            type: "FINISH_GAME",
+            inGame: false
+        };
+    } else if (type === "SET_POSITION") {
+        action = {
+            type: "SET_POSITION",
+            position: getJson()
+        };
+    } else if (type === "SET_SELECTED") {
+        action = {
+            type: "SET_SELECTED",
+            selected: selectedSquare
+        };
+    }
+    dispatch(action);
+  }
+
   let updatePosition = () => {
     action = {
         type: 'SET_POSITION',
@@ -271,6 +292,7 @@ const Gambit = () => {
     console.log("game: " + getJson());
     game.aiMove(aiLevel);
     // game.aiMove(localStorage.getItem('botDepth')??2);
+
   }
 
   let take = (dest) => {
@@ -312,19 +334,11 @@ const Gambit = () => {
   let startGame = () => {
     gameStarted = true;
     if (singlePlayer && playingAs === BLACK) playAiMove();
-    action = {
-        type: 'START_GAME',
-        inGame: gameStarted,
-        selected: selectedSquare,
-        playingAs: playingAs,
-        position: getJson()
-    }
-    dispatch(action);
-    updatePosition();
+    dispatchToStore('START_GAME');
   }
 
   let offerDraw = () => {
-    
+    //incorporate ai level in some probability function that returns a boolean
   }
 
   let resign = () => {

@@ -27,8 +27,11 @@ export const Terminal = function() {
             return commandHistory;
         },
 
-        getPreviousCommand: function() {
-            return commandHistory[commandHistory.length -1];
+        getPreviousCommand: function(amount) {
+            if (amount > commandHistory.length || amount < 1)
+                return commandHistory[0];
+            else 
+                return commandHistory[commandHistory.length - amount];
         },
 
         getPieces: function() {
@@ -44,7 +47,7 @@ export const Terminal = function() {
         },
 
         parseCommand: function(command) {
-            sendCommand(command);
+            return sendCommand(command);
         }
     }
 
