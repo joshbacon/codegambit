@@ -3,13 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 const Gambit = (state) => {
 
   // const game = new Game()
-  const {inGame, playingAs, selected, aiLevel, position, commands} = state;
+//   const {state, engine} = props;
+  const jsChessEngine = require('js-chess-engine');
+  const engine = new jsChessEngine.Game('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+  // 
+  const {inGame, playingAs, selected, aiLevel, game, commands} = state;
 //   const {inGame, playingAs, aiLevel, position} = useSelector(state => state.game);
 //   const state = useSelector(state => state.game);
 
-  const jsChessEngine = require('js-chess-engine');
-  const game = new jsChessEngine.Game(position??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-  console.log(game.exportJson());
+//   console.log(game);
 
   const dispatch = useDispatch();
 
@@ -30,7 +32,10 @@ const Gambit = (state) => {
 
     let result = runCommand(command, params);
     console.log(result);
-    dispatchToStore("SET_COMMANDS", {result: result, command: input});
+    if (result == '')
+        dispatchToStore("SET_COMMANDS", {result: result, command: input});
+    else
+        dispatchToStore("SET_COMMANDS", {result: Object.toString(result), command: input});
 
     return result;
     // return runCommand(command, params);
@@ -151,9 +156,11 @@ const Gambit = (state) => {
                 return "startGame() expects no arguments.";
             else{
                 if (singlePlayer && playingAs === BLACK){
+                    let num = Math.ceil(Math.random()*5)*1000;
+                    console.log(num)
                     setTimeout(
                         playAiMove(),
-                        Math.ceil(Math.random()*5)*10000
+                        num
                     );
                 }
                 dispatchToStore('START_GAME');
@@ -296,11 +303,16 @@ const Gambit = (state) => {
 
   let move = (dest) => {
     try {
-        let result = game.move(selected, dest);
+        let result = engine.move(selected, dest);
         if (singlePlayer) {
+            let num = Math.ceil(Math.random()*5)*1000;
+            console.log(num, "309")
             setTimeout(
-                playAiMove(),
-                Math.ceil(Math.random()*5)*10000
+                () => {
+                    console.log("playing black");
+                    playAiMove();
+                },
+                num
             );
         }
         return result;
@@ -357,7 +369,7 @@ const Gambit = (state) => {
 
   let playAiMove = () => {
     try {
-        let result = game.aiMove(aiLevel);
+        let result = engine.aiMove(aiLevel);
         dispatchToStore("SET_POSITION");
         return result;
     } catch(e) {
@@ -378,12 +390,12 @@ const Gambit = (state) => {
     
   }
 
-  let getJson = () => game.exportJson();
+  let getJson = () => engine.exportJson();
 
-  let getFEN = () => game.exportFEN();
+  let getFEN = () => engine.exportFEN();
 
   let setFromFEN = (FEN) => {
-    game = new jsChessEngine.Game(FEN??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+    // game = new jsChessEngine.Game(FEN??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
   }
 
   let setBoardTheme = (theme) => {

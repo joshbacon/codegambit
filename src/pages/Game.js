@@ -11,9 +11,12 @@ import docs from '../assets/icons/docs.svg';
 import back from '../assets/icons/back.svg';
 
 
-const Game = (props) => {
-
+const Game = () => {
+  
   const {game} = useSelector(state => state);
+  
+  // const jsChessEngine = require('js-chess-engine');
+  // const engine = new jsChessEngine.Game('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
   // console.log('reload')
 
   return (
@@ -28,8 +31,8 @@ const Game = (props) => {
         </Link>
       </div>
       <section className="main">
-        <Board position={game.position} selected={game.selected} playingAs={game.playingAs}/>
-        <Terminal state={game}/>
+        <Board game={game.game} selected={game.selected} playingAs={game.playingAs}/>
+        <Terminal state={game} engine={null}/>
       </section>
     </div>
   );
