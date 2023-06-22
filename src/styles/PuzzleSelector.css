@@ -1,0 +1,137 @@
+html {
+    background-color: #191919;
+}
+
+.lessonSelector {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+  
+header {
+    background-color: black;
+    position: relative;
+    display: grid;
+    place-items: center;
+    font-size: calc(10px + 2vmin);
+    width: 100%;
+    height: 75px;
+}
+
+.lessonBackBtn {
+    width: 52px;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background-size: 90%;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.lessonList {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.lessonTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 50%;
+}
+
+.totalProgress {
+    display: flex;
+    flex-direction: row;
+    float: right;
+    padding-top: 10px;
+}
+
+.progressBar {
+    width: 100px;
+    height: 25px;
+    border-radius: 5px;
+    outline: #555555 solid 1px;
+}
+
+.progress {
+    background-color: green;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.lessonTabs {
+    width: 50%;
+    height: 60%;
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.tabs {
+    list-style: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.tabItem {
+    font-size: clamp(1rem, 1.5rem, 1.5rem);
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 5px 5px 0 0;
+    background-color: #191919;
+    cursor: pointer;
+}
+
+.tabItem:hover {
+    text-decoration: underline;
+}
+
+.active {
+    background-color: #111111;
+}
+
+.tabPanel {
+    font-size: 1.2rem;
+    padding: 15px;
+    background-color: #111111;
+    list-style-position: inside;
+    width: calc(100% - 30px);
+    min-height: 15rem;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.lessonItem {
+    cursor: pointer;
+    height: 1.5rem;
+    border-radius: 5px;
+    padding: 2px 0px 2px 15px;
+}
+
+.lessonItem:hover {
+    background-color: #191919;
+}
+
+.incomplete {
+    list-style-type: circle;
+}
+
+.complete {
+    list-style-type: none;
+}
+
+.complete::before {
+    content: '\2714\0020';
+}

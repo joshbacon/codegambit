@@ -1,0 +1,147 @@
+:root {
+  --bg-clr1: #202020;
+  --bg-clr2: #252525;
+
+  --text-clr: #008000;
+}
+  
+@font-face {
+    font-family: mainFont;
+    src: url('../assets/fonts/terminal.otf');
+}
+@font-face {
+    font-family: mainFontBold;
+    src: url('../assets/fonts/terminalBold.otf');
+}
+
+html {
+  color: var(--text-clr);
+  background-color: var(--bg-clr1);
+  font-family: mainFont;
+  overflow: hidden;
+}
+
+.titleBar h1 {
+  font-size: 3rem;
+  text-shadow: 2px 2px 6px #000000;
+}
+
+.mainPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: space-evenly;
+}
+
+.waves {
+  background-image: url("../assets/images/wavesOpacity.svg");
+  height: 20%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.info {
+  width: 100%;
+  height: 80%;
+  position: absolute;
+  top: 15%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  justify-content: space-evenly;
+}
+
+.titleBar {
+  position: relative;
+}
+
+.titleImage {
+  width: 90px;
+  aspect-ratio: 1;
+  position: absolute;
+  top: -45px;
+  z-index: -1;
+}
+
+.left {
+  background-image: url("../assets/pieces/wp.png");
+  left: -90px;
+  transform: rotateZ(25deg);
+}
+
+.right {
+  background-image: url("../assets/pieces/bp.png");
+  right: -90px;
+  transform: rotateZ(-25deg);
+}
+
+.mainMenu {
+  background-color: #252525;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.menuItem {
+  text-decoration: none;
+  color: var(--text-clr);
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  place-items: center;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background-color: var(--bg-clr1);
+}
+
+h2 {
+  padding: 5px 10px;
+}
+
+.menuImg {
+  width: 50px;
+  aspect-ratio: 1;
+  padding: 10px 0;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameBg {background-image: url('../assets/icons/game.svg')}
+.puzzlesBg {background-image: url('../assets/icons/puzzle.svg')}
+.docsBg {background-image: url('../assets/icons/docs.svg')}
+.accountBg {background-image: url('../assets/icons/user.svg')}
+
+
+.popup {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  background-color: #111111;
+  padding: 1rem;
+  border-radius: 15px;
+  box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+  -webkit-box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+  -moz-box-shadow: 0px 0px 31px 0px rgba(0,0,0,1);
+}
+
+.popup .showing {
+  display: block;
+  animation: fadeOut 4s;
+  -moz-animation: fadeOut 4s;
+  -webkit-animation: fadeOut 4s;
+  -o-animation: fadeOut 4s;
+}
+
+@keyframes fadeOut {
+  0%   { opacity: 100% }
+  50%  { opacity: 100% }
+  100% { opacity: 0% }
+}

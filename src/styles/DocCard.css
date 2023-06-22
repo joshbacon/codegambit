@@ -1,0 +1,40 @@
+:root {
+    --section-width: 500px;
+    --section-height: 300px;
+
+    --card-width: 100%;
+    --card-height: 100%;
+}
+
+.doc-section {
+    position: relative;
+    width: var(--section-width);
+    min-height: var(--card-height);
+    display: grid;
+    background-color: #111111;
+    border-radius: 20px;
+    row-gap: 1rem;
+    padding: 15px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+}
+
+.method-card {
+    width: var(--card-width);
+    min-height: var(--card-height);
+    background-color: #292929;
+    border-radius: 10px;
+}
+
+.method-card h3, .method-card p {
+    padding-left: 15px;
+}
+
+@media only screen and (max-width: 575px) {
+    :root {
+        --section-width: 90%;
+    }
+}
