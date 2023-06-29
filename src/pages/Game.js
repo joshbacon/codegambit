@@ -1,11 +1,10 @@
 import '../styles/Game.css';
 import '../styles/Board.css';
 import React from 'react';
-import { Link, /*useLocation*/ } from 'react-router-dom';
-import { Terminal } from '../components/Terminal';
-import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Board from '../components/Board';
+import Terminal from '../components/Terminal';
 
 import docs from '../assets/icons/docs.svg';
 import back from '../assets/icons/back.svg';
@@ -13,12 +12,6 @@ import back from '../assets/icons/back.svg';
 
 const Game = () => {
   
-  const {game} = useSelector(state => state);
-  
-  // const jsChessEngine = require('js-chess-engine');
-  // const engine = new jsChessEngine.Game('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-  // console.log('reload')
-
   return (
     <div className="game">
       <div className="gameHeader">
@@ -31,8 +24,8 @@ const Game = () => {
         </Link>
       </div>
       <section className="main">
-        <Board game={game.game} selected={game.selected} playingAs={game.playingAs}/>
-        <Terminal state={game} engine={null}/>
+        <Board />
+        <Terminal />
       </section>
     </div>
   );

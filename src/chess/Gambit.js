@@ -5,11 +5,14 @@ const Gambit = (state) => {
   // const game = new Game()
 //   const {state, engine} = props;
   const jsChessEngine = require('js-chess-engine');
-  const engine = new jsChessEngine.Game('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+  const { move, aiMove, status, getFen } = jsChessEngine;
+//   const engine = new jsChessEngine.Game('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
   // 
-  const {inGame, playingAs, selected, aiLevel, game, commands} = state;
-//   const {inGame, playingAs, aiLevel, position} = useSelector(state => state.game);
-//   const state = useSelector(state => state.game);
+//   const {inGame, playingAs, selected, aiLevel, game, commands} = useSelectstate;
+
+//   const {FEN} = useSelector(state => state.FEN);
+  const { inGame, playingAs, selected, aiLevel, game, commands } = useSelector(state => state.game);
+//   const tempvar = useSelector(state => state.game);
 
 //   console.log(game);
 
@@ -35,8 +38,13 @@ const Gambit = (state) => {
     if (result == '')
         dispatchToStore("SET_COMMANDS", {result: result, command: input});
     else
-        dispatchToStore("SET_COMMANDS", {result: Object.toString(result), command: input});
+        dispatchToStore("SET_COMMANDS", {result: result, command: input});
 
+    // console.log("NEW STATE AFTER DISPATCH", game);
+    // console.log(input);
+    dispatchToStore("SET_PREV_COMMAND", {command: input});
+    // console.log(prevCommand);
+    // console.log(tempvar);
     return result;
     // return runCommand(command, params);
   }
@@ -44,7 +52,6 @@ const Gambit = (state) => {
   let runCommand = (command, params) => {
     switch(command) {
         case 'select':
-            // console.log(state);
             if (!inGame)
                 return 'A game must be started to select a piece.';
             else if (params.length !== 1)
@@ -56,7 +63,6 @@ const Gambit = (state) => {
             else if (!isOwnPiece(params[0]))
                 return "You can only select your own pieces.";
             else {
-                // console.log("dispatching");
                 dispatchToStore('SET_SELECTED', {square: params[0].trim().toUpperCase()});
                 return '';
             }
@@ -79,13 +85,15 @@ const Gambit = (state) => {
                 return 'There is no piece currently selected to move.';
             else if (params.length !== 1)
                 return "move() expects 1 argument.";
-            else if (singlePlayer){
-                let result = move(params[0]);
-                dispatchToStore('SET_POSITION');
-                return result;
-            }       
-            else
-                return move(params[0]);
+            
+            let next = move(game, selected, params[0]);
+            if (singlePlayer) {
+                let aiMove = playAiMove(next);
+                return `[${selected}, ${params[0]}]\n${aiMove}`;
+            } else {
+                dispatchToStore('SET_POSITION', {next: next});
+                return `[${selected}, ${params[0]}]`;
+            }
             break;
         case 'take':
             if (!inGame)
@@ -98,7 +106,7 @@ const Gambit = (state) => {
                 return 'There is no piece to take on this square.';
             else {
                 let result = move(selected, params[0]);
-                dispatchToStore('SET_POSITION');
+                dispatchToStore('SET_POSITION', {from: selected, to: params[0]});
                 return result;
             }
             break;
@@ -154,16 +162,11 @@ const Gambit = (state) => {
                 return 'You can\'t start a new game with an existing instance.';
             else if (params.length !== 0)
                 return "startGame() expects no arguments.";
-            else{
-                if (singlePlayer && playingAs === BLACK){
-                    let num = Math.ceil(Math.random()*5)*1000;
-                    console.log(num)
-                    setTimeout(
-                        playAiMove(),
-                        num
-                    );
-                }
+            else {
                 dispatchToStore('START_GAME');
+                if (singlePlayer && playingAs === BLACK) {
+                    playAiMove();
+                }
                 return '';
             }
             break;
@@ -200,7 +203,7 @@ const Gambit = (state) => {
             if (params.length !== 0)
                 return "getFEN() expects no argument.";
             else
-                return getFEN();
+                return getFENState();
             break;
         case 'setBoardTheme':
             if (params.length !== 1)
@@ -225,7 +228,7 @@ const Gambit = (state) => {
             else if (params[0] !== WHITE && params[0] !== BLACK)
                 return "Valid paramaters are w for white or b for black.";
             else
-                dispatchToStore("SET_PLAYINGAS", {playingAs: params[0]})
+                dispatchToStore("SET_PLAYING_AS", {playingAs: params[0]})
                 return '';
         case 'help':
             if (params.length !== 1)
@@ -245,8 +248,6 @@ const Gambit = (state) => {
     if (type === "START_GAME") {
         action = {
             type: 'START_GAME',
-            playingAs: playingAs,
-            position: getJson()
         };
     } else if (type === "FINISH_GAME") {
         action = {
@@ -256,26 +257,26 @@ const Gambit = (state) => {
     } else if (type === "SET_POSITION") {
         action = {
             type: "SET_POSITION",
-            position: getJson()
+            position: getFen(payload.next)
         };
     } else if (type === "SET_SELECTED") {
         action = {
             type: "SET_SELECTED",
             selected: payload.square
         };
-    } else if (type === "SET_PLAYINGAS") {
+    } else if (type === "SET_PLAYING_AS") {
         action = {
-            type: "SET_PLAYINGAS",
+            type: "SET_PLAYING_AS",
             playingAs: payload.playingAs
         }
     } else if (type === "SET_COMMANDS") {
-        console.log(payload.result)
+        // console.log(payload.result)
         if (typeof(payload.result) === 'object' && payload.result.length === 0) {
             action = {
                 type: "SET_COMMANDS",
                 commands: []
             };
-        } else {//if (payload.result !== "") {
+        } else {
             if (payload.result === ""){
                 action = {
                     type: "SET_COMMANDS",
@@ -288,8 +289,14 @@ const Gambit = (state) => {
                 };
             }
         }
+    } else if (type === "SET_PREV_COMMAND") {
+        // console.log(payload.command)
+        action = {
+            type: "SET_PREV_COMMAND",
+            prevCommand: payload.command
+        }
     }
-    console.log("ACTION: ", action);
+    // console.log("ACTION: ", action);
     dispatch(action);
   }
 
@@ -301,9 +308,9 @@ const Gambit = (state) => {
           return piece === piece.toLowerCase();
   }
 
-  let move = (dest) => {
+  let movePiece = (dest) => {
     try {
-        let result = engine.move(selected, dest);
+        let result = move({...game}, selected, dest);
         if (singlePlayer) {
             let num = Math.ceil(Math.random()*5)*1000;
             console.log(num, "309")
@@ -367,32 +374,34 @@ const Gambit = (state) => {
     
   }
 
-  let playAiMove = () => {
+  let playAiMove = (position = game) => {
     try {
-        let result = engine.aiMove(aiLevel);
-        dispatchToStore("SET_POSITION");
-        return result;
+        let result = aiMove(position, aiLevel);
+        console.log(result);
+        console.log(Object.entries(result)[0][0], Object.entries(result)[0][1]);
+        let next = move(position, Object.entries(result)[0][0], Object.entries(result)[0][1])
+        console.log(next);
+        dispatchToStore("SET_POSITION", {next: next});
+        return `[${Object.entries(result)[0][0]}, ${Object.entries(result)[0][1]}]`;
     } catch(e) {
         return e;
     }
   }
 
   let getPiece = (square) => {
-    console.log(getJson(), square)
-    return getJson().pieces[square];
+    // console.log(getPieces(), square)
+    return getPieces()[square];
   }
 
   let getPieces = () => {
-    return getJson().pieces;
+    return status(game).pieces;
   }
 
   let getEvaluation = () => {
     
   }
 
-  let getJson = () => engine.exportJson();
-
-  let getFEN = () => engine.exportFEN();
+  let getFENState = () => getFen({...game});
 
   let setFromFEN = (FEN) => {
     // game = new jsChessEngine.Game(FEN??'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');

@@ -3,13 +3,13 @@ const initialState = {
     playingAs: 'w',
     selected: '',
     aiLevel: 2,
-    FEN: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-    // use the engine option of without memory and keep track of moves yourself
+    game: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RKBQKBNR w KQkq - 0 1',
     moves: [],
     commands: [
         'Welcome to code_gambit! We teach coding through playing chess.',
         'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
-    ]
+    ],
+    prevCommand: ''
 }
 
 export default function game(state = initialState, action) {
@@ -19,46 +19,46 @@ export default function game(state = initialState, action) {
             let temp = {
                 ...state,
                 inGame: true,
-                selected: '',
-                playingAs: action.playingAs,
-                position: action.position
+                selected: ''
             }
-            console.log(temp)
             return temp
         case 'FINISH_GAME':
             return  {
                 ...state,
                 inGame: false
             }
-        case 'SET_AILEVEL':
+        case 'SET_AI_LEVEL':
             return  {
                 ...state,
                 aiLevel: action.aiLevel
             }
         case 'SET_POSITION':
-            return  {
+            let next = {
                 ...state,
-                position: action.position
-            }
+                game: action.position
+            };
+            return next;
         case 'SET_SELECTED':
             let teamp = {
                 ...state,
                 selected: action.selected
             }
-            console.log(teamp)
             return teamp
-        case 'SET_PLAYINGAS':
-            console.log(state)
+        case 'SET_PLAYING_AS':
             let temo = {
                 ...state,
                 playingAs: action.playingAs
             }
-            console.log(temo)
             return temo
         case 'SET_COMMANDS':
             return {
                 ...state,
                 commands: action.commands
+            }
+        case 'SET_PREV_COMMAND':
+            return {
+                ...state,
+                prevCommand: action.prevCommand
             }
         default:
             return state;

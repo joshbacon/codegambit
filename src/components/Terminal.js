@@ -1,21 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Gambit from '../chess/Gambit';
 
-export const Terminal = (props) => {
-    let game = Gambit(props.state);
-    // console.log(props.state)
+const Terminal = (props) => {
+    let game = Gambit();
 
-    const {commands} = useSelector(state => state.game);
-    const dispatch = useDispatch();
-    let backAmount = 0;
-
-    // let commandHistory = [
-    //     'Welcome to code_gambit! We teach coding through playing chess.',
-    //     'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
-    // ];
-    
+    const {commands, prevCommand} = useSelector(state => state.game);
+    const gameCur = useSelector(state => state.game);
     const [currCommand, setCurrCommand] = useState("");
 
     const updateCommand = (e) => {
@@ -23,32 +15,20 @@ export const Terminal = (props) => {
     }
 
     const checkKey = (e) => {
+      console.log(gameCur.game);
         let key = e.key;
-        // console.log(key);
         if (key === 'ArrowUp') {
-            backAmount += 1;
-        // let newCommand = getPreviousCommand(backAmount);
-        // if (newCommand !== currCommand)
-        //     setCurrCommand(newCommand);
-        // else
-        //     backAmount -= 1;
+          setCurrCommand(prevCommand);
+        } else if (key === 'ArrowDown') {
+          setCurrCommand("");
         } else if (key === 'Enter') {
-            parseCommand(currCommand);
-            setCurrCommand("");
-            backAmount = 0;
-            // console.log("I RAN")
+          parseCommand(currCommand);
+          setCurrCommand("");
         }
-        // console.log(backAmount)
     }
 
     function parseCommand(command) {
-
-        let result = game.enterCommand(command);
-        // console.log(result);
-        // else if (result === '')
-        //     pass
-        // else 
-        //     commandHistory.push("Segmentation fault (core dumped)")
+      game.enterCommand(command);
     }
 
     const ScrollToBottom = () => {
@@ -83,3 +63,5 @@ export const Terminal = (props) => {
         </div>
     );
 }
+
+export default Terminal;
