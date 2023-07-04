@@ -6,7 +6,7 @@ import Gambit from '../chess/Gambit';
 const Terminal = (props) => {
     let game = Gambit();
 
-    const {commands, prevCommand} = useSelector(state => state.game);
+    const {commands, prevCommand, history, validMoves} = useSelector(state => state.game);
     const gameCur = useSelector(state => state.game);
     const [currCommand, setCurrCommand] = useState("");
 
@@ -15,19 +15,18 @@ const Terminal = (props) => {
     }
 
     const checkKey = (e) => {
-      console.log(gameCur.game);
         let key = e.key;
         if (key === 'ArrowUp') {
           setCurrCommand(prevCommand);
         } else if (key === 'ArrowDown') {
           setCurrCommand("");
         } else if (key === 'Enter') {
-          parseCommand(currCommand);
+          sendCommand(currCommand);
           setCurrCommand("");
         }
     }
 
-    function parseCommand(command) {
+    function sendCommand(command) {
       game.enterCommand(command);
     }
 

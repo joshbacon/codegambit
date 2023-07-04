@@ -3,8 +3,9 @@ const initialState = {
     playingAs: 'w',
     selected: '',
     aiLevel: 2,
-    game: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RKBQKBNR w KQkq - 0 1',
-    moves: [],
+    game: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+    history: [],
+    validMoves: [],
     commands: [
         'Welcome to code_gambit! We teach coding through playing chess.',
         'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
@@ -13,7 +14,6 @@ const initialState = {
 }
 
 export default function game(state = initialState, action) {
-    // console.log(state);
     switch (action.type) {
         case 'START_GAME':
             let temp = {
@@ -33,23 +33,20 @@ export default function game(state = initialState, action) {
                 aiLevel: action.aiLevel
             }
         case 'SET_POSITION':
-            let next = {
+            return {
                 ...state,
                 game: action.position
-            };
-            return next;
+            }
         case 'SET_SELECTED':
-            let teamp = {
+            return {
                 ...state,
                 selected: action.selected
             }
-            return teamp
         case 'SET_PLAYING_AS':
-            let temo = {
+            return {
                 ...state,
                 playingAs: action.playingAs
             }
-            return temo
         case 'SET_COMMANDS':
             return {
                 ...state,
@@ -59,6 +56,24 @@ export default function game(state = initialState, action) {
             return {
                 ...state,
                 prevCommand: action.prevCommand
+            }
+        case 'SET_HISTORY':
+            return {
+                ...state,
+                history: action.history
+            }
+        case 'SET_VALID_MOVES':
+            return {
+                ...state,
+                validMoves: action.moves
+            }
+        case 'RESET':
+            return {
+                ...state,
+                selected: '',
+                game: initialState.game,
+                history: [],
+                validMoves: []
             }
         default:
             return state;

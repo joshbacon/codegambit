@@ -21,12 +21,14 @@
     "section": "Checking",
     "methods": [
         {"mid":1, "method":"isValidMove(to)", "params":"to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
-        {"mid":2, "method":"getValidMoves()", "params":"none", "desc":"returns all valid moves for the current position; concatenate with .[square] to get only the valid moves for a given piece.", "example":"getValidMove().e2"},
-        {"mid":3, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
-        {"mid":4, "method":"hideValidMoves()", "params":"none", "desc":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
-        {"mid":5, "method":"showMoveHistory()", "params":"none", "desc":"prints the move history for both players in the terminal or returns false if no moves have been played.", "example":"showMoveHistory()"},
-        {"mid":6, "method":"showWhiteMoves()", "params":"none", "desc":"prints the move history for white in the terminal or returns false if no moves have been played.", "example":"showWhiteHistory()"},
-        {"mid":7, "method":"showBlackMoves()", "params":"none", "desc":"prints the move history for black in the terminal or returns false if no moves have been played.", "example":"showBlackHistory()"}
+        {"mid":2, "method":"isValidMove(from, to)", "params":"from - source square, to - destination square", "desc":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
+        {"mid":3, "method":"getValidMoves()", "params":"none", "desc":"returns all valid moves for the current position.", "example":"getValidMoves()"},
+        {"mid":3, "method":"getValidMoves(square)", "params":"square - the square you want ot see the moves for", "desc":"returns all valid moves for the piece at the given square.", "example":"getValidMoves(E2)"},
+        {"mid":4, "method":"showValidMoves()", "params":"none", "desc":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
+        {"mid":5, "method":"hideValidMoves()", "params":"none", "desc":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
+        {"mid":6, "method":"showMoveHistory()", "params":"none", "desc":"prints the move history for both players in the terminal or returns false if no moves have been played.", "example":"showMoveHistory()"},
+        {"mid":7, "method":"showWhiteMoves()", "params":"none", "desc":"prints the move history for white in the terminal or returns false if no moves have been played.", "example":"showWhiteHistory()"},
+        {"mid":8, "method":"showBlackMoves()", "params":"none", "desc":"prints the move history for black in the terminal or returns false if no moves have been played.", "example":"showBlackHistory()"}
     ]
 },
 {

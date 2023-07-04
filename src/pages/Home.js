@@ -20,7 +20,7 @@ function Home() {
         <div className='titleImage right'/>
       </div>
       <div className='mainMenu'>
-        <Link to='/play' state={{game: null}} className='menuItem'>
+        <Link to='/play' className='menuItem'>
           <div className='gameBg menuImg'/>
           <h2>Play a Game</h2>
         </Link>

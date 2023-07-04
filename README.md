@@ -28,24 +28,23 @@
 
 [![codegambit Screen Shot][product-screenshot]](https://codegambit.io)
 
-`codegambit` is web app aimed to get users used to entering commands and writing simple functions in the context of playing chess. Play a game against a bot or a friend by entering commands into a terminal and . You can also complete lessons by writing scripts that execute multiple moves to solve the problem.
+`codegambit` is web app aimed to get users used to entering commands and writing simple functions in the context of playing chess. Play a game against a bot or a friend by entering commands into a terminal. You can also complete puzzles and lessons by writing scripts that execute multiple moves to solve the problem.
 
 
 
 ### Built With
 
-This project is built with primarily JavaScript. I used React for the frontend design and functionality along with Redux to maintain the game state. The site is hosted on my RPI using Nginx (note this may affect load times).
+This project is built with primarily JavaScript at the moment. I used React for the frontend design and functionality along with Redux to maintain the game state.
 
 * [![React][React.js]][React-url]
 * [![Redux][Redux.com]][Redux-url]
-* [![nginx][nginx.com]][nginx-url]
 
 ### Coming Up
 
-I aim to create a Go API to communicate with a MySQL database enabling accounts and, by extension, multiplayer games. For faster load times, I also want to migrate to Next.JS for server side rendering.
+I aim to create a user management system with the help of Clerk. This will allow for game/puzzle/lesson tracking and opens the door for multiplayer games. Go will be used to create a backend to maintain multiplayer game lobbies. For faster load times, and other benefits of server side rendering, I also want to migrate to Next.JS.
 
+* [![Clerk][Clerk]][Clerk-url]
 * [![go][go]][go-url]
-* [![MySQL][MySQL]][MySQL-url]
 * [![Next.js][Next.js]][Next-url]
 
 
@@ -54,7 +53,7 @@ I aim to create a Go API to communicate with a MySQL database enabling accounts 
 
 - [x] Finalize base-application
 - [ ] Add backend
-- [ ] Add lessons
+- [ ] Add puzzles/lessons
 - [ ] Add multiplayer & accounts
 - [ ] Migrate to Next.js for SSR
 
@@ -83,9 +82,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information. -->
 [Node-url]: https://nodejs.org/en/
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
-[MySQL]: https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white
-[MySQL-url]: https://www.mysql.com/
+[Clerk]: https://img.shields.io/badge/Clerk-6c47ff?style=for-the-badge&logo=Clockify&logoColor=white
+[Clerk-url]: https://clerk.com/
 [go]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=Go&logoColor=white
 [go-url]: https://golang.google.cn/
-[nginx.com]: https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=NGINX
-[nginx-url]: https://nginx.org/en/

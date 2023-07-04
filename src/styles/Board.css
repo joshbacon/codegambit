@@ -28,9 +28,17 @@
     aspect-ratio: 1;
     background-size: 100%;
 }
-  
+
 .selected {
     background-color: #80008090;
+}
+
+.lastMove {
+    background-color: #fdd70090;
+}
+
+.valid {
+    background-color: #00ff0d90;
 }
   
 .p {background-image: url("../assets/pieces/bp.png")}
