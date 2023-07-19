@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Gambit = (state) => {
@@ -7,13 +8,18 @@ const Gambit = (state) => {
   
   const { inGame, playingAs, selected, aiLevel, game, history, commands } = useSelector(state => state.game);
 
-
   const dispatch = useDispatch();
 
   const WHITE = 'w';
   const BLACK = 'b';
 
   let singlePlayer = true;
+
+  useEffect(() => {
+    try {
+        setBotDepth(localStorage.getItem('aiLevel') ?? 0);
+    } catch { }
+  },[]);
 
   let parseCommand = (input) => {
     // TODO: need to update this to accept the FEN notation for setFromFEN()
@@ -233,7 +239,7 @@ const Gambit = (state) => {
                 return "setBoardTheme() expects 1 argument.";
             else if (!['bDark', 'bLight', 'bPurple', 'bBlue', 'bGreen', 'bOrange'].includes(params[0]))
                 return '';
-            else 
+            else
                 localStorage.setItem('bTheme', params[0]);
                 return '';
             break;
@@ -441,7 +447,8 @@ const Gambit = (state) => {
     
   }
 
-  let setBotDepth = (newLevel = 2) => {
+  let setBotDepth = (newLevel = 0) => {
+    localStorage.setItem('aiLevel', newLevel);
     dispatchToStore('SET_AI_LEVEL', {aiLevel: newLevel});
   }
 

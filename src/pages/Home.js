@@ -34,12 +34,10 @@ function Home() {
           <div className='docsBg menuImg'/>
           <h2>Documentation</h2>
         </Link>
-        {/* <Link to='/account' className='menuItem'> */}
-        <div className='menuItem' onClick={showPopup}>
+        <Link to='/account' className='menuItem'>
           <div className='accountBg menuImg'/>
           <h2>Account</h2>
-        </div>
-        {/* </Link> */}
+        </Link>
       </div>
       <div className={'popup'+(showingPopup?' showing':'')} onClick={() => setShowing(false)}>
         <h2>This feature is coming soon</h2>

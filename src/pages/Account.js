@@ -1,43 +1,35 @@
 import '../styles/Account.css';
-import React from 'react';
-import {useState} from 'react';
+import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
+import pb from '../api/pocketbase';
+import Login from '../components/Login';
+import useLogout from '../hooks/useLogout';
+import UserCard from '../components/UserCard';
 import Settings from '../components/Settings';
 
 import back from '../assets/icons/back.svg';
 
 const Account = (props) => {
+    const logout = useLogout();
 
-    // do something to grab the current account from the localStorage
-    // return the account page if one exists
-    // otherwise show a login signup page
+    const [loggedIn, setLoggedIn] = useState(pb.authStore.isValid);
 
     return <div className='account'>
         <div className='waves'/>
         <Link to='/' className='home button'>
             <img src={back} alt='Back button' className='homeImg'/>
         </Link>
-        <div className='userCard'>
-            <h2>Josh Bacon</h2>
-            <div className='gameSection'>
-                <div className='played section'>
-                    <p className='result'>23</p>
-                    <p>games played</p>
-                </div>
-                <div className='won section'>
-                    <p className='result'>23</p>
-                    <p>games won</p>
-                </div>
-                <div className='winRate section'>
-                    <p className='result'>52%</p>
-                    <p>win rate</p>
-                </div>
-            </div>
-            <div className='lessonSection'>
-                <p className='result'>12</p>
-                <p>Lessons completed</p>
-            </div>
-        </div>
+        { !loggedIn ?
+            <Login onLogin={(result) => setLoggedIn(result)}/> :
+            <>
+                <UserCard />
+                <button onClick={() => {
+                    let result = logout();
+                    console.log(result);
+                    setLoggedIn(result);
+                }}>Logout</button>
+            </>
+        }
     </div>
 }
 

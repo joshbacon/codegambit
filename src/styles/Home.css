@@ -70,13 +70,13 @@ html {
 }
 
 .left {
-  background-image: url("../assets/pieces/wp.png");
+  background-image: url("../assets/images/pieces/wp.png");
   left: -90px;
   transform: rotateZ(25deg);
 }
 
 .right {
-  background-image: url("../assets/pieces/bp.png");
+  background-image: url("../assets/images/pieces/bp.png");
   right: -90px;
   transform: rotateZ(-25deg);
 }

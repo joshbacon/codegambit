@@ -9,18 +9,18 @@
     background-size: 100%;
 }
 
-.wbDark { background-image: url('../assets/images/wboardDark.png') }
-.wbLight { background-image: url('../assets/images/wboardLight.png') }
-.wbPurple { background-image: url('../assets/images/wboardPurple.png') }
-.wbBlue { background-image: url('../assets/images/wboardBlue.png') }
-.wbGreen { background-image: url('../assets/images/wboardGreen.png') }
-.wbOrange { background-image: url('../assets/images/wboardOrange.png') }
-.bbDark { background-image: url('../assets/images/bboardDark.png') }
-.bbLight { background-image: url('../assets/images/bboardLight.png') }
-.bbPurple { background-image: url('../assets/images/bboardPurple.png') }
-.bbBlue { background-image: url('../assets/images/bboardBlue.png') }
-.bbGreen { background-image: url('../assets/images/bboardGreen.png') }
-.bbOrange { background-image: url('../assets/images/bboardOrange.png') }
+.wbDark { background-image: url('../assets/images/boards/wboardDark.png') }
+.wbLight { background-image: url('../assets/images/boards/wboardLight.png') }
+.wbPurple { background-image: url('../assets/images/boards/wboardPurple.png') }
+.wbBlue { background-image: url('../assets/images/boards/wboardBlue.png') }
+.wbGreen { background-image: url('../assets/images/boards/wboardGreen.png') }
+.wbOrange { background-image: url('../assets/images/boards/wboardOrange.png') }
+.bbDark { background-image: url('../assets/images/boards/bboardDark.png') }
+.bbLight { background-image: url('../assets/images/boards/bboardLight.png') }
+.bbPurple { background-image: url('../assets/images/boards/bboardPurple.png') }
+.bbBlue { background-image: url('../assets/images/boards/bboardBlue.png') }
+.bbGreen { background-image: url('../assets/images/boards/bboardGreen.png') }
+.bbOrange { background-image: url('../assets/images/boards/bboardOrange.png') }
   
 .square {
     position: absolute;
@@ -41,12 +41,12 @@
     background-color: #00ff0d90;
 }
   
-.p {background-image: url("../assets/pieces/bp.png")}
-.n {background-image: url("../assets/pieces/bn.png")}
-.b {background-image: url("../assets/pieces/bb.png")}
-.r {background-image: url("../assets/pieces/br.png")}
-.q {background-image: url("../assets/pieces/bq.png")}
-.k {background-image: url("../assets/pieces/bk.png")}
+.p {background-image: url("../assets/images/pieces/bp.png")}
+.n {background-image: url("../assets/images/pieces/bn.png")}
+.b {background-image: url("../assets/images/pieces/bb.png")}
+.r {background-image: url("../assets/images/pieces/br.png")}
+.q {background-image: url("../assets/images/pieces/bq.png")}
+.k {background-image: url("../assets/images/pieces/bk.png")}
 
 .a1 {top: calc(var(--square-size) * 0); left: calc(var(--square-size) * 7)}
 .a2 {top: calc(var(--square-size) * 1); left: calc(var(--square-size) * 7)}
@@ -113,12 +113,12 @@
 .h7 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 0)}
 .h8 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 0)}
   
-.P {background-image: url("../assets/pieces/wp.png")}
-.N {background-image: url("../assets/pieces/wn.png")}
-.B {background-image: url("../assets/pieces/wb.png")}
-.R {background-image: url("../assets/pieces/wr.png")}
-.Q {background-image: url("../assets/pieces/wq.png")}
-.K {background-image: url("../assets/pieces/wk.png")}
+.P {background-image: url("../assets/images/pieces/wp.png")}
+.N {background-image: url("../assets/images/pieces/wn.png")}
+.B {background-image: url("../assets/images/pieces/wb.png")}
+.R {background-image: url("../assets/images/pieces/wr.png")}
+.Q {background-image: url("../assets/images/pieces/wq.png")}
+.K {background-image: url("../assets/images/pieces/wk.png")}
   
 .A1 {top: calc(var(--square-size) * 7); left: calc(var(--square-size) * 0)}
 .A2 {top: calc(var(--square-size) * 6); left: calc(var(--square-size) * 0)}
