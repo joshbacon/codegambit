@@ -2,7 +2,7 @@ import '../styles/Account.css';
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import pb from '../api/pocketbase';
-import Login from '../components/Login';
+import AuthCard from '../components/AuthCard';
 import useLogout from '../hooks/useLogout';
 import UserCard from '../components/UserCard';
 import Settings from '../components/Settings';
@@ -14,15 +14,17 @@ const Account = (props) => {
 
     const [loggedIn, setLoggedIn] = useState(pb.authStore.isValid);
 
+    console.log(pb.authStore.model);
+
     return <div className='account'>
         <div className='waves'/>
         <Link to='/' className='home button'>
             <img src={back} alt='Back button' className='homeImg'/>
         </Link>
         { !loggedIn ?
-            <Login onLogin={(result) => setLoggedIn(result)}/> :
+            <AuthCard onLogin={(result) => setLoggedIn(result)}/> :
             <>
-                <UserCard />
+                <UserCard data={pb.authStore.model}/>
                 <button onClick={() => {
                     let result = logout();
                     console.log(result);

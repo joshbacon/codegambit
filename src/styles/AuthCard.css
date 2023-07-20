@@ -1,0 +1,116 @@
+.auth-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: clamp(290px, 40vw, 1120px);
+    height: clamp(285px, 50vh, 1000px);
+    border-radius: 2rem;
+    background-color: #5c5c5cb0;
+    overflow: hidden;
+}
+
+.auth-card h1 {
+    font-size: max(25px, min(3.5vw, 3.5vh));
+    text-shadow:  2px 2px 20px #0c0c0cd8,
+                -2px -2px 20px #282828d8;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 60%;
+    height: 100%;
+}
+
+::placeholder {
+    color: var(--text-primary);
+}
+
+:focus::placeholder {
+    opacity: 0.35;
+}
+
+.auth-card input {
+    outline: none;
+    width: clamp(250px, 80%, 700px);
+    height: clamp(40px, 10%, 300px);
+    font-size: max(20px, min(3vw, 3vh));
+    background-color: #252525;
+    box-shadow:  2px 2px 20px #0C0C0Cd8,
+                -2px -2px 20px #282828d8;
+}
+
+.auth-card button {
+    outline: none;
+    border: none;
+    width: clamp(250px, 60%, 700px);
+    height: clamp(40px, 10%, 80px);
+    border-radius: 15px;
+    font-size: max(18px, min(2.5vw, 2.5vh));
+    background-color: #141414;
+    box-shadow:  2px 2px 20px #0c0c0cd8,
+                -2px -2px 20px #282828d8;
+}
+
+.toggleMethod {
+    margin: 2rem;
+}
+
+.auth-card button:hover {
+    animation: flash 3s ease-in-out infinite;
+}
+
+.fade-in {
+    animation: fade-in 1s ease-in;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(+5rem);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0rem);
+    }
+}
+
+@keyframes flash {
+    25% { 
+        color: var(--text-primary);
+        text-shadow: 0 0 1px #FFF,
+            0 0 2px #FFF,
+            0 0 3px #FFF,
+            0 0 4px #49ff18,
+            0 0 6px #49FF18,
+            0 0 8px #49FF18,
+            0 0 11px #49FF18,
+            0 0 15px #49ff18;
+    }
+    50% {
+        color: #FFFFFF;
+        background: #222422;
+        text-shadow: 0 0 5px #FFF,
+            0 0 10px #FFF,
+            0 0 15px #FFF,
+            0 0 20px #49ff18,
+            0 0 30px #49FF18,
+            0 0 40px #49FF18,
+            0 0 55px #49FF18,
+            0 0 75px #49ff18;
+    }
+    75% { 
+        color: var(--text-primary);
+        text-shadow: 0 0 1px #FFF,
+            0 0 2px #FFF,
+            0 0 3px #FFF,
+            0 0 4px #49ff18,
+            0 0 6px #49FF18,
+            0 0 8px #49FF18,
+            0 0 11px #49FF18,
+            0 0 15px #49ff18;
+        }
+}

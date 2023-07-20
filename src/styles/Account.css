@@ -1,8 +1,9 @@
 .account {
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
+    margin-top: 15vh;
     display: grid;
-    place-content: center;
+    place-items: center;
 }
 
 .waves {
@@ -100,4 +101,57 @@
     height: 35%;
     display: grid;
     place-items: center;
+}
+
+button {
+    outline: none;
+    border: none;
+    width: clamp(150px, 60%, 300px);
+    height: clamp(40px, 10%, 80px);
+    border-radius: 15px;
+    font-size: max(18px, min(2.5vw, 2.5vh));
+    background-color: #141414;
+    box-shadow:  17px 17px 30px #0A0A0A,
+                -17px -17px 30px #282828;
+}
+
+button:hover {
+    animation: flash 3s ease-in-out infinite;
+}
+
+@keyframes flash {
+    25% { 
+        color: var(--text-primary);
+        text-shadow: 0 0 1px #FFF,
+            0 0 2px #FFF,
+            0 0 3px #FFF,
+            0 0 4px #49ff18,
+            0 0 6px #49FF18,
+            0 0 8px #49FF18,
+            0 0 11px #49FF18,
+            0 0 15px #49ff18;
+    }
+    50% {
+        color: #FFFFFF;
+        background: #222422;
+        text-shadow: 0 0 5px #FFF,
+            0 0 10px #FFF,
+            0 0 15px #FFF,
+            0 0 20px #49ff18,
+            0 0 30px #49FF18,
+            0 0 40px #49FF18,
+            0 0 55px #49FF18,
+            0 0 75px #49ff18;
+    }
+    75% { 
+        color: var(--text-primary);
+        text-shadow: 0 0 1px #FFF,
+            0 0 2px #FFF,
+            0 0 3px #FFF,
+            0 0 4px #49ff18,
+            0 0 6px #49FF18,
+            0 0 8px #49FF18,
+            0 0 11px #49FF18,
+            0 0 15px #49ff18;
+        }
 }

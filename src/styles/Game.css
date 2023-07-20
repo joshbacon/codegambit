@@ -1,6 +1,4 @@
 :root {
-    --terminal-text: #008000;
-  
     --square-size: 90px;
     --square-size: 12%;
 }
@@ -85,71 +83,9 @@ button {
 .main::-webkit-scrollbar {
     width: 0;
 }
-
-.terminal {
-    z-index: 5;
-    overflow: hidden;
-    width: 667px;
-    max-width: 80%;
-    border-radius: 20px;
-    box-shadow:  17px 17px 40px #0A0A0A,
-                -17px -17px 40px #282828;
-}
-  
-.command-history {
-    display: flex;
-    flex-direction: column;
-  
-    position: relative;
-    padding: 1rem;
-    overflow-x: hidden;
-    overflow-y: auto;
-  
-    background-color: black;
-    font-size: 1rem;
-  
-    width: 100%;
-    height: 15rem;
-}
-  
-.command-history::-webkit-scrollbar {
-    width: 15px;
-}
-  
-.command-history::-webkit-scrollbar-track {
-    background-color: #00000000;
-}
-  
-.command-history::-webkit-scrollbar-thumb {
-    background-color: var(--terminal-text);
-}
-  
-.terminal-in {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 15px;
-  
-    background-color: black;
-    border-top: 1px var(--terminal-text) solid;
-}
-  
-.code-in {
-    width: 100%;
-    padding: 1rem;
-  
-    color: var(--terminal-text);
-    background-color: inherit;
-    font-size: 1.2rem;
-    border: none;
-    outline: none;
-}
   
 @media only screen and (max-width: 915px){
     .main {
       grid-template-columns: 1fr;
-    }
-    .command-history {
-      height: 10rem;
     }
 }

@@ -1,18 +1,17 @@
 import pb from '../api/pocketbase';
 import useLogin from './useLogin';
 
-const useLogin = () => {
+const useSignup = () => {
 
     const login = useLogin();
-    const data = {
-        email,
-        usename,
-        password,
-        passwordConfirm: password
-    };
     
-    let signup = async () => {
-        console.log("loggin in");
+    let signup = async ({email, username, password}) => {
+        const data = {
+            email,
+            username,
+            password,
+            passwordConfirm: password
+        }
         try {
             const createdUser = await pb
                 .collection('users')
@@ -26,4 +25,4 @@ const useLogin = () => {
     return signup;
 }
 
-export default useLogin;
+export default useSignup;
