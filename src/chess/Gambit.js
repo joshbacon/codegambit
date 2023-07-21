@@ -129,9 +129,9 @@ const Gambit = (state) => {
             else if (selected === '' && params.length === 1)
                 return 'There is no piece currently selected to check if move is valid.';
             else if (params.length === 1){
-                return '['+getValidMoves(params[0])+']';
+                return '['+getValidMoves(params[0]).toString()+']';
             } else {
-                return '['+getValidMoves()+']';
+                return '['+getValidMoves().toString()+']';
             }
             break;
         case 'showValidMoves':
@@ -394,7 +394,7 @@ const Gambit = (state) => {
   }
 
   let getValidMoves = (square=selected) => {
-    return moves(game)[square].toString();
+    return moves(game)[square];
   }
 
   let formatMoves = (side='wb') => {

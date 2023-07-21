@@ -19,19 +19,19 @@ type Game struct {
 	Moves string `json:"moves"`
 }
 
-type CompletedLesson struct {
-	Id int64 `json:"id"`
-	Lesson_id int `json:"lesson_id"`
-	User_id int64 `json:"user_id"`
-}
+// type CompletedLesson struct {
+// 	Id int64 `json:"id"`
+// 	Lesson_id int `json:"lesson_id"`
+// 	User_id int64 `json:"user_id"`
+// }
 
-type Lesson struct {
-	Id int64 `json:"id"`
-	Category string `json:"category"`
-	Rating int `json:"rating"`
-	Title string `json:"title"`
-	FEN string `json:"FEN"`
-	Playing_as string `json:"playing_as"`
-	Moves string `json:"moves"`
-	Goal string `json:"goal"`
-}
+// type Lesson struct {
+// 	Id int64 `json:"id"`
+// 	Category string `json:"category"`
+// 	Rating int `json:"rating"`
+// 	Title string `json:"title"`
+// 	FEN string `json:"FEN"`
+// 	Playing_as string `json:"playing_as"`
+// 	Moves string `json:"moves"`
+// 	Goal string `json:"goal"`
+// }

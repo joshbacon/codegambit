@@ -33,7 +33,7 @@
     opacity: 0.35;
 }
 
-.auth-card input {
+.auth-card > input {
     outline: none;
     width: clamp(250px, 80%, 700px);
     height: clamp(40px, 10%, 300px);
@@ -43,7 +43,7 @@
                 -2px -2px 20px #282828d8;
 }
 
-.auth-card button {
+.auth-card > button {
     outline: none;
     border: none;
     width: clamp(250px, 60%, 700px);

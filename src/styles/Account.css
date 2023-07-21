@@ -16,7 +16,7 @@
   z-index: -1;
 }
 
-.button {
+.account .button {
     position: absolute;
     border-radius: 10px;
     padding: 5px;
@@ -27,7 +27,7 @@
     z-index: 2;
 }
 
-.button:hover {
+.account .button:hover {
     background-color: #252525F0;
     box-shadow: 0px 0px 26px 0px rgba(0,0,0,0.75);
     -webkit-box-shadow: 0px 0px 26px 0px rgba(0,0,0,0.75);
@@ -103,7 +103,7 @@
     place-items: center;
 }
 
-button {
+.account button {
     outline: none;
     border: none;
     width: clamp(150px, 60%, 300px);
@@ -115,7 +115,7 @@ button {
                 -17px -17px 30px #282828;
 }
 
-button:hover {
+.account button:hover {
     animation: flash 3s ease-in-out infinite;
 }
 

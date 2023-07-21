@@ -70,11 +70,14 @@ export default function game(state = initialState, action) {
         case 'RESET':
             return {
                 ...state,
+                inGame: false,
                 selected: '',
                 game: initialState.game,
                 history: [],
                 validMoves: []
             }
+        case 'FIX':
+            return initialState
         default:
             return state;
     }

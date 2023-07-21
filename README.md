@@ -34,16 +34,16 @@
 
 ### Built With
 
-This project is built with primarily JavaScript at the moment. I used React for the frontend design and functionality along with Redux to maintain the game state.
+This project is built with primarily JavaScript at the moment. I used React for the frontend design and functionality along with Redux to maintain the game state. The user management system was implemented with the help of PocketBase. This allows for game/puzzle/lesson tracking and opens the door for multiplayer games.
 
 * [![React][React.js]][React-url]
 * [![Redux][Redux.com]][Redux-url]
+* [![PocketBase][PocketBase]][PocketBase-url]
 
 ### Coming Up
 
-I aim to create a user management system with the help of Clerk. This will allow for game/puzzle/lesson tracking and opens the door for multiplayer games. Go will be used to create a backend to maintain multiplayer game lobbies. For faster load times, and other benefits of server side rendering, I also want to migrate to Next.JS.
+I aim to create a Go backend to maintain multiplayer game lobbies using websockets. For faster load times, and other benefits of server side rendering, I also want to migrate to Next.JS.
 
-* [![Clerk][Clerk]][Clerk-url]
 * [![go][go]][go-url]
 * [![Next.js][Next.js]][Next-url]
 
@@ -82,7 +82,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information. -->
 [Node-url]: https://nodejs.org/en/
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
-[Clerk]: https://img.shields.io/badge/Clerk-6c47ff?style=for-the-badge&logo=Clockify&logoColor=white
-[Clerk-url]: https://clerk.com/
+[PocketBase]: https://img.shields.io/badge/PocketBase-white?style=for-the-badge&logo=PocketBase&logoColor=black
+[PocketBase-url]: https://clerk.com/
 [go]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=Go&logoColor=white
 [go-url]: https://golang.google.cn/

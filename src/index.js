@@ -8,6 +8,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import Home from './pages/Home';
 import Game from './pages/Game';
+import Multiplayer from './pages/Multiplayer';
 import PuzzleSelector from './pages/PuzzleSelector';
 import Puzzle from './pages/Puzzle';
 import Docs from './pages/Docs';
@@ -25,6 +26,7 @@ root.render(
           <Routes>
             <Route path='/' element={<Home/>} />
             <Route path='/play' element={<Game/>} />
+            <Route path='/multiplayer' element={<Multiplayer/>} />
             <Route path='/puzzles' element={<PuzzleSelector/>} />
             <Route path='/puzzle/:id' element={<Puzzle/>} />
             <Route path='/documentation' element={<Docs/>} />
