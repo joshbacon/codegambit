@@ -20,10 +20,14 @@ const reducers = combineReducers({
     routing: routerReducer
 });
 
-const persistentReducer = persistReducer(persistConfig, reducers);
+// const persistentReducer = persistReducer(persistConfig, reducers);
+
+// export const store = configureStore({
+//     reducer: persistentReducer
+// });
 
 export const store = configureStore({
-    reducer: persistentReducer
+    reducer: reducers
 });
 
 const browserHistory = createBrowserHistory();

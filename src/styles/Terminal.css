@@ -59,6 +59,7 @@
     font-size: 1.2rem;
     border: none;
     outline: none;
+    box-shadow: none;
 }
   
 @media only screen and (max-width: 915px){

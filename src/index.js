@@ -15,13 +15,13 @@ import Docs from './pages/Docs';
 import Account from './pages/Account';
 
 
-let persistor = persistStore(store);
+// let persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      {/* <PersistGate persistor={persistor}> */}
         <Router history={history}>
           <Routes>
             <Route path='/' element={<Home/>} />
@@ -33,7 +33,7 @@ root.render(
             <Route path='/account' element={<Account/>} />
           </Routes>
         </Router>
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   </React.StrictMode>
 );

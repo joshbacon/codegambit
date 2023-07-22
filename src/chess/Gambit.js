@@ -88,6 +88,7 @@ const Gambit = (state) => {
             
             let result = playMove(params);
             dispatchToStore('SET_HISTORY', {history: [...history, ...result]});
+            dispatchToStore('SET_VALID_MOVES', {moves: []});
             if (result.length > 1){
                 return `[${result[0][0]}, ${result[0][1]}]\n[${result[1][0]}, ${result[1][1]}]`;
             } else return `[${result[0][0]}, ${result[0][1]}]`;

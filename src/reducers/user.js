@@ -1,8 +1,8 @@
 const initialState = {
-    id: '74',
-    email: 'user@code.gambit',
-    name: 'user',
-    password: 'pass',
+    id: '',
+    email: '',
+    name: '',
+    password: '',
 
 };
 

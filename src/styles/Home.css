@@ -154,6 +154,16 @@ h2 {
   transition: transform 1s;
 }
 
+.mainMenu .disabled,
+.playMenu .disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.mainMenu .disabled:hover,
+.playMenu .disabled:hover {
+  background-color: #0000;
+}
+
 .popup {
   display: none;
   position: absolute;
