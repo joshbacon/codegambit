@@ -1,0 +1,29 @@
+{
+    "select":   {"id": 0, "mid": 0},
+    "unselect": {"id": 0, "mid": 1},
+
+    "move": {"id":1, "mid": 0},
+    "take": {"id":1, "mid": 1},
+
+    "isValidMove": {"id":2, "mid": 0},
+    "getValidMoves": {"id":2, "mid": 2},
+    "showValidMoves": {"id":2, "mid": 4},
+    "hideValidMoves": {"id":2, "mid": 5},
+    "showMoveHistory": {"id":2, "mid": 6},
+    "showWhiteMoves": {"id":2, "mid": 7},
+    "showBlackMoves": {"id":2, "mid": 8},
+
+    "startGame": {"id":3, "mid": 0},
+    "offerDraw": {"id":3, "mid": 1},
+    "resign": {"id":3, "mid": 2},
+    "resetBoard": {"id":3, "mid": 3},
+    "getFEN": {"id":3, "mid": 4},
+    "setFromFEN": {"id":3, "mid": 5},
+
+    "setBoardTheme": {"id":4, "mid": 0},
+    "setBotDepth": {"id":4, "mid": 1},
+    "playAs": {"id":4, "mid": 2},
+
+    "help": {"id":5, "mid": 0},
+    "clear": {"id":5, "mid": 1}
+}

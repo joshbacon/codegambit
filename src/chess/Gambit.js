@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import DocData from '../data/docs.json';
+import DocLookup from '../data/docLookup.json';
 
 const Gambit = (state) => {
 
@@ -22,8 +24,7 @@ const Gambit = (state) => {
   },[]);
 
   let parseCommand = (input) => {
-    // TODO: need to update this to accept the FEN notation for setFromFEN()
-    if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(input)){
+    if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(input) && !input.includes("setFromFEN")){
         let result = "Invalid function format.";
         dispatchToStore("SET_COMMANDS", {result: result, command: input});
         return result;
@@ -36,14 +37,13 @@ const Gambit = (state) => {
     params = params.filter((str) => { return str.length > 0; });
 
     let result = runCommand(command, params);
-    if (result == '')
+    if (result === '')
         dispatchToStore("SET_COMMANDS", {result: result, command: input});
     else
         dispatchToStore("SET_COMMANDS", {result: result, command: input});
 
     dispatchToStore("SET_PREV_COMMAND", {command: input});
     return result;
-    // return runCommand(command, params);
   }
 
   let runCommand = (command, params) => {
@@ -53,7 +53,7 @@ const Gambit = (state) => {
                 return 'A game must be started to select a piece.';
             else if (params.length !== 1)
                 return "select() expects 1 argument.";
-            else if (getPiece(params[0]) === '')
+            else if (getPiece(params[0]) === '' || getPiece(params[0]) === undefined)
                 return "There is no piece on this square.";
             else if (!/^[A-H][1-8]$/.test(params[0]))
                 return "An invalid square was given.";
@@ -63,7 +63,6 @@ const Gambit = (state) => {
                 select(params[0]);
                 return '';
             }
-            break;
         case 'unselect':
             if (!inGame)
                 return 'A game must be started to unselect a piece.';
@@ -75,7 +74,6 @@ const Gambit = (state) => {
                 select('');
                 return '';
             }
-            break;
         case 'move':
             if (!inGame)
                 return 'A game must be started to move a piece.';
@@ -92,7 +90,6 @@ const Gambit = (state) => {
             if (result.length > 1){
                 return `[${result[0][0]}, ${result[0][1]}]\n[${result[1][0]}, ${result[1][1]}]`;
             } else return `[${result[0][0]}, ${result[0][1]}]`;
-            break;
         case 'take':
             if (!inGame)
                 return 'A game must be started to take a piece.';
@@ -105,11 +102,14 @@ const Gambit = (state) => {
             else if (!isValidMove(selected, params[0]))
                 return "This is not a valid move.";
             else {
-                let result = move(selected, params[0]);
-                dispatchToStore('SET_POSITION', {from: selected, to: params[0]});
-                return result;
+                console.log(params[0]);
+                let result = playMove(params);
+                dispatchToStore('SET_HISTORY', {history: [...history, ...result]});
+                dispatchToStore('SET_VALID_MOVES', {moves: []});
+                if (result.length > 1){
+                    return `[${result[0][0]}, ${result[0][1]}]\n[${result[1][0]}, ${result[1][1]}]`;
+                } else return `[${result[0][0]}, ${result[0][1]}]`;
             }
-            break;
         case 'isValidMove':
             if (!inGame)
                 return 'A game must be started to select a piece.';
@@ -121,7 +121,6 @@ const Gambit = (state) => {
                 return `${isValidMove(selected, params[0])}`;
             else
                 return `${isValidMove(params[0], params[1])}`;
-            break;
         case 'getValidMoves':
             if (!inGame)
                 return 'A game must be started to select a piece.';
@@ -134,7 +133,6 @@ const Gambit = (state) => {
             } else {
                 return '['+getValidMoves().toString()+']';
             }
-            break;
         case 'showValidMoves':
             if (!inGame)
                 return 'A game must be started to show valid moves.';
@@ -147,7 +145,6 @@ const Gambit = (state) => {
                 dispatchToStore('SET_VALID_MOVES', {moves: result});
                 return '';
             } else return 'false';
-            break;
         case 'hideValidMoves':
             if (!inGame)
                 return 'A game must be started to hide valid moves.';
@@ -159,7 +156,6 @@ const Gambit = (state) => {
                 dispatchToStore('SET_VALID_MOVES', {moves: []});
                 return '';
             }
-            break;
         case 'showMoveHistory':
             if (!inGame)
                 return 'A game must be started to show move history.';
@@ -168,25 +164,22 @@ const Gambit = (state) => {
             else {
                 return formatMoves();
             }
-            break;
         case 'showWhiteMoves':
             if (!inGame)
                 return 'A game must be started to show white\'s move history.';
             else if (params.length !== 0)
                 return "showWhiteMoves() expects no arguments.";
-                else {
-                    return formatMoves(WHITE);
-                }
-            break;
+            else {
+                return formatMoves(WHITE);
+            }
         case 'showBlackMoves':
             if (!inGame)
                 return 'A game must be started to show black\'s move history.';
             else if (params.length !== 0)
                 return "showBlackMoves() expects no arguments.";
-                else {
-                    return formatMoves(BLACK);
-                }
-            break;
+            else {
+                return formatMoves(BLACK);
+            }
         case 'startGame':
             if (inGame)
                 return 'You can\'t start a new game with an existing instance.';
@@ -196,7 +189,6 @@ const Gambit = (state) => {
                 startGame();
                 return '';
             }
-            break;
         case 'offerDraw':
             if (!inGame)
                 return 'A game must be started to offer a draw.';
@@ -204,7 +196,6 @@ const Gambit = (state) => {
                 return "offerDraw() expects no arguments.";
             
             return offerDraw();
-            break;
         case 'resign':
             if (!inGame)
                 return 'A game must be started to resign.';
@@ -212,7 +203,6 @@ const Gambit = (state) => {
                 return "resign() expects no arguments.";
             
             return finishGame();
-            break;
         case 'resetBoard':
             if (inGame)
                 return 'Cannot reset the board while in a game.';
@@ -222,28 +212,26 @@ const Gambit = (state) => {
                 dispatchToStore('RESET');
                 return '';
             }
-            break;
         case 'getFEN':
             if (params.length !== 0)
                 return "getFEN() expects no argument.";
             else
                 return getFen(game);
-            break;
         case 'setFromFEN':
             if (params.length !== 1)
                 return "setFromFEN() expects 1 argument.";
+            // else if (!/^(?:(?:[PNBRQK]+|[1-8])\/){7}(?:[PNBRQK]+|[1-8])$/gim.test(params[0]))
+            //     return "Invalid FEN format.";
             else
-                setFromFEN(params[0]);
-            break;
+                return setFromFEN(params[0]);
         case 'setBoardTheme':
             if (params.length !== 1)
                 return "setBoardTheme() expects 1 argument.";
             else if (!['bDark', 'bLight', 'bPurple', 'bBlue', 'bGreen', 'bOrange'].includes(params[0]))
-                return '';
+                return 'Not a valid theme name.';
             else
                 localStorage.setItem('bTheme', params[0]);
                 return '';
-            break;
         case 'setBotDepth':
             if (inGame)
                 return 'You can\'t change the bot depth during a game.';
@@ -255,7 +243,6 @@ const Gambit = (state) => {
                 setBotDepth(params[0]);
                 return params[0];
             }
-            break;
         case 'playAs':
             if (inGame)
                 return 'You can\'t change who you are playing as during a game.';
@@ -270,15 +257,13 @@ const Gambit = (state) => {
         case 'help':
             if (params.length !== 1)
                 return "help() expects 1 argument.";
-            
-            return formatHelp(params[0]);
-            break;
+            else
+                return formatHelp(params[0]);
         case 'clear':
             return clear();
         default:
             return "This command is not recognized.";
       }
-      return '';
   }
 
   let dispatchToStore = (type, payload) => {
@@ -296,6 +281,11 @@ const Gambit = (state) => {
         action = {
             type: "SET_POSITION",
             position: getFen(payload.next)
+        };
+    } else if (type === "SET_FROM_FEN") {
+        action = {
+            type: "SET_FROM_FEN",
+            position: payload.fen
         };
     } else if (type === "SET_SELECTED") {
         action = {
@@ -364,9 +354,10 @@ const Gambit = (state) => {
 
   let isOwnPiece = (square) => {
       let piece = getPiece(square);
+      if (piece === '') return;
       if (playingAs === WHITE){
           return piece === piece.toUpperCase();
-      }else
+      } else
           return piece === piece.toLowerCase();
   }
 
@@ -383,10 +374,6 @@ const Gambit = (state) => {
         dispatchToStore('SET_POSITION', {next: next});
         return [selected, params[0]];
     }
-  }
-
-  let take = (dest) => {
-    
   }
 
   let isValidMove = (from, to) => {
@@ -445,7 +432,15 @@ const Gambit = (state) => {
   }
 
   let setFromFEN = (FEN) => {
-    
+    try {
+        move(FEN, 'A1', 'A2');
+    } catch(e) {
+        console.log(e);
+        return 'Invalid format.';
+    }
+    // probably need to set the turn and stuff too
+    dispatchToStore('SET_FROM_FEN', {fen: FEN});
+    return '';
   }
 
   let setBotDepth = (newLevel = 0) => {
@@ -457,8 +452,17 @@ const Gambit = (state) => {
     dispatchToStore("SET_PLAYING_AS", {playingAs: side});
   }
 
-  let formatHelp = () => {
-    let result = '';
+  let formatHelp = (method) => {
+    if (!Object.keys(DocLookup).includes(method))
+        return "Not a valid method.";
+    let info = DocData[DocLookup[method].id].methods[DocLookup[method].mid];
+    let result = `
+        ${info.method}\n
+        parameters: ${info.params}
+        example: ${info.example}
+
+        ${info.desc}
+    `;
     return result;
   }
 

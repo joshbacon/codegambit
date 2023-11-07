@@ -37,6 +37,11 @@ export default function game(state = initialState, action) {
                 ...state,
                 game: action.position
             }
+        case 'SET_FROM_FEN':
+            return {
+                ...state,
+                game: action.position
+            }
         case 'SET_SELECTED':
             return {
                 ...state,
