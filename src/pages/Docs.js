@@ -49,7 +49,6 @@ const Docs = (props) => {
                         </ul>
                     </div>
                 })}
-                <h3 className='author'>by Josh Bacon</h3>
             </div>
             
             <div className='scroll-box'>

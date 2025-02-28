@@ -9,6 +9,15 @@ const Board = (props) => {
 
     const {game, selected, playingAs, history, validMoves} = useSelector(state => state.game);
 
+    let mateSquare = '';
+    if (status(game).checkMate) {
+        if (status(game).turn === "white") {
+            mateSquare = 'K';
+        } else {
+            mateSquare = 'k';
+        }
+    }
+
     return <div className={"board " + playingAs + (localStorage.getItem('bTheme') ?? 'bBlue')}>
         {Object.entries(status(game).pieces).map(([key, value]) => {
             return <div
@@ -16,7 +25,8 @@ const Board = (props) => {
                 className={
                     "square " + (playingAs === 'w' ? key.toUpperCase() : key.toLowerCase()) + " " +
                         value + (key === selected ? " selected" : "") +
-                        (history.length > 0 && key === history[history.length -1][1] ? " lastMove" : "")
+                        (history.length > 0 && key === history[history.length -1][1] ? " lastMove" : "") +
+                        (mateSquare === value ? " mated" : "")
                 }
             />
         })}

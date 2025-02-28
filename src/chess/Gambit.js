@@ -21,10 +21,10 @@ const Gambit = (state) => {
     try {
         setBotDepth(localStorage.getItem('aiLevel') ?? 0);
     } catch { }
-  },[]);
+  }, []);
 
   let parseCommand = (input) => {
-    if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(input) && !input.includes("setFromFEN")){
+    if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(input)) {// && !input.includes("setFromFEN")){
         let result = "Invalid function format.";
         dispatchToStore("SET_COMMANDS", {result: result, command: input});
         return result;
@@ -87,9 +87,9 @@ const Gambit = (state) => {
             let result = playMove(params);
             dispatchToStore('SET_HISTORY', {history: [...history, ...result]});
             dispatchToStore('SET_VALID_MOVES', {moves: []});
-            if (result.length > 1){
-                return `[${result[0][0]}, ${result[0][1]}]\n[${result[1][0]}, ${result[1][1]}]`;
-            } else return `[${result[0][0]}, ${result[0][1]}]`;
+            if (result.length > 2){
+                return `[${result[0]}, ${result[1]}]\n[${result[2][0]}, ${result[2][1]}]`;
+            } else return `[${result[0]}, ${result[1]}]`;
         case 'take':
             if (!inGame)
                 return 'A game must be started to take a piece.';
@@ -102,13 +102,12 @@ const Gambit = (state) => {
             else if (!isValidMove(selected, params[0]))
                 return "This is not a valid move.";
             else {
-                console.log(params[0]);
                 let result = playMove(params);
                 dispatchToStore('SET_HISTORY', {history: [...history, ...result]});
                 dispatchToStore('SET_VALID_MOVES', {moves: []});
-                if (result.length > 1){
-                    return `[${result[0][0]}, ${result[0][1]}]\n[${result[1][0]}, ${result[1][1]}]`;
-                } else return `[${result[0][0]}, ${result[0][1]}]`;
+                if (result.length > 2){
+                    return `[${result[0]}, ${result[1]}]\n[${result[2][0]}, ${result[2][1]}]`;
+                } else return `[${result[0]}, ${result[1]}]`;
             }
         case 'isValidMove':
             if (!inGame)
@@ -217,13 +216,13 @@ const Gambit = (state) => {
                 return "getFEN() expects no argument.";
             else
                 return getFen(game);
-        case 'setFromFEN':
-            if (params.length !== 1)
-                return "setFromFEN() expects 1 argument.";
-            // else if (!/^(?:(?:[PNBRQK]+|[1-8])\/){7}(?:[PNBRQK]+|[1-8])$/gim.test(params[0]))
-            //     return "Invalid FEN format.";
-            else
-                return setFromFEN(params[0]);
+        // case 'setFromFEN':
+        //     if (params.length !== 1)
+        //         return "setFromFEN() expects 1 argument.";
+        //     // else if (!/^(?:(?:[PNBRQK]+|[1-8])\/){7}(?:[PNBRQK]+|[1-8])$/gim.test(params[0]))
+        //     //     return "Invalid FEN format.";
+        //     else
+        //         return setFromFEN(params[0]);
         case 'setBoardTheme':
             if (params.length !== 1)
                 return "setBoardTheme() expects 1 argument.";
@@ -274,8 +273,7 @@ const Gambit = (state) => {
         };
     } else if (type === "FINISH_GAME") {
         action = {
-            type: "FINISH_GAME",
-            inGame: false
+            type: "FINISH_GAME"
         };
     } else if (type === "SET_POSITION") {
         action = {
@@ -367,13 +365,15 @@ const Gambit = (state) => {
 
   let playMove = (params) => {
     let next = move(game, selected, params[0]);
-    if (singlePlayer) {
+    if (singlePlayer && !status(next).isFinished) {
         let aiMove = playAiMove(next);
-        return [[selected, params[0]], aiMove];
-    } else {
-        dispatchToStore('SET_POSITION', {next: next});
-        return [selected, params[0]];
+        return [selected, params[0], aiMove];
     }
+    dispatchToStore('SET_POSITION', {next: next});
+    if (status(next).isFinished || status(next).checkMate) {
+        finishGame();
+    }
+    return [selected, params[0]];
   }
 
   let isValidMove = (from, to) => {
@@ -417,7 +417,7 @@ const Gambit = (state) => {
 
   let finishGame = () => {
     dispatchToStore('FINISH_GAME');
-    return (playingAs === WHITE ? 'Black' : 'White') + ' wins!';
+    return `${playingAs === WHITE ? 'Black' : 'White'} wins!`;
   }
 
   let playAiMove = (position = game) => {
@@ -425,24 +425,24 @@ const Gambit = (state) => {
         let result = aiMove(position, aiLevel);
         let next = move(position, Object.entries(result)[0][0], Object.entries(result)[0][1]);
         dispatchToStore("SET_POSITION", {next: next});
+        if (status(next).isFinished || status(next).checkMate) finishGame();
         return Object.entries(result)[0];
     } catch(e) {
         return e;
     }
   }
 
-  let setFromFEN = (FEN) => {
-    try {
-        move(FEN, 'A1', 'A2');
-    } catch(e) {
-        console.log(e);
-        return 'Invalid format.';
-    }
-    // probably need to set the turn and stuff too
-    dispatchToStore('SET_FROM_FEN', {fen: FEN});
-    return '';
-  }
-
+//   let setFromFEN = (FEN) => {
+//     try {
+//         move(FEN, 'A1', 'A2');
+//     } catch(e) {
+//         return 'Invalid format.';
+//     }
+//     // probably need to set the turn and stuff too
+//     dispatchToStore('SET_FROM_FEN', {fen: FEN});
+//     return '';
+//   }
+  
   let setBotDepth = (newLevel = 0) => {
     localStorage.setItem('aiLevel', newLevel);
     dispatchToStore('SET_AI_LEVEL', {aiLevel: newLevel});
@@ -458,8 +458,8 @@ const Gambit = (state) => {
     let info = DocData[DocLookup[method].id].methods[DocLookup[method].mid];
     let result = `
         ${info.method}\n
-        parameters: ${info.params}
-        example: ${info.example}
+        parameters: ${info.params}\n
+        example: ${info.example}\n
 
         ${info.desc}
     `;

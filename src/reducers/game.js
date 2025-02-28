@@ -25,7 +25,8 @@ export default function game(state = initialState, action) {
         case 'FINISH_GAME':
             return  {
                 ...state,
-                inGame: false
+                inGame: false,
+                commands: action.commands
             }
         case 'SET_AI_LEVEL':
             return  {
