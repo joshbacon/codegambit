@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(27, 27, 27);
 }
 
 @font-face {
@@ -16,4 +16,23 @@
 
 * {
     font-family: "terminal";
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #00000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #008236;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #008236;
 }
