@@ -25,9 +25,9 @@ function HomePage() {
         <h1 className="font-bold text-5xl drop-shadow-[0_3px_3px_rgba(0,0,0,1)]">code_gambit</h1>
       </div>
 
-      <div className='bg-neutral-800 rounded-2xl p-5 flex overflow-hidden'>
+      <div className='relative bg-neutral-800 rounded-2xl p-5 flex overflow-hidden'>
         
-        <div className={`flex flex-col gap-2 transition-all duration-1000 ease-in-out ${!showPlayMenu ? '' : '-translate-x-[125%] opacity-0'}`}>
+        <div className={`flex flex-col gap-2 w-full transition-all duration-1000 ease-in-out ${!showPlayMenu ? '' : '-translate-x-[125%] opacity-0'}`}>
           <button onClick={() => setPlayMenu(true)} className='grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2 cursor-pointer'>
             <img src={gameIcon} className="w-12 aspect-square" />
             <h2 className='font-bold text-2xl col-span-2 pr-2'>Play a Game</h2>
@@ -47,7 +47,7 @@ function HomePage() {
         </div>
 
         <div className={`flex flex-col gap-2 absolute transition-all duration-1000 ease-in-out ${!showPlayMenu ? 'translate-x-[125%] opacity-0 -z-10' : 'z-10'}`}>
-          <button onClick={() => setPlayMenu(false)} className='grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2 cursor-pointer'>
+          <button onClick={() => setPlayMenu(false)} className='w-[262px] grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2 cursor-pointer'>
             <img src={backIcon} className="w-12 aspect-square" />
             <h2 className='font-bold text-2xl col-span-2'>Back</h2>
           </button>
