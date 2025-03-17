@@ -5,6 +5,9 @@ export default {
   ],
   theme: {
     extend: {
+      gridRowStart: {
+        '8': '8'
+      },
       transitionProperty: {
         'height': 'height'
       }

@@ -78,6 +78,7 @@ function Board(state: string, playingAs: string, selected: string, previousMove:
             }
         }
     }
+    console.log(pieceData)
 
     function pieceLookup(piece: string) {
         switch (piece) {
@@ -96,56 +97,53 @@ function Board(state: string, playingAs: string, selected: string, previousMove:
         }
     }
 
-    return <div className="relative w-[70%] aspect-square">
-        <img src={boardTheme} draggable={false} className="-z-10 absolute w-full drag" />
+    return <div className="relative w-[max(300px,60%)] lg:w-[70%] aspect-square">
+        <img src={boardTheme} draggable={false} className="-z-10 absolute w-full" />
         <div className='w-[96%] h-[96%] grid grid-cols-8 grid-rows-8 place-items-center'>
             {
                 Object.entries(pieceData).map(([key, value]) => {
                     return <img
+                        style={{gridRowStart: key.split('')[0], gridColumnStart: key.split('')[1]}}
                         key={key}
                         src={pieceLookup(value)}
                         draggable={false}
-                        className={`z-20 w-9/10 aspect-square row-start-${key.split('')[0]} col-start-${key.split('')[1]}`}
+                        className='z-20 w-9/10 aspect-square'
                     />
                 })
             }
-            {
-                selected ?
-                    <div className={`
-                        bg-purple-600 opacity-50 w-full h-full
-                        row-start-${playingAs == 'w' ? selected.split('')[0] : mapWhiteToBlack(selected.split('')[0])}
-                        col-start-${playingAs == 'w' ? selected.split('')[1] : mapWhiteToBlack(selected.split('')[1])}
-                    `}
-                    /> : null
+            { selected ? <div
+                    style= {{
+                        gridRowStart: playingAs == 'w' ? selected.split('')[0] : mapWhiteToBlack(selected.split('')[0]),
+                        gridColumnStart: playingAs == 'w' ? selected.split('')[1] : mapWhiteToBlack(selected.split('')[1])
+                    }}
+                    className='bg-purple-600 opacity-50 w-full h-full'
+                /> : null
             }
-            {
-                previousMove ?
-                    <div className={`
-                        bg-amber-200 opacity-50 w-full h-full
-                        row-start-${playingAs == 'w' ? previousMove.split('')[0] : mapWhiteToBlack(previousMove.split('')[0])}
-                        col-start-${playingAs == 'w' ? previousMove.split('')[1] : mapWhiteToBlack(previousMove.split('')[1])}
-                    `}
-                    /> : null
+            { previousMove ? <div
+                style= {{
+                    gridRowStart: playingAs == 'w' ? previousMove.split('')[0] : mapWhiteToBlack(previousMove.split('')[0]),
+                    gridColumnStart: playingAs == 'w' ? previousMove.split('')[1] : mapWhiteToBlack(previousMove.split('')[1])
+                }}
+                className='bg-amber-200 opacity-50 w-full h-full'
+                /> : null
             }
-            {
-                validMoves.length > 0 ?
-                    Object.entries(validMoves).map(([key, value]) => {
-                        return <div key={key} className={`
-                            bg-green-600 opacity-50 w-full h-full
-                            row-start-${playingAs == 'w' ? value.split('')[0] : mapWhiteToBlack(value.split('')[0])}
-                            col-start-${playingAs == 'w' ? value.split('')[1] : mapWhiteToBlack(value.split('')[1])}
-                        `}
-                        />
-                    }) : null
-            }
-            {
-                mateSquare ?
-                    <div className={`
-                        bg-red-600 opacity-50 w-full h-full
-                        row-start-${playingAs == 'w' ? mateSquare.split('')[0] : mapWhiteToBlack(mateSquare.split('')[0])}
-                        col-start-${playingAs == 'w' ? mateSquare.split('')[1] : mapWhiteToBlack(mateSquare.split('')[1])}
-                    `}
-                    /> : null
+            { validMoves.length > 0 ? Object.entries(validMoves).map(([key, value]) => {
+                return <div
+                    key={key}
+                    style= {{
+                        gridRowStart: playingAs == 'w' ? value.split('')[0] : mapWhiteToBlack(value.split('')[0]),
+                        gridColumnStart: playingAs == 'w' ? value.split('')[1] : mapWhiteToBlack(value.split('')[1])
+                    }}
+                    className='bg-green-600 opacity-50 w-full h-full'
+                />
+            }) : null }
+            { mateSquare ? <div
+                style= {{
+                    gridRowStart: playingAs == 'w' ? mateSquare.split('')[0] : mapWhiteToBlack(mateSquare.split('')[0]),
+                    gridColumnStart: playingAs == 'w' ? mateSquare.split('')[1] : mapWhiteToBlack(mateSquare.split('')[1])
+                }}
+                className='bg-red-600 opacity-50 w-full h-full'
+                /> : null
             }
         </div>
     </div>
