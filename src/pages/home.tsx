@@ -7,6 +7,7 @@ import bPawn from '../assets/images/pieces/bp.png';
 import gameIcon from '../assets/icons/game.svg';
 import puzzleIcon from '../assets/icons/puzzle.svg';
 import documentationIcon from '../assets/icons/docs.svg';
+import scriptIcon from '../assets/icons/script.svg';
 import accountIcon from '../assets/icons/user.svg';
 import backIcon from '../assets/icons/back.svg';
 
@@ -35,6 +36,10 @@ function HomePage() {
           <Link to="/" className={'grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2' + disabledStyle}>
             <img src={puzzleIcon} className="w-12 aspect-square" />
             <h2 className='font-bold text-2xl col-span-2 pr-2'>Puzzles</h2>
+          </Link>
+          <Link to="/scripting" className='grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2'>
+            <img src={scriptIcon} className="w-12 aspect-square" />
+            <h2 className='font-bold text-2xl col-span-2 pr-2'>Scripting</h2>
           </Link>
           <Link to="/documentation" className='grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2'>
             <img src={documentationIcon} className="w-12 aspect-square" />

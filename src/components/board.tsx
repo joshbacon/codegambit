@@ -25,7 +25,7 @@ import R from '../assets/images/pieces/wr.png';
 import Q from '../assets/images/pieces/wq.png';
 import K from '../assets/images/pieces/wk.png';
 
-function Board(state: string, playingAs: string, selected: string, previousMove: string, validMoves: string[], mateSquare: string) {
+function Board(fen: string, playingAs: string, selected: string, previousMove: string, validMoves: string[], mateSquare: string) {
 
     let boardTheme: string = playingAs == 'w' ? wbDark : bbDark;
     const theme: string = '';
@@ -62,7 +62,7 @@ function Board(state: string, playingAs: string, selected: string, previousMove:
         return newValue;
     }
 
-    const boardRows: string[] = state.split(' ')[0].split('/');
+    const boardRows: string[] = fen.split(' ')[0].split('/');
     const pieceData: { [id: string]: string } = {};
     for (let r: number = 0; r < boardRows.length; r++) {
         let counter: number = 0;
@@ -78,7 +78,6 @@ function Board(state: string, playingAs: string, selected: string, previousMove:
             }
         }
     }
-    console.log(pieceData)
 
     function pieceLookup(piece: string) {
         switch (piece) {

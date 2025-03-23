@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import Interpreter from "../models/interpreter";
 
 function Terminal() {
+
+    const interpreter = Interpreter('');
 
     const [history, setHistory] = useState<string[]>([
         'Welcome to code_gambit! We teach coding through playing chess.',
@@ -15,13 +18,10 @@ function Terminal() {
     const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(commandHistory.length);
 
     useEffect(() => {
+        setCommandSearchIndex(commandHistory.length);
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
         }
-    }, [commandHistory]);
-
-    useEffect(() => {
-        setCommandSearchIndex(commandHistory.length);
     }, [commandHistory]);
 
     function updateInput(newValue: string) {
