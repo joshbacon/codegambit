@@ -1,44 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import Interpreter from "../models/interpreter";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import ScriptInterpreter from "../models/scriptinterpreter";
 
 function ScriptEditor() {
 
-    // inlclude a flag that says it's the editing terminal?
-    // - not sure if we need to limit any access yet just figure it out in testing (trying to break things for once!)
-    // - also to include testing only functions (like testScript), so probably do need one
-
-    // Additional functionality (not in the game terminal)
-    // need to be able to save a script under a certain name
-    // need to be able to run/test a script
-    // - also need to pause it (it will have the delay... that'll be fun yay async)
-    // - ... or be able to step back through it after it runs (want this with or without the delay)
-
-    // existing functionality we'll need to keep from game terminal
-    // - setPlayingAs
-    // - setFromFEN
-    // - resetBoard
-    // - showValidMoves
-    // - hideValidMoves
-    // - setBoardTheme
-    // - help
-    // - clear
-
-    // maybe setup an inheritance thing...
-    // have the script terminal extend the game one and just add these
-    // - because even though not all the game functions are used in the terminal,
-    //   they will be used when interpreting the actual script
-
-    const interpreter = Interpreter('');
+    const interpreter = ScriptInterpreter(true);
 
     // Editor Variables
 
-    const script = '';
+    const [script, setScript] = useState<string>('');
+
 
     // Terminal Variables
     
-    const [history, setHistory] = useState<string[]>(['Use the command testScript() to run your script']);
+    const [history, setHistory] = useState<string[]>(['Use the command testScript() to watch your script run']);
 
     const scrollRef = useRef<null | HTMLTableRowElement>(null);
     
@@ -89,12 +65,13 @@ function ScriptEditor() {
         
         <CodeMirror
             value={script}
+            onChange={(newScript, _) => setScript(newScript)}
             theme={vscodeDark}
             className="w-full h-full max-h-[600px] overflow-y-scroll"
         />
 
         <div className="flex flex-col w-full h-48 text-green-700 bg-black shadow-[0_0_25px_0_black]">
-            <table className="relative p-2 flex h-[calc(100%-49px)] overflow-y-scroll">
+            <table className="relative p-2 flex  h-[100px] overflow-y-scroll">
                 <tbody>
                     { history.map((value, key) => {
                         return <tr key={key}>

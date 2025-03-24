@@ -44,6 +44,15 @@
 },
 {
     "id": 4,
+    "name": "Scripting",
+    "methods": [
+        {"mid":0, "name":"runScript(scriptName)", "params":"scriptName - name of the script to run", "description":"runs a saved script if one exists under the given name. no delay is used.", "example":"runScript(ponziani)"},
+        {"mid":1, "name":"testScript()", "params":"none", "description":"test the script as is entered in the editor. runs with a delay between moves.", "example":"testScript()"},
+        {"mid":2, "name":"saveScript(scriptName)", "params":"scriptName - name to save the script under", "description":"saves the script under a certain name.", "example":"saveScript(ponziani)"}
+    ]
+},
+{
+    "id": 5,
     "name": "Settings",
     "methods": [
         {"mid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (bDark, bLight, bPurple, bBlue, bGreen, or bOrange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
@@ -52,7 +61,7 @@
     ]
 },
 {
-    "id": 5,
+    "id": 6,
     "name": "Other",
     "methods": [
         {"mid":0, "name":"help(method)", "params":"method signature without parameters", "description":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
