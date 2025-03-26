@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import ScriptInterpreter from "../models/scriptinterpreter";
+import TerminalInterpreter from "../models/terminalinterpreter";
 
 function ScriptEditor() {
 
-    const interpreter = ScriptInterpreter(true);
+    const interpreter = TerminalInterpreter(true);
 
     // Editor Variables
 

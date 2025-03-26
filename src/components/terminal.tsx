@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import CommandInterpreter from "../models/commandinterpreter";
+import TerminalInterpreter from "../models/terminalinterpreter";
 
 function Terminal() {
 
-    const interpreter = CommandInterpreter(false);
+    const interpreter = TerminalInterpreter(false);
 
     const [history, setHistory] = useState<string[]>([
         'Welcome to code_gambit! We teach coding through playing chess.',

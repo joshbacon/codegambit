@@ -20,10 +20,15 @@
     "getFEN":           {"id":3, "mid": 4},
     "setFromFEN":       {"id":3, "mid": 5},
 
-    "setBoardTheme":    {"id":4, "mid": 0},
-    "setBotDepth":      {"id":4, "mid": 1},
-    "playAs":           {"id":4, "mid": 2},
+    "runScript":        {"id":4, "mid": 0},
+    "testScript":       {"id":4, "mid": 1},
+    "saveScript":       {"id":4, "mid": 2},
+    "loadScript":       {"id":4, "mid": 3},
 
-    "help":             {"id":5, "mid": 0},
-    "clear":            {"id":5, "mid": 1}
+    "setBoardTheme":    {"id":5, "mid": 0},
+    "setBotDepth":      {"id":5, "mid": 1},
+    "playAs":           {"id":5, "mid": 2},
+
+    "help":             {"id":6, "mid": 0},
+    "clear":            {"id":6, "mid": 1}
 }
