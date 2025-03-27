@@ -1,7 +1,7 @@
-import Method from "../models/method";
-import MethodCategory from "../models/methodcategory";
+import Command from "../models/command";
+import CommandCategory from "../models/commandcategory";
 
-function LegendCard(mc: MethodCategory, key: number) {
+function LegendCard(mc: CommandCategory, key: number) {
 
     function scrollToElement(id: string) {
         const element = document.getElementById(id);
@@ -16,13 +16,13 @@ function LegendCard(mc: MethodCategory, key: number) {
 
     return <div key={key} className="border-t-2 border-green-700 p-3">
         <h2 className="font-bold text-xl">{mc.name}</h2>
-        { mc.methods.map((method: Method, key: number) => {
+        { mc.commands.map((command: Command, key: number) => {
             return <h2
                 key={key}
-                onClick={() => scrollToElement(`${mc.id}-${method.mid}`)}
+                onClick={() => scrollToElement(`${mc.id}-${command.cid}`)}
                 className="font-semibold cursor-pointer hover:underline"
             >
-                - {method.name}
+                - {command.name}
             </h2>
         }) }
     </div>

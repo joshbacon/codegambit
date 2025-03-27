@@ -3,70 +3,70 @@
 {
     "id": 0,
     "name": "Selection",
-    "methods": [
-        {"mid":0, "name":"select(square)", "params":"square - where the piece you want to select is", "description":"selects a piece at the given position if one exists and returns or fale otherwise.", "example":"select(G5)"},
-        {"mid":1, "name":"unselect()", "params":"none", "description":"unselects the currently selected piece if one exists and returns false otherwise.", "example":"unselect()"}
+    "commands": [
+        {"cid":0, "name":"select(square)", "params":"square - where the piece you want to select is", "description":"selects a piece at the given position if one exists and returns or fale otherwise.", "example":"select(G5)"},
+        {"cid":1, "name":"unselect()", "params":"none", "description":"unselects the currently selected piece if one exists and returns false otherwise.", "example":"unselect()"}
     ]
 },
 {
     "id": 1,
     "name": "Movement",
-    "methods": [
-        {"mid":0, "name":"move(to)", "params":"to - destination square", "description":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"mid":1, "name":"take(to)", "params":"to - destination square", "description":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
+    "commands": [
+        {"cid":0, "name":"move(to)", "params":"to - destination square", "description":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
+        {"cid":1, "name":"take(to)", "params":"to - destination square", "description":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
     ]
 },
 {
     "id": 2,
     "name": "Checking",
-    "methods": [
-        {"mid":1, "name":"isValidMove(to)", "params":"to - destination square", "description":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
-        {"mid":2, "name":"isValidMove(from, to)", "params":"from - source square, to - destination square", "description":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
-        {"mid":3, "name":"getValidMoves()", "params":"none", "description":"returns all valid moves for the current position.", "example":"getValidMoves()"},
-        {"mid":3, "name":"getValidMoves(square)", "params":"square - the square you want ot see the moves for", "description":"returns all valid moves for the piece at the given square.", "example":"getValidMoves(E2)"},
-        {"mid":4, "name":"showValidMoves()", "params":"none", "description":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
-        {"mid":5, "name":"hideValidMoves()", "params":"none", "description":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
-        {"mid":6, "name":"showMoveHistory()", "params":"none", "description":"prints the move history for both players in the terminal or returns false if no moves have been played.", "example":"showMoveHistory()"},
-        {"mid":7, "name":"showWhiteMoves()", "params":"none", "description":"prints the move history for white in the terminal or returns false if no moves have been played.", "example":"showWhiteHistory()"},
-        {"mid":8, "name":"showBlackMoves()", "params":"none", "description":"prints the move history for black in the terminal or returns false if no moves have been played.", "example":"showBlackHistory()"}
+    "commands": [
+        {"cid":1, "name":"isValidMove(to)", "params":"to - destination square", "description":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
+        {"cid":2, "name":"isValidMove(from, to)", "params":"from - source square, to - destination square", "description":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
+        {"cid":3, "name":"getValidMoves()", "params":"none", "description":"returns all valid moves for the current position.", "example":"getValidMoves()"},
+        {"cid":3, "name":"getValidMoves(square)", "params":"square - the square you want ot see the moves for", "description":"returns all valid moves for the piece at the given square.", "example":"getValidMoves(E2)"},
+        {"cid":4, "name":"showValidMoves()", "params":"none", "description":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
+        {"cid":5, "name":"hideValidMoves()", "params":"none", "description":"hides all the valid moves of the selected piece if one exists and false otherwise.", "example":"hideValidMoves()"},
+        {"cid":6, "name":"showMoveHistory()", "params":"none", "description":"prints the move history for both players in the terminal or returns false if no moves have been played.", "example":"showMoveHistory()"},
+        {"cid":7, "name":"showWhiteMoves()", "params":"none", "description":"prints the move history for white in the terminal or returns false if no moves have been played.", "example":"showWhiteHistory()"},
+        {"cid":8, "name":"showBlackMoves()", "params":"none", "description":"prints the move history for black in the terminal or returns false if no moves have been played.", "example":"showBlackHistory()"}
     ]
 },
 {
     "id": 3,
     "name": "Gameplay",
-    "methods": [
-        {"mid":0, "name":"startGame()", "params":"none", "description":"initiates the start of a game.", "example":"startGame()"},
-        {"mid":1, "name":"offerDraw()", "params":"none", "description":"offers a draw to the opponent.", "example":"offerDraw()"},
-        {"mid":2, "name":"resign()", "params":"none", "description":"resigns the game.", "example":"resiasgdfuasoidgn()"},
-        {"mid":3, "name":"resetBoard()", "params":"none", "description":"resets the board, can only be called when the previous game has finished.", "example":"resetBoard()"},
-        {"mid":4, "name":"getFEN()", "params":"none", "description":"returns the FEN string denoting the current state of the game.", "example":"getFEN()"}
+    "commands": [
+        {"cid":0, "name":"startGame()", "params":"none", "description":"initiates the start of a game.", "example":"startGame()"},
+        {"cid":1, "name":"offerDraw()", "params":"none", "description":"offers a draw to the opponent.", "example":"offerDraw()"},
+        {"cid":2, "name":"resign()", "params":"none", "description":"resigns the game.", "example":"resiasgdfuasoidgn()"},
+        {"cid":3, "name":"resetBoard()", "params":"none", "description":"resets the board, can only be called when the previous game has finished.", "example":"resetBoard()"},
+        {"cid":4, "name":"getFEN()", "params":"none", "description":"returns the FEN string denoting the current state of the game.", "example":"getFEN()"}
     ]
 },
 {
     "id": 4,
     "name": "Scripting",
-    "methods": [
-        {"mid":0, "name":"runScript(scriptName)", "params":"scriptName - name of the script to run", "description":"runs a saved script if one exists under the given name. no delay is used.", "example":"runScript(ponziani)"},
-        {"mid":1, "name":"testScript()", "params":"none", "description":"test the script as is entered in the editor. runs with a delay between moves. * only available on script editor page.", "example":"testScript()"},
-        {"mid":2, "name":"saveScript(scriptName)", "params":"scriptName - name to save the script under", "description":"saves the script under a certain name.", "example":"saveScript(ponziani)"},
-        {"mid":3, "name":"loadScript(scriptName)", "params":"scriptName - name of script to load", "description":"loads the script saved under a certain name. * only available on script editor page", "example":"loadScript(ponziani)"}
+    "commands": [
+        {"cid":0, "name":"runScript(scriptName)", "params":"scriptName - name of the script to run", "description":"runs a saved script if one exists under the given name. no delay is used.", "example":"runScript(ponziani)"},
+        {"cid":1, "name":"testScript()", "params":"none", "description":"test the script as is entered in the editor. runs with a delay between moves. * only available on script editor page.", "example":"testScript()"},
+        {"cid":2, "name":"saveScript(scriptName)", "params":"scriptName - name to save the script under", "description":"saves the script under a certain name.", "example":"saveScript(ponziani)"},
+        {"cid":3, "name":"loadScript(scriptName)", "params":"scriptName - name of script to load", "description":"loads the script saved under a certain name. * only available on script editor page", "example":"loadScript(ponziani)"}
     ]
 },
 {
     "id": 5,
     "name": "Settings",
-    "methods": [
-        {"mid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (bDark, bLight, bPurple, bBlue, bGreen, or bOrange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
-        {"mid":1, "name":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "description":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
-        {"mid":2, "name":"playAs(color)", "params":"color - the color you want to start as (w or b)", "description":"sets the color you play as.", "example":"playAs(b)"}
+    "commands": [
+        {"cid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (bDark, bLight, bPurple, bBlue, bGreen, or bOrange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
+        {"cid":1, "name":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "description":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
+        {"cid":2, "name":"playAs(color)", "params":"color - the color you want to start as (w or b)", "description":"sets the color you play as.", "example":"playAs(b)"}
     ]
 },
 {
     "id": 6,
     "name": "Other",
-    "methods": [
-        {"mid":0, "name":"help(method)", "params":"method signature without parameters", "description":"displays use case information for the given method so you don't have to come to the docs.", "example":"help(take)"},
-        {"mid":1, "name":"clear()", "params":"none", "description":"clears the terminal.", "example":"clear()"}
+    "commands": [
+        {"cid":0, "name":"help(method)", "params":"method signature without parameters", "description":"displays use case information for the given method.", "example":"help(take)"},
+        {"cid":1, "name":"clear()", "params":"none", "description":"clears the terminal.", "example":"clear()"}
     ]
 }
 

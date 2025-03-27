@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
-import TerminalInterpreter from "../models/terminalinterpreter";
+import TerminalInterpreter from "../interpreters/terminalinterpreter";
+import Terminal from "./terminal";
 
 function ScriptEditor() {
 
-    const interpreter = TerminalInterpreter(true);
+    const interpreter = TerminalInterpreter(true, 'Use the command testScript() to watch your script run');
 
     // Editor Variables
 
@@ -13,27 +14,24 @@ function ScriptEditor() {
 
 
     // Terminal Variables
-    
-    const [history, setHistory] = useState<string[]>(['Use the command testScript() to watch your script run']);
 
     const scrollRef = useRef<null | HTMLTableRowElement>(null);
     
     const [currentCommand, setCurrentCommand] = useState<string>("");
     const [partialCommand, setPartialCommand] = useState<string>("");
-    const [commandHistory, setCommandHistory] = useState<string[]>([]);
-    const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(commandHistory.length);
+    const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(interpreter.commandHistory().length);
 
     useEffect(() => {
-        setCommandSearchIndex(commandHistory.length);
+        setCommandSearchIndex(interpreter.commandHistory().length);
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
         }
-    }, [commandHistory]);
+    }, [interpreter.commandHistory()]);
 
     function updateTerminalInput(newValue: string) {
         setCurrentCommand(newValue);
         setPartialCommand(newValue);
-        setCommandSearchIndex(commandHistory.length);
+        setCommandSearchIndex(interpreter.commandHistory().length);
     }
 
     function checkTerminalKey(key: string) {
@@ -41,21 +39,20 @@ function ScriptEditor() {
             if (commandSearchIndex > 0) {
                 const temp = commandSearchIndex;
                 setCommandSearchIndex(temp-1);
-                setCurrentCommand(commandHistory[temp-1]);
+                setCurrentCommand(interpreter.commandHistory()[temp-1]);
             }
         } else if (key === 'ArrowDown') {
-            if (commandSearchIndex < commandHistory.length) {
+            if (commandSearchIndex < interpreter.commandHistory().length) {
                 const temp = commandSearchIndex;
                 setCommandSearchIndex(temp+1);
-                if (temp + 1 == commandHistory.length) {
+                if (temp + 1 == interpreter.commandHistory().length) {
                     setCurrentCommand(partialCommand);
                 } else {
-                    setCurrentCommand(commandHistory[temp+1]);
+                    setCurrentCommand(interpreter.commandHistory()[temp+1]);
                 }
             }
         } else if (key === 'Enter') {
-            setHistory([...history, currentCommand]);
-            setCommandHistory([...commandHistory, currentCommand]);
+            interpreter.sendCommand(currentCommand);
             setCurrentCommand("");
             setPartialCommand("");
         }
@@ -65,7 +62,7 @@ function ScriptEditor() {
         
         <CodeMirror
             value={script}
-            onChange={(newScript, _) => setScript(newScript)}
+            onChange={(newScript) => setScript(newScript)}
             theme={vscodeDark}
             className="w-full h-full max-h-[600px] overflow-y-scroll"
         />
@@ -73,7 +70,7 @@ function ScriptEditor() {
         <div className="flex flex-col w-full h-48 text-green-700 bg-black shadow-[0_0_25px_0_black]">
             <table className="relative p-2 flex  h-[100px] overflow-y-scroll">
                 <tbody>
-                    { history.map((value, key) => {
+                    { interpreter.history().map((value, key) => {
                         return <tr key={key}>
                             <td>{value}</td>
                         </tr>

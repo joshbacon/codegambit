@@ -1,34 +1,34 @@
-{
-    "select":           {"id": 0, "mid": 0},
-    "unselect":         {"id": 0, "mid": 1},
-
-    "move":             {"id":1, "mid": 0},
-    "take":             {"id":1, "mid": 1},
-
-    "isValidMove":      {"id":2, "mid": 0},
-    "getValidMoves":    {"id":2, "mid": 2},
-    "showValidMoves":   {"id":2, "mid": 4},
-    "hideValidMoves":   {"id":2, "mid": 5},
-    "showMoveHistory":  {"id":2, "mid": 6},
-    "showWhiteMoves":   {"id":2, "mid": 7},
-    "showBlackMoves":   {"id":2, "mid": 8},
-
-    "startGame":        {"id":3, "mid": 0},
-    "offerDraw":        {"id":3, "mid": 1},
-    "resign":           {"id":3, "mid": 2},
-    "resetBoard":       {"id":3, "mid": 3},
-    "getFEN":           {"id":3, "mid": 4},
-    "setFromFEN":       {"id":3, "mid": 5},
-
-    "runScript":        {"id":4, "mid": 0},
-    "testScript":       {"id":4, "mid": 1},
-    "saveScript":       {"id":4, "mid": 2},
-    "loadScript":       {"id":4, "mid": 3},
-
-    "setBoardTheme":    {"id":5, "mid": 0},
-    "setBotDepth":      {"id":5, "mid": 1},
-    "playAs":           {"id":5, "mid": 2},
-
-    "help":             {"id":6, "mid": 0},
-    "clear":            {"id":6, "mid": 1}
-}
+[
+    { "key": "select",           "id": 0, "cid": 0 },
+    { "key": "unselect",         "id": 0, "cid": 1 },
+    
+    { "key": "move",             "id": 1, "cid": 0 },
+    { "key": "take",             "id": 1, "cid": 1 },
+    
+    { "key": "isValidMove",      "id": 2, "cid": 0 },
+    { "key": "getValidMoves",    "id": 2, "cid": 2 },
+    { "key": "showValidMoves",   "id": 2, "cid": 4 },
+    { "key": "hideValidMoves",   "id": 2, "cid": 5 },
+    { "key": "showMoveHistory",  "id": 2, "cid": 6 },
+    { "key": "showWhiteMoves",   "id": 2, "cid": 7 },
+    { "key": "showBlackMoves",   "id": 2, "cid": 8 },
+    
+    { "key": "startGame",        "id": 3, "cid": 0 },
+    { "key": "offerDraw",        "id": 3, "cid": 1 },
+    { "key": "resign",           "id": 3, "cid": 2 },
+    { "key": "resetBoard",       "id": 3, "cid": 3 },
+    { "key": "getFEN",           "id": 3, "cid": 4 },
+    { "key": "setFromFEN",       "id": 3, "cid": 5 },
+    
+    { "key": "runScript",        "id": 4, "cid": 0 },
+    { "key": "testScript",       "id": 4, "cid": 1 },
+    { "key": "saveScript",       "id": 4, "cid": 2 },
+    { "key": "loadScript",       "id": 4, "cid": 3 },
+    
+    { "key": "setBoardTheme",    "id": 5, "cid": 0 },
+    { "key": "setBotDepth",      "id": 5, "cid": 1 },
+    { "key": "playAs",           "id": 5, "cid": 2 },
+    
+    { "key": "help",             "id": 6, "cid": 0 },
+    { "key": "clear",            "id": 6, "cid": 1 }
+]

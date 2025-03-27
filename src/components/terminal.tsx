@@ -1,33 +1,27 @@
 import { useEffect, useRef, useState } from "react";
-import TerminalInterpreter from "../models/terminalinterpreter";
+import TerminalInterpreter from "../interpreters/terminalinterpreter";
 
 function Terminal() {
 
-    const interpreter = TerminalInterpreter(false);
-
-    const [history, setHistory] = useState<string[]>([
-        'Welcome to code_gambit! We teach coding through playing chess.',
-        'type help(method) to see how to use a given method or check out the documentation for a list of commands.'
-    ]);
+    const interpreter = TerminalInterpreter(false, 'type help(method) to see how to use a given method or check out the documentation for a list of commands.');
 
     const scrollRef = useRef<null | HTMLTableRowElement>(null);
     
     const [currentCommand, setCurrentCommand] = useState<string>("");
     const [partialCommand, setPartialCommand] = useState<string>("");
-    const [commandHistory, setCommandHistory] = useState<string[]>([]);
-    const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(commandHistory.length);
+    const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(interpreter.commandHistory().length);
 
     useEffect(() => {
-        setCommandSearchIndex(commandHistory.length);
+        setCommandSearchIndex(interpreter.commandHistory().length);
         if (scrollRef.current) {
             scrollRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
         }
-    }, [commandHistory]);
+    }, [interpreter.commandHistory()]);
 
     function updateInput(newValue: string) {
         setCurrentCommand(newValue);
         setPartialCommand(newValue);
-        setCommandSearchIndex(commandHistory.length);
+        setCommandSearchIndex(interpreter.commandHistory().length);
     }
 
     function checkKey(key: string) {
@@ -35,23 +29,23 @@ function Terminal() {
             if (commandSearchIndex > 0) {
                 const temp = commandSearchIndex;
                 setCommandSearchIndex(temp-1);
-                setCurrentCommand(commandHistory[temp-1]);
+                setCurrentCommand(interpreter.commandHistory()[temp-1]);
             }
         } else if (key === 'ArrowDown') {
-            if (commandSearchIndex < commandHistory.length) {
+            if (commandSearchIndex < interpreter.commandHistory().length) {
                 const temp = commandSearchIndex;
                 setCommandSearchIndex(temp+1);
-                if (temp + 1 == commandHistory.length) {
+                if (temp + 1 == interpreter.commandHistory().length) {
                     setCurrentCommand(partialCommand);
                 } else {
-                    setCurrentCommand(commandHistory[temp+1]);
+                    setCurrentCommand(interpreter.commandHistory()[temp+1]);
                 }
             }
         } else if (key === 'Enter') {
-            setHistory([...history, currentCommand]);
-            setCommandHistory([...commandHistory, currentCommand]);
+            interpreter.sendCommand(currentCommand);
             setCurrentCommand("");
             setPartialCommand("");
+            setCommandSearchIndex(interpreter.commandHistory().length);
         }
     }
 
@@ -59,7 +53,7 @@ function Terminal() {
     return <div className="flex flex-col w-4/5 min-w-80 h-72 text-green-700 bg-black rounded-2xl shadow-[10px_10px_20px_0_black,-10px_-10px_20px_0_rgba(64,64,64,0.5)]">
         <table className="relative p-2 flex h-[calc(100%-49px)] overflow-y-scroll">
             <tbody>
-                { history.map((value, key) => {
+                { interpreter.history().map((value, key) => {
                     return <tr key={key}>
                         <td>{value}</td>
                     </tr>

@@ -1,10 +1,10 @@
 
-type Method = {
-    mid: number;
+type Command = {
+    cid: number;
     name: string;
     params: string;
     description: string;
     example: string;
 };
 
-export default Method;
+export default Command;

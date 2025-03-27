@@ -1,4 +1,4 @@
-import ScriptVariable from "./scriptvariable";
+import ScriptVariable from "../models/scriptvariable";
 
 const ScriptInterpreter = (testing: boolean, runCallback: Function) => {
 
