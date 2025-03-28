@@ -68,7 +68,7 @@ function ScriptEditor() {
         />
 
         <div className="flex flex-col w-full h-48 text-green-700 bg-black shadow-[0_0_25px_0_black]">
-            <table className="relative p-2 flex  h-[100px] overflow-y-scroll">
+            <table className="relative p-2 flex w-full h-[100px] text-wrap overflow-y-scroll">
                 <tbody>
                     { interpreter.history().map((value, key) => {
                         return <tr key={key}>

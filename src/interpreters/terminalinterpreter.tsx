@@ -11,8 +11,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
   
     //const dispatch = useDispatch();
   
-    // const WHITE = 'w';
-    // const BLACK = 'b';
+    const WHITE = 'w';
+    const BLACK = 'b';
   
     // let singlePlayer = true;
 
@@ -73,6 +73,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 appendToHistory();
         }
     }
+
+    // Helper Functions
 
     function formatHelp(command: string) {
         const index = DocLookup.map(e => e.key).indexOf(command);

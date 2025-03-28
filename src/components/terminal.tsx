@@ -51,7 +51,7 @@ function Terminal() {
 
 
     return <div className="flex flex-col w-4/5 min-w-80 h-72 text-green-700 bg-black rounded-2xl shadow-[10px_10px_20px_0_black,-10px_-10px_20px_0_rgba(64,64,64,0.5)]">
-        <table className="relative p-2 flex h-[calc(100%-49px)] overflow-y-scroll">
+        <table className="relative p-2 flex w-full h-[calc(100%-49px)] text-wrap overflow-y-scroll">
             <tbody>
                 { interpreter.history().map((value, key) => {
                     return <tr key={key}>
