@@ -56,9 +56,10 @@
     "id": 5,
     "name": "Settings",
     "commands": [
-        {"cid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (bDark, bLight, bPurple, bBlue, bGreen, or bOrange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
+        {"cid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (dark, light, purple, blue, green, or orange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
         {"cid":1, "name":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "description":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
-        {"cid":2, "name":"playAs(color)", "params":"color - the color you want to start as (w or b)", "description":"sets the color you play as.", "example":"playAs(b)"}
+        {"cid":2, "name":"playAs(color)", "params":"color - the color you want to start as (w or b)", "description":"sets the color you play as.", "example":"playAs(b)"},
+        {"cid":3, "name":"toggleErrors()", "params":"none", "description":"toggle error codes to make things more difficult to troubleshoot.", "example":"toggleErrors()"}
     ]
 },
 {

@@ -28,6 +28,7 @@
     { "key": "setBoardTheme",    "id": 5, "cid": 0 },
     { "key": "setBotDepth",      "id": 5, "cid": 1 },
     { "key": "playAs",           "id": 5, "cid": 2 },
+    { "key": "toggleErrors",     "id": 5, "cid": 3 },
     
     { "key": "help",             "id": 6, "cid": 0 },
     { "key": "clear",            "id": 6, "cid": 1 }

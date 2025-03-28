@@ -1,3 +1,5 @@
+import { useAppSelector } from '../store/hooks';
+
 import wbDark from '../assets/images/boards/wboardDark.png';
 import wbLight from '../assets/images/boards/wboardLight.png';
 import wbPurple from '../assets/images/boards/wboardPurple.png';
@@ -25,28 +27,30 @@ import R from '../assets/images/pieces/wr.png';
 import Q from '../assets/images/pieces/wq.png';
 import K from '../assets/images/pieces/wk.png';
 
-function Board(fen: string, playingAs: string, selected: string, previousMove: string, validMoves: string[], mateSquare: string) {
+function Board() {
 
-    let boardTheme: string = playingAs == 'w' ? wbDark : bbDark;
-    const theme: string = '';
-    switch (theme) {
+    const { fen, playingAs } = useAppSelector(state => state.game);
+    const { boardTheme, selected, previousMove, validMoves, mateSquare } = useAppSelector(state => state.visual);
+
+    let theme: string = playingAs == 'w' ? wbDark : bbDark;
+    switch (boardTheme) {
         case 'light':
-            boardTheme = playingAs == 'w' ? wbLight : bbLight;
+            theme = playingAs == 'w' ? wbLight : bbLight;
             break;
         case 'purple':
-            boardTheme = playingAs == 'w' ? wbPurple : bbPurple;
+            theme = playingAs == 'w' ? wbPurple : bbPurple;
             break;
         case 'blue':
-            boardTheme = playingAs == 'w' ? wbBlue : bbBlue;
+            theme = playingAs == 'w' ? wbBlue : bbBlue;
             break;
         case 'green':
-            boardTheme = playingAs == 'w' ? wbGreen : bbGreen;
+            theme = playingAs == 'w' ? wbGreen : bbGreen;
             break;
         case 'orange':
-            boardTheme = playingAs == 'w' ? wbOrange : bbOrange;
+            theme = playingAs == 'w' ? wbOrange : bbOrange;
             break;
         default:
-            boardTheme = playingAs == 'w' ? wbDark : bbDark;
+            theme = playingAs == 'w' ? wbDark : bbDark;
     }
 
     function mapWhiteToBlack(value: string) {
@@ -97,7 +101,7 @@ function Board(fen: string, playingAs: string, selected: string, previousMove: s
     }
 
     return <div className="relative w-[max(300px,60%)] lg:w-[70%] aspect-square">
-        <img src={boardTheme} draggable={false} className="-z-10 absolute w-full" />
+        <img src={theme} draggable={false} className="-z-10 absolute w-full" />
         <div className='w-[96%] h-[96%] grid grid-cols-8 grid-rows-8 place-items-center'>
             {
                 Object.entries(pieceData).map(([key, value]) => {
