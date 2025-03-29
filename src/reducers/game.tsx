@@ -6,6 +6,7 @@ const initialState: GameState = {
     started: false,
     aiDepth: 2,
     playingAs: 'w',
+    singlePlayer: true,
 }
 
 export const gameSlice = createSlice({
@@ -24,10 +25,13 @@ export const gameSlice = createSlice({
         setPlayingAs: (state, action: PayloadAction<string>) => {
             state.playingAs = action.payload;
         },
+        setSinglePlayer: (state, action: PayloadAction<boolean>) => {
+            state.singlePlayer = action.payload;
+        },
     }
 });
 
-export const { setFEN, setStarted, setAIDepth, setPlayingAs} = gameSlice.actions;
+export const { setFEN, setStarted, setAIDepth, setPlayingAs, setSinglePlayer } = gameSlice.actions;
 
 
 export default gameSlice.reducer;

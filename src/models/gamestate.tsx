@@ -5,6 +5,7 @@ type GameState = {
     started: boolean,
     aiDepth: number,
     playingAs: string,
+    singlePlayer: boolean,
 
 };
 

@@ -1,22 +1,21 @@
 import { useState } from "react";
 import DocData from '../data/docs.json';
 import DocLookup from '../data/docLookup.json';
-// import { move, status, moves, aiMove, getFen } from 'js-chess-engine';
+import { move, status, moves, aiMove, getFen } from 'js-chess-engine';
 import Command from "../models/command";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { setBoardTheme } from "../reducers/visual";
+import { setBoardTheme, setSelected } from "../reducers/visual";
 import { setStarted, setAIDepth, setPlayingAs } from "../reducers/game";
 
 const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => {
   
-    const { fen, started, playingAs } = useAppSelector(state => state.game);
+    const { fen, started, playingAs, singlePlayer } = useAppSelector(state => state.game);
+    const { selected } = useAppSelector(state => state.visual);
 
     const dispatch = useAppDispatch();
   
     const WHITE = 'w';
     const BLACK = 'b';
-  
-    // let singlePlayer = true;
 
     const [history, setHistory] = useState<string[]>([historyPretext]);
     const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -51,6 +50,36 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
 
     function runCommand(command: string, parameters: string[]) {
         switch (command) {
+            case 'select':
+                if (!started) {
+                    toAppend.push('A game must be started to select a piece.');
+                } else if (parameters.length !== 1) {
+                    toAppend.push("select() expects 1 argument.");
+                } else if (getPiece(parameters[0]) === '' || getPiece(parameters[0]) === undefined) {
+                    toAppend.push("There is no piece on this square.");
+                } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
+                    toAppend.push("An invalid square was given.");
+                } else if (!isOwnPiece(parameters[0])) {
+                    toAppend.push("You can only select your own pieces.");
+                } else {
+                    dispatch(setSelected(parameters[0]));
+                    toAppend.push(parameters[0]);
+                }
+                appendToHistory();
+                break;
+            case 'unselect':
+                if (!started)
+                    toAppend.push('A game must be started to unselect a piece.');
+                else if (parameters.length !== 0)
+                    toAppend.push("unselect() expects no arguments.");
+                else if (selected === '')
+                    toAppend.push("A square must be selected to unselect.");
+                else {
+                    dispatch(setSelected(''));
+                    toAppend.push(parameters[0]);
+                }
+                appendToHistory();
+                break;
             case 'startGame':
                 if (started) {
                     toAppend.push('A match is already in session.');
@@ -59,6 +88,9 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The gameStart function expects 0 parameters.');
                 } else {
                     dispatch(setStarted(true));
+                    if (singlePlayer && playingAs === BLACK) {
+                        //playAiMove();
+                    }
                 }
                 appendToHistory();
                 break;
@@ -125,6 +157,22 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     }
 
     // Helper Functions
+
+    function getPiece(square: string) {
+        return getPieces()[square];
+    }
+
+    function getPieces() {
+        return status(fen).pieces;
+    }
+
+    let isOwnPiece = (square: string) => {
+        if (playingAs === WHITE) {
+            return square === square.toUpperCase();
+        } else {
+            return square === square.toLowerCase();
+        }
+    }
 
     function formatHelp(command: string) {
         const index = DocLookup.map(e => e.key).indexOf(command);

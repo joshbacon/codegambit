@@ -53,19 +53,6 @@ function Board() {
             theme = playingAs == 'w' ? wbDark : bbDark;
     }
 
-    function mapWhiteToBlack(value: string) {
-        let newValue: string = '1';
-        if (value == '1') newValue = '8';
-        else if (value == '2') newValue = '7';
-        else if (value == '3') newValue = '6';
-        else if (value == '4') newValue = '5';
-        else if (value == '5') newValue = '4';
-        else if (value == '6') newValue = '3';
-        else if (value == '7') newValue = '2';
-        else if (value == '8') newValue = '1';
-        return newValue;
-    }
-
     const boardRows: string[] = fen.split(' ')[0].split('/');
     const pieceData: { [id: string]: string } = {};
     for (let r: number = 0; r < boardRows.length; r++) {
@@ -81,6 +68,19 @@ function Board() {
                 counter += Number(boardRows[r][c])-1;
             }
         }
+    }
+
+    function mapWhiteToBlack(value: string) {
+        let newValue: string = '1';
+        if (value == '1') newValue = '8';
+        else if (value == '2') newValue = '7';
+        else if (value == '3') newValue = '6';
+        else if (value == '4') newValue = '5';
+        else if (value == '5') newValue = '4';
+        else if (value == '6') newValue = '3';
+        else if (value == '7') newValue = '2';
+        else if (value == '8') newValue = '1';
+        return newValue;
     }
 
     function pieceLookup(piece: string) {
@@ -100,13 +100,40 @@ function Board() {
         }
     }
 
+    function squareToGrid(square: string) {
+        const file = square[0];
+        const rank = square[1];
+        let gridCoords = '';
+        switch (file) {
+            case 'A': gridCoords += '1'; break;
+            case 'B': gridCoords += '2'; break;
+            case 'C': gridCoords += '3'; break;
+            case 'D': gridCoords += '4'; break;
+            case 'E': gridCoords += '5'; break;
+            case 'F': gridCoords += '6'; break;
+            case 'G': gridCoords += '7'; break;
+            case 'H': gridCoords += '8'; break;
+        }
+        switch (rank) {
+            case '1': gridCoords += '8'; break;
+            case '2': gridCoords += '7'; break;
+            case '3': gridCoords += '6'; break;
+            case '4': gridCoords += '5'; break;
+            case '5': gridCoords += '4'; break;
+            case '6': gridCoords += '3'; break;
+            case '7': gridCoords += '2'; break;
+            case '8': gridCoords += '1'; break;
+        }
+        return gridCoords;
+    }
+
     return <div className="relative w-[max(300px,60%)] lg:w-[70%] aspect-square">
         <img src={theme} draggable={false} className="-z-10 absolute w-full" />
         <div className='w-[96%] h-[96%] grid grid-cols-8 grid-rows-8 place-items-center'>
             {
                 Object.entries(pieceData).map(([key, value]) => {
                     return <img
-                        style={{gridRowStart: key.split('')[0], gridColumnStart: key.split('')[1]}}
+                        style={{gridRowStart: key[0], gridColumnStart: key.split('')[1]}}
                         key={key}
                         src={pieceLookup(value)}
                         draggable={false}
@@ -116,36 +143,36 @@ function Board() {
             }
             { selected ? <div
                     style= {{
-                        gridRowStart: playingAs == 'w' ? selected.split('')[0] : mapWhiteToBlack(selected.split('')[0]),
-                        gridColumnStart: playingAs == 'w' ? selected.split('')[1] : mapWhiteToBlack(selected.split('')[1])
+                        gridColumnStart: playingAs == 'w' ? squareToGrid(selected)[0] : mapWhiteToBlack(squareToGrid(selected)[0]),
+                        gridRowStart: playingAs == 'w' ? squareToGrid(selected)[1] : mapWhiteToBlack(squareToGrid(selected)[1])
                     }}
                     className='bg-purple-600 opacity-50 w-full h-full'
                 /> : null
             }
             { previousMove ? <div
-                style= {{
-                    gridRowStart: playingAs == 'w' ? previousMove.split('')[0] : mapWhiteToBlack(previousMove.split('')[0]),
-                    gridColumnStart: playingAs == 'w' ? previousMove.split('')[1] : mapWhiteToBlack(previousMove.split('')[1])
-                }}
-                className='bg-amber-200 opacity-50 w-full h-full'
+                    style= {{
+                        gridColumnStart: playingAs == 'w' ? squareToGrid(previousMove)[0] : mapWhiteToBlack(squareToGrid(previousMove)[0]),
+                        gridRowStart: playingAs == 'w' ? squareToGrid(previousMove[1]) : mapWhiteToBlack(squareToGrid(previousMove[1]))
+                    }}
+                    className='bg-amber-200 opacity-50 w-full h-full'
                 /> : null
             }
             { validMoves.length > 0 ? Object.entries(validMoves).map(([key, value]) => {
                 return <div
                     key={key}
                     style= {{
-                        gridRowStart: playingAs == 'w' ? value.split('')[0] : mapWhiteToBlack(value.split('')[0]),
-                        gridColumnStart: playingAs == 'w' ? value.split('')[1] : mapWhiteToBlack(value.split('')[1])
+                        gridColumnStart: playingAs == 'w' ? squareToGrid(value)[0] : mapWhiteToBlack(squareToGrid(value)[0]),
+                        gridRowStart: playingAs == 'w' ? squareToGrid(value[1]) : mapWhiteToBlack(squareToGrid(value[1]))
                     }}
                     className='bg-green-600 opacity-50 w-full h-full'
                 />
             }) : null }
             { mateSquare ? <div
-                style= {{
-                    gridRowStart: playingAs == 'w' ? mateSquare.split('')[0] : mapWhiteToBlack(mateSquare.split('')[0]),
-                    gridColumnStart: playingAs == 'w' ? mateSquare.split('')[1] : mapWhiteToBlack(mateSquare.split('')[1])
-                }}
-                className='bg-red-600 opacity-50 w-full h-full'
+                    style= {{
+                        gridColumnStart: playingAs == 'w' ? squareToGrid(mateSquare)[0] : mapWhiteToBlack(squareToGrid(mateSquare)[0]),
+                        gridRowStart: playingAs == 'w' ? squareToGrid(mateSquare[1]) : mapWhiteToBlack(squareToGrid(mateSquare[1]))
+                    }}
+                    className='bg-red-600 opacity-50 w-full h-full'
                 /> : null
             }
         </div>
