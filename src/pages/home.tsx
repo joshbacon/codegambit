@@ -33,7 +33,7 @@ function HomePage() {
             <img src={gameIcon} className="w-12 aspect-square" />
             <h2 className='font-bold text-2xl col-span-2 pr-2'>Play a Game</h2>
           </button>
-          <Link to="/" className={'grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2' + disabledStyle}>
+          <Link to="/puzzles" className='grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2'>
             <img src={puzzleIcon} className="w-12 aspect-square" />
             <h2 className='font-bold text-2xl col-span-2 pr-2'>Puzzles</h2>
           </Link>
