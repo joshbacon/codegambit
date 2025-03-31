@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import GameState from "../models/gamestate"
+import Move from "../models/move";
 
 const initialState: GameState = {
     fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
@@ -7,6 +8,7 @@ const initialState: GameState = {
     aiDepth: 2,
     playingAs: 'w',
     singlePlayer: true,
+    moveHistory: [],
 }
 
 export const gameSlice = createSlice({
@@ -28,10 +30,13 @@ export const gameSlice = createSlice({
         setSinglePlayer: (state, action: PayloadAction<boolean>) => {
             state.singlePlayer = action.payload;
         },
+        setMoveHistory: (state, action: PayloadAction<Move>) => {
+            state.moveHistory.push(action.payload);
+        },
     }
 });
 
-export const { setFEN, setStarted, setAIDepth, setPlayingAs, setSinglePlayer } = gameSlice.actions;
+export const { setFEN, setStarted, setAIDepth, setPlayingAs, setSinglePlayer, setMoveHistory } = gameSlice.actions;
 
 
 export default gameSlice.reducer;

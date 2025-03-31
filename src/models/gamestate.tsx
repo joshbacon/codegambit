@@ -1,3 +1,4 @@
+import Move from "./move";
 
 type GameState = {
 
@@ -6,6 +7,7 @@ type GameState = {
     aiDepth: number,
     playingAs: string,
     singlePlayer: boolean,
+    moveHistory: Move[],
 
 };
 

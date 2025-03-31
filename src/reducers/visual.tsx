@@ -31,6 +31,6 @@ export const visualSlice = createSlice({
     }
 });
 
-export const { setBoardTheme, setSelected, setPreviousMove,setValidMoves,setMateSquare} = visualSlice.actions;
+export const { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare } = visualSlice.actions;
 
 export default visualSlice.reducer;

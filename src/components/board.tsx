@@ -152,7 +152,7 @@ function Board() {
             { previousMove ? <div
                     style= {{
                         gridColumnStart: playingAs == 'w' ? squareToGrid(previousMove)[0] : mapWhiteToBlack(squareToGrid(previousMove)[0]),
-                        gridRowStart: playingAs == 'w' ? squareToGrid(previousMove[1]) : mapWhiteToBlack(squareToGrid(previousMove[1]))
+                        gridRowStart: playingAs == 'w' ? squareToGrid(previousMove)[1] : mapWhiteToBlack(squareToGrid(previousMove)[1])
                     }}
                     className='bg-amber-200 opacity-50 w-full h-full'
                 /> : null
@@ -162,7 +162,7 @@ function Board() {
                     key={key}
                     style= {{
                         gridColumnStart: playingAs == 'w' ? squareToGrid(value)[0] : mapWhiteToBlack(squareToGrid(value)[0]),
-                        gridRowStart: playingAs == 'w' ? squareToGrid(value[1]) : mapWhiteToBlack(squareToGrid(value[1]))
+                        gridRowStart: playingAs == 'w' ? squareToGrid(value)[1] : mapWhiteToBlack(squareToGrid(value)[1])
                     }}
                     className='bg-green-600 opacity-50 w-full h-full'
                 />
@@ -170,7 +170,7 @@ function Board() {
             { mateSquare ? <div
                     style= {{
                         gridColumnStart: playingAs == 'w' ? squareToGrid(mateSquare)[0] : mapWhiteToBlack(squareToGrid(mateSquare)[0]),
-                        gridRowStart: playingAs == 'w' ? squareToGrid(mateSquare[1]) : mapWhiteToBlack(squareToGrid(mateSquare[1]))
+                        gridRowStart: playingAs == 'w' ? squareToGrid(mateSquare)[1] : mapWhiteToBlack(squareToGrid(mateSquare)[1])
                     }}
                     className='bg-red-600 opacity-50 w-full h-full'
                 /> : null
