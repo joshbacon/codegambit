@@ -44,6 +44,16 @@
 },
 {
     "id": 4,
+    "name": "Review",
+    "commands": [
+        {"cid":0, "name":"goToPrevMove()", "params":"none", "description":"Displays the game position at the previous sequential move.", "example":"goToPrevMove()"},
+        {"cid":1, "name":"goToNextMove()", "params":"none", "description":"Displays the game position at the next sequential move.", "example":"goToNextMove()"},
+        {"cid":2, "name":"goToFirstMove()", "params":"none", "description":"Displays the initial game position.", "example":"goToFirstMove()"},
+        {"cid":3, "name":"goToLastMove()", "params":"none", "description":"Displays the final or current game position.", "example":"goToLastMove()"}
+    ]
+},
+{
+    "id": 5,
     "name": "Scripting",
     "commands": [
         {"cid":0, "name":"runScript(scriptName)", "params":"scriptName - name of the script to run", "description":"runs a saved script if one exists under the given name. no delay is used.", "example":"runScript(ponziani)"},
@@ -53,7 +63,7 @@
     ]
 },
 {
-    "id": 5,
+    "id": 6,
     "name": "Settings",
     "commands": [
         {"cid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (dark, light, purple, blue, green, or orange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
@@ -63,7 +73,7 @@
     ]
 },
 {
-    "id": 6,
+    "id": 7,
     "name": "Other",
     "commands": [
         {"cid":0, "name":"help(method)", "params":"method signature without parameters", "description":"displays use case information for the given method.", "example":"help(take)"},

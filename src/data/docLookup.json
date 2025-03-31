@@ -19,17 +19,22 @@
     { "key": "resetBoard",       "id": 3, "cid": 3 },
     { "key": "getFEN",           "id": 3, "cid": 4 },
     { "key": "setFromFEN",       "id": 3, "cid": 5 },
+
+    { "key": "goToPrevMove",     "id": 4, "cid": 0 },
+    { "key": "goToNextMove",     "id": 4, "cid": 1 },
+    { "key": "goToFirstMove",    "id": 4, "cid": 2 },
+    { "key": "goToLastMove",     "id": 4, "cid": 3 },
     
-    { "key": "runScript",        "id": 4, "cid": 0 },
-    { "key": "testScript",       "id": 4, "cid": 1 },
-    { "key": "saveScript",       "id": 4, "cid": 2 },
-    { "key": "loadScript",       "id": 4, "cid": 3 },
+    { "key": "runScript",        "id": 5, "cid": 0 },
+    { "key": "testScript",       "id": 5, "cid": 1 },
+    { "key": "saveScript",       "id": 5, "cid": 2 },
+    { "key": "loadScript",       "id": 5, "cid": 3 },
     
-    { "key": "setBoardTheme",    "id": 5, "cid": 0 },
-    { "key": "setBotDepth",      "id": 5, "cid": 1 },
-    { "key": "playAs",           "id": 5, "cid": 2 },
-    { "key": "toggleErrors",     "id": 5, "cid": 3 },
+    { "key": "setBoardTheme",    "id": 6, "cid": 0 },
+    { "key": "setBotDepth",      "id": 6, "cid": 1 },
+    { "key": "playAs",           "id": 6, "cid": 2 },
+    { "key": "toggleErrors",     "id": 6, "cid": 3 },
     
-    { "key": "help",             "id": 6, "cid": 0 },
-    { "key": "clear",            "id": 6, "cid": 1 }
+    { "key": "help",             "id": 7, "cid": 0 },
+    { "key": "clear",            "id": 7, "cid": 1 }
 ]

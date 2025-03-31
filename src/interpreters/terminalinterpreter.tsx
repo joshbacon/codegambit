@@ -341,8 +341,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
       let validMoves = moves(fen)[from];
       return validMoves && validMoves.includes(to);
     }
-  
-    
+
     function getValidMoves(square: string = selected) {
         const possibleMoves = moves(fen)[square];
         if (possibleMoves) {
