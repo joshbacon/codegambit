@@ -39,7 +39,8 @@
         {"cid":1, "name":"offerDraw()", "params":"none", "description":"offers a draw to the opponent.", "example":"offerDraw()"},
         {"cid":2, "name":"resign()", "params":"none", "description":"resigns the game.", "example":"resiasgdfuasoidgn()"},
         {"cid":3, "name":"resetBoard()", "params":"none", "description":"resets the board, can only be called when the previous game has finished.", "example":"resetBoard()"},
-        {"cid":4, "name":"getFEN()", "params":"none", "description":"returns the FEN string denoting the current state of the game.", "example":"getFEN()"}
+        {"cid":4, "name":"getFEN()", "params":"none", "description":"returns the FEN string denoting the current state of the game.", "example":"getFEN()"},
+        {"cid":5, "name":"setFromFEN(fen)", "params":"fen - FEN formatted string", "description":"Sets the board to a given position.", "example":"setFromFEN(5Qkr/p6p/2p2p2/3P2p1/8/BP6/P1PP1PPP/RN4K1 b - - 0 18)"}
     ]
 },
 {
@@ -67,7 +68,7 @@
     "name": "Settings",
     "commands": [
         {"cid":0, "name":"setBoardTheme(theme)", "params":"theme - the name of the theme you want to use (dark, light, purple, blue, green, or orange)", "description":"changes the color theme of the board.", "example":"setBoardTheme(dark)"},
-        {"cid":1, "name":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at (0-6)", "description":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
+        {"cid":1, "name":"setBotDepth(depth)", "params":"depth - the new depth for the bot to operate at from 0 to 4 inclusive", "description":"changes how many moves ahead the bot will look.", "example":"setBotDepth(4)"},
         {"cid":2, "name":"playAs(color)", "params":"color - the color you want to start as (w or b)", "description":"sets the color you play as.", "example":"playAs(b)"},
         {"cid":3, "name":"toggleErrors()", "params":"none", "description":"toggle error codes to make things more difficult to troubleshoot.", "example":"toggleErrors()"}
     ]

@@ -1,7 +1,6 @@
 import Puzzle from "../models/puzzle";
 import duckIcon from '../assets/icons/duck.svg';
 
-
 function PuzzleCard(puzzle: Puzzle, callBack: Function) {
 
     let difficultyCounter: string[] = [];

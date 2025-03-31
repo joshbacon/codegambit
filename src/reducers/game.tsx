@@ -30,8 +30,8 @@ export const gameSlice = createSlice({
         setSinglePlayer: (state, action: PayloadAction<boolean>) => {
             state.singlePlayer = action.payload;
         },
-        setMoveHistory: (state, action: PayloadAction<Move>) => {
-            state.moveHistory.push(action.payload);
+        setMoveHistory: (state, action: PayloadAction<Move[]>) => {
+            state.moveHistory = action.payload;
         },
     }
 });

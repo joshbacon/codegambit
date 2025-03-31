@@ -1,7 +1,7 @@
+import { useState } from "react";
 import Puzzle from "../models/puzzle";
 import PuzzleCard from "./puzzlecard";
 import randomIcon from '../assets/icons/random.svg';
-import { useState } from "react";
 import Terminal from "./terminal";
 
 function PuzzleSelector() {

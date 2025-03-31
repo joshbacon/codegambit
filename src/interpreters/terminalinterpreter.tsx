@@ -1,17 +1,18 @@
 import { useState } from 'react';
+
 import DocData from '../data/docs.json';
 import DocLookup from '../data/docLookup.json';
-import { move, status, moves, aiMove, getFen } from 'js-chess-engine';
 import Command from '../models/command';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { setBoardTheme, setSelected } from '../reducers/visual';
-import { setFEN, setStarted, setAIDepth, setPlayingAs } from '../reducers/game';
-import { setValidMoves } from '../reducers/visual';
 import Move from '../models/move';
+
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare } from '../reducers/visual';
+import { setFEN, setStarted, setAIDepth, setPlayingAs, setMoveHistory } from '../reducers/game';
+
+import { move, status, moves, aiMove } from 'js-chess-engine';
 
 const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => {
 
-    
     const { fen, started, aiDepth, playingAs, singlePlayer, moveHistory } = useAppSelector(state => state.game);
     const { selected, validMoves } = useAppSelector(state => state.visual);
     
@@ -33,7 +34,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         setCommandHistory([...commandHistory, input]);
 
         // Check input
-        if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(input)) {
+        if (input.split('(')[0] !== 'setFromFEN' && !/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(input)) {
             toAppend.push('Invalid function format.');
             appendToHistory();
             return;
@@ -77,11 +78,45 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('A game must be started to unselect a piece.');
                 } else if (parameters.length !== 0) {
                     toAppend.push('The unselect funciton expects no arguments.');
-                } else if (selected === '') {
+                } else if (!selected) {
                     toAppend.push('A square must be selected to unselect.');
                 } else {
                     dispatch(setSelected(''));
                     toAppend.push(parameters[0]);
+                }
+                appendToHistory();
+                break;
+            case 'move':
+                if (!started) {
+                    toAppend.push('A game must be started to move a piece.');
+                } else if (parameters.length !== 1) {
+                    toAppend.push('The move function expects 1 parameter.');
+                } else if (!selected) {
+                    toAppend.push('A piece must be selected to make a move.');
+                } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
+                    toAppend.push('An invalid sqaure was given.');
+                } else if (!isValidMove(selected, parameters[0])) {
+                    toAppend.push('An invalid move was given.');
+                } else {
+                    toAppend.push(playMove(parameters[0]));
+                }
+                appendToHistory();
+                break;
+            case 'take':
+                if (!started) {
+                    toAppend.push('A game must be started to take a piece.');
+                } else if (parameters.length !== 1) {
+                    toAppend.push('The take function expects 1 parameter.');
+                } else if (!selected) {
+                    toAppend.push('A piece must be selected to make a move.');
+                } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
+                    toAppend.push('An invalid sqaure was given.');
+                } else if (!isValidMove(selected, parameters[0])) {
+                    toAppend.push('An invalid move was given.');
+                } else if (isNotPiece(parameters[0])) {
+                    toAppend.push('There is no piece to take at the given square');
+                } else {
+                    toAppend.push(playMove(parameters[0]));
                 }
                 appendToHistory();
                 break;
@@ -90,7 +125,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('A game must be started to select a piece.');
                 } else if (parameters.length !== 1 && parameters.length !== 2) {
                     toAppend.push("The isValidMove function expects 1 or 2 arguments.");
-                } else if (selected === '' && parameters.length === 1) {
+                } else if (!selected && parameters.length === 1) {
                     toAppend.push('A piece must be selected or passed as a parameter to check move validity.');
                 } else {
                     if (!/^[A-H][1-8]$/.test(parameters[0])) {
@@ -116,7 +151,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('A game must be started to get valid moves.');
                 } else if (parameters.length !== 0 && parameters.length !== 1) {
                     toAppend.push('The getValidMoves function expects 0 or 1 arguments.');
-                } else if (selected === '' && parameters.length !== 1) {
+                } else if (!selected && parameters.length !== 1) {
                     toAppend.push('A piece must be selected or passed as a parameter to get valid moves.');
                 } else if (parameters.length === 1) {
                     if (!/^[A-H][1-8]$/.test(parameters[0])) {
@@ -136,7 +171,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('A game must be started to show valid moves.');
                 } else if (parameters.length !== 0 && parameters.length !== 1) {
                     toAppend.push('The getValidMoves function expects 0 or 1 arguments.');
-                } else if (selected === '' && parameters.length !== 1) {
+                } else if (!selected && parameters.length !== 1) {
                     toAppend.push('A piece must be selected or passed as a parameter to get valid moves.');
                 } else if (parameters.length === 1) {
                     if (!/^[A-H][1-8]$/.test(parameters[0])) {
@@ -205,7 +240,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setStarted(true));
                     if (singlePlayer && playingAs === BLACK) {
-                        //playAiMove();
+                        toAppend.push(playAiMove());
                     }
                 }
                 appendToHistory();
@@ -253,6 +288,21 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 }
                 appendToHistory();
                 break;
+            case 'setFromFEN':
+                if (started) {
+                    toAppend.push('You can\'t set the position while in game.');
+                } else if (parameters.length !== 1) {
+                    toAppend.push('The setFromFEN function expects 1 parameter.');
+                } else if (true) { // TODO: need a regex for a valid FEN string
+                    toAppend.push('Invalid FEN formatted string.');
+                } else {
+                    dispatch(setFEN(parameters[0]));
+                    // TODO:
+                    // - check if mated and highlight that square
+                    toAppend.push(parameters[0]);
+                }
+                appendToHistory();
+                break;
             case 'setBoardTheme':
                 if (parameters.length !== 1) {
                     toAppend.push('The setBoardTheme function expects 1 parameter.');
@@ -269,8 +319,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The setBotDepth function expects 1 parameter.');
                 } else if (isNaN(+parameters[0])) {
                     toAppend.push('The setBotDepth function expects a number as a parameter.');
-                } else if (Number(parameters[0]) < 0 || Number(parameters[0]) > 3) {
-                    toAppend.push('New depth must be in the range [0, 3].');
+                } else if (Number(parameters[0]) < 0 || Number(parameters[0]) > 4) {
+                    toAppend.push('New depth must be in the range [0, 4].');
                 } else {
                     dispatch(setAIDepth(Number(parameters[0])));
                     toAppend.push(parameters[0]);
@@ -330,10 +380,76 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     }
 
     function isOwnPiece(square: string) {
+        const piece = getPiece(square);
         if (playingAs === WHITE) {
-            return square === square.toUpperCase();
+            return piece === piece.toUpperCase();
         } else {
-            return square === square.toLowerCase();
+            return piece === piece.toLowerCase();
+        }
+    }
+
+    function playMove(square: string) {
+        const nextPosition = move(fen, selected, square);
+        let result = '[' + selected + ',' + square + ']';
+
+        dispatch(setFEN(nextPosition));
+        dispatch(setPreviousMove(square));
+        dispatch(setSelected(''));
+        dispatch(setValidMoves([]));
+
+        let tempHistory: Move[] = [...moveHistory];
+        tempHistory.push({from: selected, to: square})
+        dispatch(setMoveHistory(tempHistory));
+        
+        if (status(nextPosition).isFinished) {
+            dispatch(setStarted(false));
+            toAppend.push(finishGame(nextPosition));
+        } else if (singlePlayer) {
+            result += ' ' + playAiMove(nextPosition);
+        }
+
+        return result;
+    }
+
+    function playAiMove(position: string = fen) {
+        const result = Object.entries(aiMove(position, aiDepth))[0];
+        const from: string = result[0];
+        const to: any = result[1];
+
+        const nextPosition = move(position, from, to);
+
+        let tempHistory: Move[] = [...moveHistory];
+        tempHistory.push({from: from, to: to})
+        dispatch(setMoveHistory(tempHistory));
+
+        dispatch(setFEN(nextPosition));
+        dispatch(setPreviousMove(to));
+        if (status(nextPosition).isFinished) {
+            dispatch(setStarted(false));
+            toAppend.push(finishGame(nextPosition));
+        }
+
+        return '[' + from + ',' + to + ']';
+    }
+
+    function finishGame(position: string = fen) {
+        const result = status(position);
+        if (result.checkMate) {
+            const matedKing = result.turn === 'black' ? 'k' : 'K';
+
+            let mateSquare = '';
+            const pieces = Object.entries(status(position).pieces);
+            
+            for (let i=0; i<pieces.length; i++) {
+                if (pieces[i].includes(matedKing)) {
+                    mateSquare = pieces[i][0];
+                }
+            }
+            
+            dispatch(setMateSquare(mateSquare));
+            return result.turn === 'black' ? 'White wins!' : 'Black wins!';
+        } else {
+            return 'Draw';
         }
     }
 
