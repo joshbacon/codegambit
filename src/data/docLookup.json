@@ -29,6 +29,8 @@
     { "key": "testScript",       "id": 5, "cid": 1 },
     { "key": "saveScript",       "id": 5, "cid": 2 },
     { "key": "loadScript",       "id": 5, "cid": 3 },
+    { "key": "removeScript",     "id": 5, "cid": 4 },
+    { "key": "listScripts",      "id": 5, "cid": 5 },
     
     { "key": "setBoardTheme",    "id": 6, "cid": 0 },
     { "key": "setBotDepth",      "id": 6, "cid": 1 },

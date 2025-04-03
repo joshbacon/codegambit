@@ -9,7 +9,7 @@ function ScriptEditor() {
 
     // Editor Variables
 
-    const [script, setScript] = useState<string>('');
+    const [script, setScript] = useState<string>('select(E2)\nmove(E4)');
 
 
     // Terminal Variables
@@ -51,7 +51,7 @@ function ScriptEditor() {
                 }
             }
         } else if (key === 'Enter') {
-            interpreter.sendCommand(currentCommand);
+            interpreter.sendCommand(currentCommand, script);
             setCurrentCommand("");
             setPartialCommand("");
         }

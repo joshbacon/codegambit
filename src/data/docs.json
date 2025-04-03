@@ -58,9 +58,11 @@
     "name": "Scripting",
     "commands": [
         {"cid":0, "name":"runScript(scriptName)", "params":"scriptName - name of the script to run", "description":"runs a saved script if one exists under the given name. no delay is used.", "example":"runScript(ponziani)"},
-        {"cid":1, "name":"testScript()", "params":"none", "description":"test the script as is entered in the editor. runs with a delay between moves. * only available on script editor page.", "example":"testScript()"},
+        {"cid":1, "name":"testScript()", "params":"none", "description":"runs the script currently in the editor. * only available on script editor page.", "example":"testScript()"},
         {"cid":2, "name":"saveScript(scriptName)", "params":"scriptName - name to save the script under", "description":"saves the script under a certain name.", "example":"saveScript(ponziani)"},
-        {"cid":3, "name":"loadScript(scriptName)", "params":"scriptName - name of script to load", "description":"loads the script saved under a certain name. * only available on script editor page", "example":"loadScript(ponziani)"}
+        {"cid":3, "name":"loadScript(scriptName)", "params":"scriptName - name of script to load", "description":"loads the script saved under a certain name into the editor. * only available on script editor page", "example":"loadScript(ponziani)"},
+        {"cid":4, "name":"removeScript(scriptName)", "params":"scriptName - name of script to remove", "description":"deletes the script saved under a certain name. * only available on script editor page and cannot be undone", "example":"removeScript(ponziani)"},
+        {"cid":5, "name":"listScripts()", "params":"none", "description":"shows list of saved scripts", "example":"listScripts()"}
     ]
 },
 {
