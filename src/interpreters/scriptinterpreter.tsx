@@ -19,11 +19,12 @@ class ScriptInterpreter {
     // Handling functions
 
     private parseScript(script: string) {
-        this._commands = script.split('\n').map(p => p.trim());
+        this._commands = script.split('\n').map(p => p.trim()).filter(p => p != '');
     }
 
-    public testScript(script: string) {
+    public testScript(script: string) : boolean {
         this.parseScript(script);
+        return true;
     }
 
     public saveScript(name: string, script: string) {
@@ -36,21 +37,22 @@ class ScriptInterpreter {
         return 'No script saved under given name.';
     }
 
-    public removeScript(name:string) {
+    public removeScript(name: string) {
         
     }
 
-    public listScripts() {
+    public listScripts() : string {
         // pull the list of the script names from local storage
+        return 'No saved scripts';
     }
 
     // Runtime functions
 
-    public hasNextCommand() {
+    public hasNextCommand() : boolean {
         return this._commandIndex < this._commands.length;
     }
 
-    public nextCommand() {
+    public nextCommand() : string {
         if (this._commands.length === 0) return 'No script loaded.'; // empty script error message
         if (this._commandIndex === this._commands.length) return 'End of script.'; // no more commands
         return this._commands[this._commandIndex++];

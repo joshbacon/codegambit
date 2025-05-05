@@ -64,11 +64,11 @@ function ScriptEditor() {
                 value={script}
                 onChange={(newScript) => setScript(newScript)}
                 theme={vscodeDark}
-                className="w-full h-full max-h-[600px] min-h-60 overflow-y-scroll"
+                className="w-full h-full max-h-[500px] min-h-60 overflow-y-scroll"
             />
 
-            <div className="flex flex-col w-full min-h-38 text-green-700 bg-black shadow-[0_0_25px_0_black]">
-                <table className="relative p-2 flex w-full h-[100px] text-wrap overflow-y-scroll">
+            <div className="flex flex-col w-full h-72 text-green-700 bg-black shadow-[0_0_25px_0_black]">
+                <table className="relative p-2 flex w-full h-full text-wrap overflow-y-scroll">
                     <tbody>
                         { interpreter.history().map((value, key) => {
                             return <tr key={key}>

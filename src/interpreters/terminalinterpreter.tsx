@@ -7,7 +7,7 @@ import Move from '../models/move';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { setFEN, setStarted, setAIDepth, setPlayingAs, setMoveHistory } from '../reducers/game';
-import { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare } from '../reducers/visual';
+import { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare, clearShowing } from '../reducers/visual';
 
 import { move, status, moves, aiMove } from 'js-chess-engine';
 
@@ -20,10 +20,10 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     
     const dispatch = useAppDispatch();
     
-    const defaultFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    const defaultFEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
     
-    const WHITE = 'w';
-    const BLACK = 'b';
+    const WHITE: string = 'w';
+    const BLACK: string = 'b';
     
     const [history, setHistory] = useState<string[]>([historyPretext]);
     const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -32,22 +32,17 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     // Script variables
 
     const [scriptInterpreter, setScriptInterpreter] = useState<ScriptInterpreter>(new ScriptInterpreter(editorEnabled));
-    // const scriptInterpreter = new ScriptInterpreter(editorEnabled);
 
     const [runningScript, setRunningScript] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     checkScript();
-    // }, [runningScript]);
+    useEffect(() => {
+        promptScript();
+    }, [runningScript, fen, started, selected]);
 
 
     function scriptBarrier(input: string, script?: string) {
-        // console.log(`${!runningScript}`);
         if (!runningScript) {
-            // console.log(input);
-            // console.log(script);
             parseCommand(input, script);
-            // console.log('ran')
         }
     }
 
@@ -55,34 +50,25 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         return new Promise( resolve => setTimeout(resolve, ms) );
     }
 
-    async function scriptLooper() {
-        console.log('looping');
-        const commands: string[] = scriptInterpreter.commands;
-        console.log(commands);
-        for (let i = 0; i < commands.length; i++) {
-            await(delay(3000));
-            parseCommand(commands[i]);
-        }
-    }
-
-    async function checkScript() {
-        await(delay(5000));
-        // console.log('checking script');
+    async function promptScript() {
         if (status(fen).turn[0] !== playingAs) return;
 
-        // console.log('here');
-        console.log(runningScript)
-        // console.log(scriptInterpreter.hasNextCommand())
-        if (runningScript && scriptInterpreter.hasNextCommand()) {
-            // console.log('here2');
-            const nextCommand: string = scriptInterpreter.nextCommand();
-            // console.log('here3');
-            if (typeof nextCommand !== 'undefined' && status(fen).turn[0] === playingAs) {
-                parseCommand(nextCommand);
+        if (runningScript) {
+            if (!scriptInterpreter.hasNextCommand()) {
+                setRunningScript(false);
+                toAppend.push('End of script.');
+                appendToHistory();
+            } else {
+                await delay(1000);
+                const nextCommand: string = scriptInterpreter.nextCommand();
+                if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(nextCommand)) {
+                    toAppend.push(nextCommand); // an error message in this case
+                    appendToHistory();
+                } else {
+                    parseCommand(nextCommand);
+                }
             }
-        } else {
-            // console.log('here4');
-            setRunningScript(false);
+    
         }
     }
 
@@ -109,7 +95,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         parameters = parameters.map(p => p.trim());
 
         runCommand(command, parameters, script);
-        // checkScript();
+        // promptScript();
     }
 
     function appendToHistory() {
@@ -341,6 +327,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The resign function expects 0 parameters.');
                 } else {
                     dispatch(setFEN(defaultFEN));
+                    dispatch(clearShowing());
                     toAppend.push(defaultFEN);
                 }
                 appendToHistory();
@@ -380,25 +367,31 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     scriptInterpreter.loadScript(parameters[0]);
                     setRunningScript(true);
                 }
+                appendToHistory();
                 break;
             case 'testScript':
-                if (parameters.length !== 0) {
-                    toAppend.push('The testScript function expects 0 parameters.');
+                if (!editorEnabled) {
+                    toAppend.push('The testScript function is only available on the script editor page.');
                 } else if (typeof script === 'undefined') {
                     toAppend.push('No script to test.');
+                } else if (parameters.length !== 0) {
+                    toAppend.push('The testScript function expects 0 parameters.');
                 } else {
                     if (!started) {
                         dispatch(setFEN(defaultFEN));
                         dispatch(setStarted(true));
                     }
-                    scriptInterpreter.testScript(script ?? '');
-                    setRunningScript(true);
-                    scriptLooper();
-                    // checkScript();
+                    if (scriptInterpreter.testScript(script ?? '')) {
+                        toAppend.push('Testing script...');
+                        setRunningScript(true);
+                    }
                 }
+                appendToHistory();
                 break;
             case 'saveScript':
-                if (parameters.length !== 1) {
+                if (!editorEnabled) {
+                    toAppend.push('The saveScript function is only available on the script editor page.');
+                } else if (parameters.length !== 1) {
                     toAppend.push('The saveScript function expects 1 parameter.');
                 } else if (typeof script === 'undefined') {
                     toAppend.push('No script to save.');
@@ -407,18 +400,24 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     scriptInterpreter.saveScript(parameters[0], script ?? '');
                 }
+                appendToHistory();
                 break;
             case 'loadScript':
-                if (parameters.length !== 1) {
+                if (!editorEnabled) {
+                    toAppend.push('The loadScript function is only available on the script editor page.');
+                } else if (parameters.length !== 1) {
                     toAppend.push('The loadScript function expects 1 parameter.');
                 } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
                 } else {
                     toAppend.push(scriptInterpreter.loadScript(parameters[0]));
                 }
+                appendToHistory();
                 break;
             case 'removeScript':
-                if (parameters.length !== 1) {
+                if (!editorEnabled) {
+                    toAppend.push('The removeScript function is only available on the script editor page.');
+                } else if (parameters.length !== 1) {
                     toAppend.push('The removeScript function expects 1 parameter.');
                 } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
@@ -432,8 +431,9 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
                 } else {
-                    scriptInterpreter.listScripts();
+                    toAppend.push(scriptInterpreter.listScripts());
                 }
+                appendToHistory();
                 break;
             case 'setBoardTheme':
                 if (parameters.length !== 1) {

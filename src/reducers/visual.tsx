@@ -28,9 +28,15 @@ export const visualSlice = createSlice({
         setMateSquare: (state, action: PayloadAction<string>) => {
             state.mateSquare = action.payload;
         },
+        clearShowing: (state) => {
+            state.selected = initialState.selected;
+            state.previousMove = initialState.previousMove;
+            state.validMoves = initialState.validMoves;
+            state.mateSquare = initialState.mateSquare;
+        }
     }
 });
 
-export const { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare } = visualSlice.actions;
+export const { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare, clearShowing } = visualSlice.actions;
 
 export default visualSlice.reducer;
