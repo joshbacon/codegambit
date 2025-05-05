@@ -50,10 +50,10 @@ function PuzzleSelector() {
             fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             playingAs: 'w',
             moves: [],
-        },
+        }
     ];
 
-    return <div className="relative flex flex-col place-items-center gap-5 w-4/5 min-w-[355px] h-[80%] p-4 rounded-2xl bg-neutral-800 text-green-700 transition-all duration-1000">
+    return <div className="relative flex flex-col place-items-center gap-5 overflow-hidden w-4/5 min-w-[355px] p-4 rounded-2xl bg-neutral-800 text-green-700 transition-all duration-1000">
 
         <button
             className="absolute top-3 right-3 cursor-pointer"
@@ -66,7 +66,7 @@ function PuzzleSelector() {
             Puzzles
         </h1>
 
-        <div className="w-full h-full grid grid-cols-1 grid-rows-1">
+        <div className="w-full grid grid-cols-1 grid-rows-1">
             <section className={`relative col-start-1 row-start-1 flex flex-col gap-1 w-full transition-opacity duration-1000 ${inPuzzle >= 0 ? 'opacity-0' : 'z-20'}`}>
                 <div className="flex flex-col w-full justify-evenly sm:grid sm:grid-cols-3 rounded-2xl mb-3 outline-2 outline-neutral-900 overflow-hidden">
                     <button
@@ -89,12 +89,14 @@ function PuzzleSelector() {
                     </button>
                 </div>
 
-                { puzzleList.map((puzzle) => {
-                    return PuzzleCard(puzzle, setInPuzzle);
-                }) }
+                <div className="flex flex-col gap-1 h-[500px] overflow-y-scroll">
+                    { puzzleList.map((puzzle) => {
+                        return PuzzleCard(puzzle, setInPuzzle);
+                    }) }
+                </div>
             </section>
 
-            <section className={`col-start-1 row-start-1 w-full h-full pb-3 transition-opacity duration-1000 ${inPuzzle < 0 ? 'opacity-0' : 'z-20'}`}>
+            <section className={`col-start-1 row-start-1 w-full pb-3 transition-opacity duration-1000 ${inPuzzle < 0 ? 'opacity-0' : 'z-20'}`}>
                 <div className="w-full rounded-2xl outline-2 outline-neutral-900 overflow-hidden">
                     <button
                         className='w-full h-full cursor-pointer hover:bg-neutral-900 '

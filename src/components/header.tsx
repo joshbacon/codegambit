@@ -3,7 +3,7 @@ import backIcon from '../assets/icons/back.svg';
 
 function NavHeader(from: string) {
 
-    return <header className='text-green-700 w-full flex justify-center place-items-center bg-neutral-950 h-20'>
+    return <header className='text-green-700 w-full h-20 min-h-20 flex justify-center place-items-center bg-neutral-950'>
         <Link
             to="../"
             state={{from: from}}

@@ -31,27 +31,68 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
 
     // Script variables
 
-    const scriptInterpreter = ScriptInterpreter(editorEnabled);
+    const [scriptInterpreter, setScriptInterpreter] = useState<ScriptInterpreter>(new ScriptInterpreter(editorEnabled));
+    // const scriptInterpreter = new ScriptInterpreter(editorEnabled);
 
     const [runningScript, setRunningScript] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (runningScript && scriptInterpreter.hasNextMove()) {
-            const nextCommand = scriptInterpreter.nextMove();
+    // useEffect(() => {
+    //     checkScript();
+    // }, [runningScript]);
+
+
+    function scriptBarrier(input: string, script?: string) {
+        // console.log(`${!runningScript}`);
+        if (!runningScript) {
+            // console.log(input);
+            // console.log(script);
+            parseCommand(input, script);
+            // console.log('ran')
+        }
+    }
+
+    function delay(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
+    }
+
+    async function scriptLooper() {
+        console.log('looping');
+        const commands: string[] = scriptInterpreter.commands;
+        console.log(commands);
+        for (let i = 0; i < commands.length; i++) {
+            await(delay(3000));
+            parseCommand(commands[i]);
+        }
+    }
+
+    async function checkScript() {
+        await(delay(5000));
+        // console.log('checking script');
+        if (status(fen).turn[0] !== playingAs) return;
+
+        // console.log('here');
+        console.log(runningScript)
+        // console.log(scriptInterpreter.hasNextCommand())
+        if (runningScript && scriptInterpreter.hasNextCommand()) {
+            // console.log('here2');
+            const nextCommand: string = scriptInterpreter.nextCommand();
+            // console.log('here3');
             if (typeof nextCommand !== 'undefined' && status(fen).turn[0] === playingAs) {
                 parseCommand(nextCommand);
-            } else {
-                setRunningScript(false);
             }
+        } else {
+            // console.log('here4');
+            setRunningScript(false);
         }
-    }, [fen, runningScript]);
-
+    }
 
     function parseCommand(input: string, script?: string) {
 
         // Update history
         toAppend.push(input);
-        setCommandHistory([...commandHistory, input]);
+        if (!runningScript) {
+            setCommandHistory([...commandHistory, input]);
+        }
 
         // Check input
         if ( !['setFromFEN','runScript','testScript','saveScript','loadScript','removeScript'].includes(input.split('(')[0]) &&
@@ -68,6 +109,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         parameters = parameters.map(p => p.trim());
 
         runCommand(command, parameters, script);
+        // checkScript();
     }
 
     function appendToHistory() {
@@ -258,6 +300,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('A match is already in session.');
                 } else if (parameters.length > 0) {
                     toAppend.push('The gameStart function expects 0 parameters.');
+                } else if (status(fen).isFinished) {
+                    toAppend.push(finishGame());
                 } else {
                     dispatch(setStarted(true));
                     if (singlePlayer && playingAs === BLACK) {
@@ -320,7 +364,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setFEN(parameters[0]));
                     toAppend.push(parameters[0]);
-                    if (status(parameters[0]).isFinished) {
+                    if (started && status(parameters[0]).isFinished) {
                         dispatch(setStarted(false));
                         toAppend.push(finishGame(parameters[0]));
                     }
@@ -343,8 +387,14 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else if (typeof script === 'undefined') {
                     toAppend.push('No script to test.');
                 } else {
+                    if (!started) {
+                        dispatch(setFEN(defaultFEN));
+                        dispatch(setStarted(true));
+                    }
                     scriptInterpreter.testScript(script ?? '');
                     setRunningScript(true);
+                    scriptLooper();
+                    // checkScript();
                 }
                 break;
             case 'saveScript':
@@ -577,7 +627,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     return {
         history: () => { return history; },
         commandHistory: () => { return commandHistory; },
-        sendCommand: (command: string, script?: string) => { parseCommand(command, script) },
+        sendCommand: (command: string, script?: string) => { scriptBarrier(command, script) },
     }
     
 }

@@ -40,7 +40,7 @@
         {"cid":2, "name":"resign()", "params":"none", "description":"resigns the game.", "example":"resiasgdfuasoidgn()"},
         {"cid":3, "name":"resetBoard()", "params":"none", "description":"resets the board, can only be called when the previous game has finished.", "example":"resetBoard()"},
         {"cid":4, "name":"getFEN()", "params":"none", "description":"returns the FEN string denoting the current state of the game.", "example":"getFEN()"},
-        {"cid":5, "name":"setFromFEN(fen)", "params":"fen - FEN formatted string", "description":"Sets the board to a given position.", "example":"setFromFEN(5Qkr/p6p/2p2p2/3P2p1/8/BP6/P1PP1PPP/RN4K1 b - - 0 18)"}
+        {"cid":5, "name":"setFromFEN(fen)", "params":"fen - FEN formatted string", "description":"Sets the board to a given position.", "example":"setFromFEN(r1bqkbnr/ppp1pB1p/2n5/4N2p/4p3/8/PPPP1PPP/RNB1K2R b KQkq - 0 6)"}
     ]
 },
 {

@@ -127,7 +127,7 @@ function Board() {
         return gridCoords;
     }
 
-    return <div className="relative w-[max(300px,60%)] lg:w-[70%] aspect-square">
+    return <div className="relative w-[max(300px,51%)] lg:w-[70%] aspect-square">
         <img src={theme} draggable={false} className="-z-10 absolute w-full" />
         <div className='w-[96%] h-[96%] grid grid-cols-8 grid-rows-8 place-items-center'>
             {

@@ -57,40 +57,42 @@ function ScriptEditor() {
         }
     }
 
-    return <div className="flex flex-col w-4/5 h-[80%] rounded-2xl overflow-hidden outline-1 outline-stone-700">
-        
-        <CodeMirror
-            value={script}
-            onChange={(newScript) => setScript(newScript)}
-            theme={vscodeDark}
-            className="w-full h-full max-h-[600px] overflow-y-scroll"
-        />
+    return <div className="w-4/5">
+        <div className="flex flex-col w-full rounded-2xl overflow-hidden outline-1 outline-stone-700">
+            
+            <CodeMirror
+                value={script}
+                onChange={(newScript) => setScript(newScript)}
+                theme={vscodeDark}
+                className="w-full h-full max-h-[600px] min-h-60 overflow-y-scroll"
+            />
 
-        <div className="flex flex-col w-full h-48 text-green-700 bg-black shadow-[0_0_25px_0_black]">
-            <table className="relative p-2 flex w-full h-[100px] text-wrap overflow-y-scroll">
-                <tbody>
-                    { interpreter.history().map((value, key) => {
-                        return <tr key={key}>
-                            <td>{value}</td>
-                        </tr>
-                    }) }
-                    <tr ref={scrollRef} />
-                </tbody>
-            </table>
-            <div className="flex items-center w-full px-2 border-t-1">
-                <h1 className="text-1xl font-bold">{'>'}</h1>
-                <input
-                    type="text"
-                    autoFocus={false}
-                    autoCapitalize="false"
-                    autoCorrect="false"
-                    autoComplete="false"
-                    spellCheck="false"
-                    value={currentCommand}
-                    onChange={(e) => updateTerminalInput(e.target.value)}
-                    onKeyUp={(e) => checkTerminalKey(e.key)}
-                    className="h-12 ml-3 w-full focus:outline-0"
-                />
+            <div className="flex flex-col w-full min-h-38 text-green-700 bg-black shadow-[0_0_25px_0_black]">
+                <table className="relative p-2 flex w-full h-[100px] text-wrap overflow-y-scroll">
+                    <tbody>
+                        { interpreter.history().map((value, key) => {
+                            return <tr key={key}>
+                                <td>{value}</td>
+                            </tr>
+                        }) }
+                        <tr ref={scrollRef} />
+                    </tbody>
+                </table>
+                <div className="flex items-center w-full px-2 border-t-1">
+                    <h1 className="text-1xl font-bold">{'>'}</h1>
+                    <input
+                        type="text"
+                        autoFocus={false}
+                        autoCapitalize="false"
+                        autoCorrect="false"
+                        autoComplete="false"
+                        spellCheck="false"
+                        value={currentCommand}
+                        onChange={(e) => updateTerminalInput(e.target.value)}
+                        onKeyUp={(e) => checkTerminalKey(e.key)}
+                        className="h-12 ml-3 w-full focus:outline-0"
+                    />
+                </div>
             </div>
         </div>
     </div>

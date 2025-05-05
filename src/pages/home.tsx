@@ -17,16 +17,16 @@ function HomePage() {
 
     const disabledStyle:String = ' opacity-25 cursor-default hover:bg-transparent';
 
-    return <div className="w-screen h-screen flex flex-col gap-20 justify-center items-center text-green-700">
-      <img src={waves} className="w-screen absolute top-0 min-w-[800px]" />
+    return<div className="w-full h-screen py-5 overflow-x-hidden flex flex-col gap-20 justify-center items-center text-green-700">
+      <img src={waves} className="w-full absolute top-0" />
 
-      <div>
-        <img src={wPawn} className="absolute -translate-x-30 -translate-y-5 rotate-[-24deg]" />
-        <img src={bPawn} className="absolute translate-x-72 -translate-y-5 rotate-12" />
+      <div className='relative flex gap-3 place-items-center h-22'>
+        <img src={wPawn} className="opacity-0 sm:opacity-100 absolute -left-25 sm:relative sm:left-0 aspect-square transition-opacity transition-width duration-500" />
         <h1 className="font-bold text-5xl drop-shadow-[0_3px_3px_rgba(0,0,0,1)]">code_gambit</h1>
+        <img src={bPawn} className="opacity-0 sm:opacity-100 absolute -right-25 sm:relative sm:right-0 aspect-square transition-opacity transition-width duration-500" />
       </div>
 
-      <div className='relative bg-neutral-800 rounded-2xl p-5 flex overflow-hidden'>
+      <div className='relative bg-neutral-800 rounded-2xl p-5 flex overflow-x-hidden'>
         
         <div className={`flex flex-col gap-2 w-full transition-all duration-1000 ease-in-out ${!showPlayMenu ? '' : '-translate-x-[125%] opacity-0'}`}>
           <button onClick={() => setPlayMenu(true)} className='grid grid-cols-3 place-items-center hover:bg-neutral-900 rounded-lg p-2 cursor-pointer'>
