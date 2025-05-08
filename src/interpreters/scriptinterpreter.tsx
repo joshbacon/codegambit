@@ -3,7 +3,9 @@ import { setScript } from "../reducers/script";
 import { useAppDispatch } from '../store/hooks';
 
 class ScriptInterpreter {
+    
     dispatch = useAppDispatch();
+
     _commandIndex: number = 0;
     _commands: string[] = [];
     _variables: ScriptVariable[] = [];

@@ -12,11 +12,9 @@
     learn the basics of coding by playing chess!
     <br />
     <br />
-    <a href="https://github.com/joshbacon/codegambit">View Site</a>
+    <a href="http://codegambit.joshbacon.ca/">View Site</a>
     ·
     <a href="https://github.com/joshbacon/codegambit/issues/new">Report Bug</a>
-    ·
-    <a href="https://github.com/joshbacon/codegambit/issues/new">Request Feature</a>
   </p>
 </div>
 
@@ -26,24 +24,24 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![codegambit Screen Shot][product-screenshot]](https://codegambit.io)
+[![codegambit Screen Shot]][product-screenshot]
 
-`codegambit` is web app aimed to get users used to entering commands and writing simple functions in the context of playing chess. Play a game against a bot or a friend by entering commands into a terminal. You can also complete puzzles and lessons by writing scripts that execute multiple moves to solve the problem.
+`codegambit` is web app aimed to get users used to entering commands and scripting in the context of playing chess. Play a game against a bot or complete puzzles by writing scripts that execute multiple moves to solve the problem.
 
 
 
 ### Built With
 
-This project is built with primarily JavaScript at the moment. I used React for the frontend design and functionality along with Redux to maintain the game state. The user management system was implemented with the help of PocketBase. This allows for game/puzzle/lesson tracking and opens the door for multiplayer games.
+This project is built with primarily TypeScript at the moment. I used React for the frontend design and functionality along with Redux to maintain the game state. 
 
 * [![React][React.js]][React-url]
 * [![Redux][Redux.com]][Redux-url]
-* [![PocketBase][PocketBase]][PocketBase-url]
 
 ### Coming Up
 
-I aim to create a Go backend to maintain multiplayer game lobbies using websockets. For faster load times, and other benefits of server side rendering, I also want to migrate to Next.JS.
+The user management system was implemented with the help of PocketBase. This will allow for game/puzzle tracking and opens the door for multiplayer games. I aim to create a Go backend to maintain multiplayer game lobbies using websockets. For faster load times, and other benefits of server side rendering, I also want to migrate to Next.JS.
 
+* [![PocketBase][PocketBase]][PocketBase-url]
 * [![go][go]][go-url]
 * [![Next.js][Next.js]][Next-url]
 
@@ -52,10 +50,10 @@ I aim to create a Go backend to maintain multiplayer game lobbies using websocke
 ## Roadmap
 
 - [x] Finalize base-application
-- [ ] Add backend
 - [ ] Add puzzles/lessons
+- [ ] Add backend
 - [ ] Add multiplayer & accounts
-- [ ] Migrate to Next.js for SSR
+- [ ] Migrate to Next.js
 
 See the [open issues](https://github.com/joshbacon/codegambit/issues) for a full list of proposed features (and known issues).
 

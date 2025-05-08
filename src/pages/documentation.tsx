@@ -10,7 +10,7 @@ function DocumentationPage() {
     const data: CommandCategory[] = DocData;
 
     return <div className='text-green-700 h-screen overflow-hidden'>
-        { NavHeader('documentation') }
+        <NavHeader />
         <div className='w-screen h-[calc(100%-5rem)] flex'>
             <div className="h-full overflow-y-scroll bg-neutral-900 transition-all duration-500 w-0 opacity-0 lg:w-65 lg:min-w-[250px] lg:opacity-100">
                 <h1 className='font-extrabold text-3xl p-3'>Documentation</h1>
