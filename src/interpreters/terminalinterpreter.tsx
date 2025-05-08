@@ -7,7 +7,7 @@ import Move from '../models/move';
 
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { setFEN, setStarted, setAIDepth, setPlayingAs, setMoveHistory } from '../reducers/game';
-import { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare, clearShowing } from '../reducers/visual';
+import { setBoardTheme, setSelected, setPreviousMoveFrom, setPreviousMoveTo, setValidMoves, setMateSquare, clearShowing } from '../reducers/visual';
 
 import { move, status, moves, aiMove } from 'js-chess-engine';
 
@@ -21,6 +21,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     const dispatch = useAppDispatch();
     
     const defaultFEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    const [enteredFEN, setEnteredFEN] = useState<string>(defaultFEN);
     
     const WHITE: string = 'w';
     const BLACK: string = 'b';
@@ -56,6 +57,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         if (runningScript) {
             if (!scriptInterpreter.hasNextCommand()) {
                 setRunningScript(false);
+                scriptInterpreter.resetScript();
                 toAppend.push('End of script.');
                 appendToHistory();
             } else {
@@ -63,6 +65,11 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 const nextCommand: string = scriptInterpreter.nextCommand();
                 if (!/^[a-z]+[a-zA-Z]*\(-?[a-zA-Z0-9]*(\,\s?\-?[a-zA-Z0-9]*)*\)$/.test(nextCommand)) {
                     toAppend.push(nextCommand); // an error message in this case
+                    appendToHistory();
+                } else if (nextCommand == 'exitScript()') {
+                    toAppend.push(nextCommand);
+                    setRunningScript(false);
+                    toAppend.push('Script terminated.');
                     appendToHistory();
                 } else {
                     parseCommand(nextCommand);
@@ -95,7 +102,6 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         parameters = parameters.map(p => p.trim());
 
         runCommand(command, parameters, script);
-        // promptScript();
     }
 
     function appendToHistory() {
@@ -126,7 +132,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 if (!started) {
                     toAppend.push('A game must be started to unselect a piece.');
                 } else if (parameters.length !== 0) {
-                    toAppend.push('The unselect funciton expects no arguments.');
+                    toAppend.push('The unselect funciton expects no parameters.');
                 } else if (!selected) {
                     toAppend.push('A square must be selected to unselect.');
                 } else {
@@ -138,34 +144,56 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
             case 'move':
                 if (!started) {
                     toAppend.push('A game must be started to move a piece.');
-                } else if (parameters.length !== 1) {
-                    toAppend.push('The move function expects 1 parameter.');
-                } else if (!selected) {
-                    toAppend.push('A piece must be selected to make a move.');
-                } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
-                    toAppend.push('An invalid sqaure was given.');
-                } else if (!isValidMove(selected, parameters[0])) {
-                    toAppend.push('An invalid move was given.');
+                } else if (parameters.length !== 1 && parameters.length !== 2) {
+                    toAppend.push('The move function expects 1 or 2 parameters.');
+                } else if (parameters.length == 2) {
+                    if (!/^[A-H][1-8]$/.test(parameters[0]) || !/^[A-H][1-8]$/.test(parameters[1])) {
+                        toAppend.push('An invalid square was given.');
+                    } else if (!isValidMove(parameters[0], parameters[1])) {
+                        toAppend.push('An invalid move was given.');
+                    } else {
+                        toAppend.push(playMove(parameters[1], parameters[0]));
+                    }
                 } else {
-                    toAppend.push(playMove(parameters[0]));
+                    if (!selected) {
+                        toAppend.push('A piece must be selected to make a move.');
+                    } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
+                        toAppend.push('An invalid square was given.');
+                    } else if (!isValidMove(selected, parameters[0])) {
+                        toAppend.push('An invalid move was given.');
+                    } else {
+                        toAppend.push(playMove(parameters[0]));
+                    }
                 }
                 appendToHistory();
                 break;
             case 'take':
                 if (!started) {
                     toAppend.push('A game must be started to take a piece.');
-                } else if (parameters.length !== 1) {
-                    toAppend.push('The take function expects 1 parameter.');
-                } else if (!selected) {
-                    toAppend.push('A piece must be selected to make a move.');
-                } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
-                    toAppend.push('An invalid sqaure was given.');
-                } else if (!isValidMove(selected, parameters[0])) {
-                    toAppend.push('An invalid move was given.');
-                } else if (isNotPiece(parameters[0])) {
-                    toAppend.push('There is no piece to take at the given square');
+                } else if (parameters.length !== 1 && parameters.length !== 2) {
+                    toAppend.push('The take function expects 1 or 2 parameters.');
+                } else if (parameters.length == 2) {
+                    if (!/^[A-H][1-8]$/.test(parameters[0]) || !/^[A-H][1-8]$/.test(parameters[1])) {
+                        toAppend.push('An invalid square was given.');
+                    } else if (!isValidMove(parameters[0], parameters[1])) {
+                        toAppend.push('An invalid move was given.');
+                    } else if (isNotPiece(parameters[1])) {
+                        toAppend.push('There is no piece to take at the given square');
+                    } else {
+                        toAppend.push(playMove(parameters[1], parameters[0]));
+                    }
                 } else {
-                    toAppend.push(playMove(parameters[0]));
+                    if (!selected) {
+                        toAppend.push('A piece must be selected to make a move.');
+                    } else if (!/^[A-H][1-8]$/.test(parameters[0])) {
+                        toAppend.push('An invalid square was given.');
+                    } else if (!isValidMove(selected, parameters[0])) {
+                        toAppend.push('An invalid move was given.');
+                    } else if (isNotPiece(parameters[0])) {
+                        toAppend.push('There is no piece to take at the given square');
+                    } else {
+                        toAppend.push(playMove(parameters[0]));
+                    }
                 }
                 appendToHistory();
                 break;
@@ -173,7 +201,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 if (!started) {
                     toAppend.push('A game must be started to select a piece.');
                 } else if (parameters.length !== 1 && parameters.length !== 2) {
-                    toAppend.push("The isValidMove function expects 1 or 2 arguments.");
+                    toAppend.push("The isValidMove function expects 1 or 2 parameters.");
                 } else if (!selected && parameters.length === 1) {
                     toAppend.push('A piece must be selected or passed as a parameter to check move validity.');
                 } else {
@@ -199,7 +227,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 if (!started) {
                     toAppend.push('A game must be started to get valid moves.');
                 } else if (parameters.length !== 0 && parameters.length !== 1) {
-                    toAppend.push('The getValidMoves function expects 0 or 1 arguments.');
+                    toAppend.push('The getValidMoves function expects 0 or 1 parameters.');
                 } else if (!selected && parameters.length !== 1) {
                     toAppend.push('A piece must be selected or passed as a parameter to get valid moves.');
                 } else if (parameters.length === 1) {
@@ -219,7 +247,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 if (!started) {
                     toAppend.push('A game must be started to show valid moves.');
                 } else if (parameters.length !== 0 && parameters.length !== 1) {
-                    toAppend.push('The getValidMoves function expects 0 or 1 arguments.');
+                    toAppend.push('The getValidMoves function expects 0 or 1 parameters.');
                 } else if (!selected && parameters.length !== 1) {
                     toAppend.push('A piece must be selected or passed as a parameter to get valid moves.');
                 } else if (parameters.length === 1) {
@@ -350,18 +378,15 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('Invalid FEN formatted string.');
                 } else {
                     dispatch(setFEN(parameters[0]));
+                    setEnteredFEN(parameters[0]);
                     toAppend.push(parameters[0]);
-                    if (started && status(parameters[0]).isFinished) {
-                        dispatch(setStarted(false));
-                        toAppend.push(finishGame(parameters[0]));
-                    }
                 }
                 appendToHistory();
                 break;
             case 'runScript':
                 if (parameters.length !== 1) {
                     toAppend.push('The runScript function expects 1 parameter.');
-                } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
+                } else if (!/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
                 } else {
                     scriptInterpreter.loadScript(parameters[0]);
@@ -388,6 +413,16 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 }
                 appendToHistory();
                 break;
+            case 'resetTest':
+                if (!editorEnabled) {
+                    toAppend.push('The resetTest function is only available on the script editor page.');
+                } else {
+                    dispatch(setFEN(enteredFEN));
+                    dispatch(setStarted(false));
+                    dispatch(clearShowing());
+                }
+                appendToHistory();
+                break;
             case 'saveScript':
                 if (!editorEnabled) {
                     toAppend.push('The saveScript function is only available on the script editor page.');
@@ -395,10 +430,10 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The saveScript function expects 1 parameter.');
                 } else if (typeof script === 'undefined') {
                     toAppend.push('No script to save.');
-                } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
+                } else if (!/^[a-zA-Z0-9]*$/.test(parameters[0]) || parameters[0] == 'example') {
                     toAppend.push('Invalid script name given.');
                 } else {
-                    scriptInterpreter.saveScript(parameters[0], script ?? '');
+                    toAppend.push(scriptInterpreter.saveScript(parameters[0], script));
                 }
                 appendToHistory();
                 break;
@@ -407,7 +442,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The loadScript function is only available on the script editor page.');
                 } else if (parameters.length !== 1) {
                     toAppend.push('The loadScript function expects 1 parameter.');
-                } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
+                } else if (!/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
                 } else {
                     toAppend.push(scriptInterpreter.loadScript(parameters[0]));
@@ -419,17 +454,16 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The removeScript function is only available on the script editor page.');
                 } else if (parameters.length !== 1) {
                     toAppend.push('The removeScript function expects 1 parameter.');
-                } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
+                } else if (!/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
                 } else {
                     scriptInterpreter.removeScript(parameters[0]);
                 }
+                appendToHistory();
                 break;
             case 'listScripts':
                 if (parameters.length !== 0) {
                     toAppend.push('The removeScript function expects 0 parameters.');
-                } else if (/^[a-zA-Z0-9]*$/.test(parameters[0])) {
-                    toAppend.push('Invalid script name given.');
                 } else {
                     toAppend.push(scriptInterpreter.listScripts());
                 }
@@ -520,17 +554,18 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         }
     }
 
-    function playMove(square: string) {
-        const nextPosition = move(fen, selected, square);
-        let result = '[' + selected + ',' + square + ']';
+    function playMove(to: string, from?: string) {
+        const nextPosition = from ? move(fen, from, to) : move(fen, selected, to);
+        let result = from ? '[' + from + ',' + to + ']' : '[' + selected + ',' + to + ']';
 
         dispatch(setFEN(nextPosition));
-        dispatch(setPreviousMove(square));
+        dispatch(setPreviousMoveFrom(selected));
+        dispatch(setPreviousMoveTo(to));
         dispatch(setSelected(''));
         dispatch(setValidMoves([]));
 
         let tempHistory: Move[] = [...moveHistory];
-        tempHistory.push({from: selected, to: square})
+        tempHistory.push({from: selected, to: to})
         dispatch(setMoveHistory(tempHistory));
         
         if (status(nextPosition).isFinished) {
@@ -555,7 +590,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         dispatch(setMoveHistory(tempHistory));
 
         dispatch(setFEN(nextPosition));
-        dispatch(setPreviousMove(to));
+        dispatch(setPreviousMoveFrom(from));
+        dispatch(setPreviousMoveTo(to));
         if (status(nextPosition).isFinished) {
             dispatch(setStarted(false));
             toAppend.push(finishGame(nextPosition));

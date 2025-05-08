@@ -4,7 +4,8 @@ import VisualState from "../models/visualstate";
 const initialState: VisualState = {
     boardTheme: 'dark',
     selected: '',
-    previousMove: '',
+    previousMoveFrom: '',
+    previousMoveTo: '',
     validMoves: [],
     mateSquare: '',
 }
@@ -19,8 +20,11 @@ export const visualSlice = createSlice({
         setSelected: (state, action: PayloadAction<string>) => {
             state.selected = action.payload;
         },
-        setPreviousMove: (state, action: PayloadAction<string>) => {
-            state.previousMove = action.payload;
+        setPreviousMoveFrom: (state, action: PayloadAction<string>) => {
+            state.previousMoveFrom = action.payload;
+        },
+        setPreviousMoveTo: (state, action: PayloadAction<string>) => {
+            state.previousMoveTo = action.payload;
         },
         setValidMoves: (state, action: PayloadAction<string[]>) => {
             state.validMoves = action.payload;
@@ -30,13 +34,14 @@ export const visualSlice = createSlice({
         },
         clearShowing: (state) => {
             state.selected = initialState.selected;
-            state.previousMove = initialState.previousMove;
+            state.previousMoveFrom = initialState.previousMoveFrom;
+            state.previousMoveTo = initialState.previousMoveTo;
             state.validMoves = initialState.validMoves;
             state.mateSquare = initialState.mateSquare;
         }
     }
 });
 
-export const { setBoardTheme, setSelected, setPreviousMove, setValidMoves, setMateSquare, clearShowing } = visualSlice.actions;
+export const { setBoardTheme, setSelected, setPreviousMoveFrom, setPreviousMoveTo, setValidMoves, setMateSquare, clearShowing } = visualSlice.actions;
 
 export default visualSlice.reducer;

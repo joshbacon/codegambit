@@ -3,7 +3,8 @@ type VisualState = {
 
     boardTheme: string,
     selected: string,
-    previousMove: string,
+    previousMoveFrom: string,
+    previousMoveTo: string,
     validMoves: string[],
     mateSquare: string,
 

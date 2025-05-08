@@ -30,7 +30,7 @@ import K from '../assets/images/pieces/wk.png';
 function Board() {
 
     const { fen, playingAs } = useAppSelector(state => state.game);
-    const { boardTheme, selected, previousMove, validMoves, mateSquare } = useAppSelector(state => state.visual);
+    const { boardTheme, selected, previousMoveFrom, previousMoveTo, validMoves, mateSquare } = useAppSelector(state => state.visual);
 
     let theme: string = playingAs == 'w' ? wbDark : bbDark;
     switch (boardTheme) {
@@ -149,10 +149,18 @@ function Board() {
                     className='bg-purple-600 opacity-50 w-full h-full'
                 /> : null
             }
-            { previousMove ? <div
+            { previousMoveFrom ? <div
                     style= {{
-                        gridColumnStart: playingAs == 'w' ? squareToGrid(previousMove)[0] : mapWhiteToBlack(squareToGrid(previousMove)[0]),
-                        gridRowStart: playingAs == 'w' ? squareToGrid(previousMove)[1] : mapWhiteToBlack(squareToGrid(previousMove)[1])
+                        gridColumnStart: playingAs == 'w' ? squareToGrid(previousMoveFrom)[0] : mapWhiteToBlack(squareToGrid(previousMoveFrom)[0]),
+                        gridRowStart: playingAs == 'w' ? squareToGrid(previousMoveFrom)[1] : mapWhiteToBlack(squareToGrid(previousMoveFrom)[1])
+                    }}
+                    className='bg-amber-200 opacity-50 w-full h-full'
+                /> : null
+            }
+            { previousMoveTo ? <div
+                    style= {{
+                        gridColumnStart: playingAs == 'w' ? squareToGrid(previousMoveTo)[0] : mapWhiteToBlack(squareToGrid(previousMoveTo)[0]),
+                        gridRowStart: playingAs == 'w' ? squareToGrid(previousMoveTo)[1] : mapWhiteToBlack(squareToGrid(previousMoveTo)[1])
                     }}
                     className='bg-amber-200 opacity-50 w-full h-full'
                 /> : null

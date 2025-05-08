@@ -1,22 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { javascript } from '@codemirror/lang-javascript';
 import TerminalInterpreter from "../interpreters/terminalinterpreter";
+import { useAppSelector } from "../store/hooks";
 
 function ScriptEditor() {
 
-    const interpreter = TerminalInterpreter(true, 'Use the command testScript() to watch your script run');
+    const interpreter = TerminalInterpreter(true, 'Use the command testScript() to watch your script run or loadScript(example) for instructions');
 
     // Editor Variables
 
-    const [script, setScript] = useState<string>('select(E2)\nmove(E4)');
+    const [script, setScript] = useState<string>(exampleScript);
+    const { loadedScript } = useAppSelector(state => state.script);
 
+    useEffect(() => {
+        setScript(loadedScript);
+    }, [loadedScript]);
 
     // Terminal Variables
 
     const scrollRef = useRef<null | HTMLTableRowElement>(null);
     
-    const [currentCommand, setCurrentCommand] = useState<string>("");
+    const [currentCommand, setCurrentCommand] = useState<string>("testScript()");
     const [partialCommand, setPartialCommand] = useState<string>("");
     const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(interpreter.commandHistory().length);
 
@@ -51,7 +57,11 @@ function ScriptEditor() {
                 }
             }
         } else if (key === 'Enter') {
-            interpreter.sendCommand(currentCommand, script);
+            if (currentCommand == 'loadScript(example)') {
+                setScript(exampleScript);
+            } else {
+                interpreter.sendCommand(currentCommand, script);
+            }
             setCurrentCommand("");
             setPartialCommand("");
         }
@@ -64,10 +74,11 @@ function ScriptEditor() {
                 value={script}
                 onChange={(newScript) => setScript(newScript)}
                 theme={vscodeDark}
+                extensions={[javascript({ jsx: true })]}
                 className="w-full h-full max-h-[500px] min-h-60 overflow-y-scroll"
             />
 
-            <div className="flex flex-col w-full h-72 text-green-700 bg-black shadow-[0_0_25px_0_black]">
+            <div className="flex flex-col w-full h-64 text-green-700 bg-black shadow-[0_0_25px_0_black]">
                 <table className="relative p-2 flex w-full h-full text-wrap overflow-y-scroll">
                     <tbody>
                         { interpreter.history().map((value, key) => {
@@ -97,5 +108,58 @@ function ScriptEditor() {
         </div>
     </div>
 }
+
+const exampleScript: string = `//
+// Welcome to the scripting page!
+// Here is everything you need to know about scripting.
+//
+
+//
+// Writing a script allows you to make a series of
+// moves according to custom logic.
+// Have a favourite opening? Create a script to
+// save yourself from typing it in over and over.
+//
+
+//
+// Functionality:
+//
+// Think of the script editor as the terminal that
+// won't run the commands until you tell it to.
+// 
+// This means any command available to you in the
+// terminal can be used in your script.
+// Including an extra Termination command.
+//
+// Use the command exitScript() to cancel a script
+//
+// This can be use to avoid a losing position if
+// your opponent makes an unexpected move.
+//
+//
+// You also have access to a function
+
+
+//
+// Below is a simple implementation for a basic
+// Ponziani variation.
+//
+
+// Setup initial sctructure
+select(E2)
+move(E4)
+select(G1)
+move(F3)
+select(C2)
+move(C3)
+select(D2)
+move(D4)
+
+// Check opponents response
+//if () {
+//
+//}
+
+`;
 
 export default ScriptEditor;

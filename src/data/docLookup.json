@@ -3,7 +3,7 @@
     { "key": "unselect",         "id": 0, "cid": 1 },
     
     { "key": "move",             "id": 1, "cid": 0 },
-    { "key": "take",             "id": 1, "cid": 1 },
+    { "key": "take",             "id": 1, "cid": 2 },
     
     { "key": "isValidMove",      "id": 2, "cid": 0 },
     { "key": "getValidMoves",    "id": 2, "cid": 2 },
@@ -27,10 +27,11 @@
     
     { "key": "runScript",        "id": 5, "cid": 0 },
     { "key": "testScript",       "id": 5, "cid": 1 },
-    { "key": "saveScript",       "id": 5, "cid": 2 },
-    { "key": "loadScript",       "id": 5, "cid": 3 },
-    { "key": "removeScript",     "id": 5, "cid": 4 },
-    { "key": "listScripts",      "id": 5, "cid": 5 },
+    { "key": "resetTest",        "id": 5, "cid": 2 },
+    { "key": "saveScript",       "id": 5, "cid": 3 },
+    { "key": "loadScript",       "id": 5, "cid": 4 },
+    { "key": "removeScript",     "id": 5, "cid": 5 },
+    { "key": "listScripts",      "id": 5, "cid": 6 },
     
     { "key": "setBoardTheme",    "id": 6, "cid": 0 },
     { "key": "setBotDepth",      "id": 6, "cid": 1 },

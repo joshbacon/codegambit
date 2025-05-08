@@ -13,7 +13,9 @@
     "name": "Movement",
     "commands": [
         {"cid":0, "name":"move(to)", "params":"to - destination square", "description":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"cid":1, "name":"take(to)", "params":"to - destination square", "description":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"}
+        {"cid":1, "name":"move(to, from)", "params":"to - destination square", "description":"moves the given piece to the given position iff it is a valid move and false otherwise.", "example":"move(E2,E4)"},
+        {"cid":2, "name":"take(to)", "params":"to - destination square", "description":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"},
+        {"cid":3, "name":"take(to, from)", "params":"to - destination square", "description":"like move but only works when said move captures another piece.", "example":"take(C2,D3)"}
     ]
 },
 {
@@ -21,7 +23,7 @@
     "name": "Checking",
     "commands": [
         {"cid":0, "name":"isValidMove(to)", "params":"to - destination square", "description":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
-        {"cid":1, "name":"isValidMove(from, to)", "params":"from - source square, to - destination square", "description":"returns true if the given position is a vlid move for the selected piece if one exists and false otherwise. *only works when a piece is selected", "example":"isValidMove(D7)"},
+        {"cid":1, "name":"isValidMove(from, to)", "params":"from - source square, to - destination square", "description":"returns true if the given position is a valid move for the given piece if one exists and false otherwise.", "example":"isValidMove(E4,E5)"},
         {"cid":2, "name":"getValidMoves()", "params":"none", "description":"returns all valid moves for the current position.", "example":"getValidMoves()"},
         {"cid":3, "name":"getValidMoves(square)", "params":"square - the square you want ot see the moves for", "description":"returns all valid moves for the piece at the given square.", "example":"getValidMoves(E2)"},
         {"cid":4, "name":"showValidMoves()", "params":"none", "description":"shows all the valid moves of the selected piece if one exists and false otherwise.", "example":"showValidMoves()"},
@@ -58,11 +60,12 @@
     "name": "Scripting",
     "commands": [
         {"cid":0, "name":"runScript(scriptName)", "params":"scriptName - name of the script to run", "description":"runs a saved script if one exists under the given name.", "example":"runScript(ponziani)"},
-        {"cid":1, "name":"testScript()", "params":"none", "description":"runs the script currently in the editor. * only available on script editor page.", "example":"testScript()"},
-        {"cid":2, "name":"saveScript(scriptName)", "params":"scriptName - name to save the script under", "description":"saves the script under a certain name. * only available on script editor page", "example":"saveScript(ponziani)"},
-        {"cid":3, "name":"loadScript(scriptName)", "params":"scriptName - name of script to load", "description":"loads the script saved under a certain name into the editor. * only available on script editor page", "example":"loadScript(ponziani)"},
-        {"cid":4, "name":"removeScript(scriptName)", "params":"scriptName - name of script to remove", "description":"deletes the script saved under a certain name. * only available on script editor page and cannot be undone", "example":"removeScript(ponziani)"},
-        {"cid":5, "name":"listScripts()", "params":"none", "description":"shows list of saved scripts", "example":"listScripts()"}
+        {"cid":1, "name":"testScript()*", "params":"none", "description":"runs the script currently in the editor. * only available on script editor page.", "example":"testScript()"},
+        {"cid":2, "name":"resetTest()*", "params":"none", "description":"resets the board state to the most recently entered FEN (or default setup if none has been entered). * only available on script editor page.", "example":"resetTest()"},
+        {"cid":3, "name":"saveScript(scriptName)*", "params":"scriptName - name to save the script under", "description":"saves the script under a certain name. * only available on script editor page", "example":"saveScript(ponziani)"},
+        {"cid":4, "name":"loadScript(scriptName)*", "params":"scriptName - name of script to load", "description":"loads the script saved under a certain name into the editor. * only available on script editor page", "example":"loadScript(ponziani)"},
+        {"cid":5, "name":"removeScript(scriptName)*", "params":"scriptName - name of script to remove", "description":"deletes the script saved under a certain name. * only available on script editor page and cannot be undone", "example":"removeScript(ponziani)"},
+        {"cid":6, "name":"listScripts()", "params":"none", "description":"shows list of saved scripts", "example":"listScripts()"}
     ]
 },
 {
