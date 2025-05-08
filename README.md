@@ -24,7 +24,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![codegambit Screen Shot]][product-screenshot]
+![codegambit Screen Shot][product-screenshot]
 
 `codegambit` is web app aimed to get users used to entering commands and scripting in the context of playing chess. Play a game against a bot or complete puzzles by writing scripts that execute multiple moves to solve the problem.
 
