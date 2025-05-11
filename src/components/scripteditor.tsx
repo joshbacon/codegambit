@@ -18,6 +18,15 @@ function ScriptEditor() {
         setScript(loadedScript);
     }, [loadedScript]);
 
+    useEffect(() => {
+        const recentScript: string | null = localStorage.getItem("recentScript");
+        if (recentScript && recentScript != 'example') {
+            interpreter.sendCommand(`loadScript(${recentScript})`);
+        } else {
+            setScript(exampleScript);
+        }
+    }, []);
+
     // Terminal Variables
 
     const scrollRef = useRef<null | HTMLTableRowElement>(null);

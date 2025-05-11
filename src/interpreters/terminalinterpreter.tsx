@@ -67,6 +67,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push(nextCommand); // an error message in this case
                     appendToHistory();
                 } else if (nextCommand == 'exitScript()') {
+                    // hoisted from parseCommand function because it's not a terminal command
                     toAppend.push(nextCommand);
                     setRunningScript(false);
                     toAppend.push('Script terminated.');
@@ -78,6 +79,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
     
         }
     }
+
+    // Terminal functions
 
     function parseCommand(input: string, script?: string) {
 
@@ -101,7 +104,9 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         let parameters: string[] = data[1] === ')' ? [] : data[1].replace(')', '').split(',');
         parameters = parameters.map(p => p.trim());
 
-        runCommand(command, parameters, script);
+        if (!runCommand(command, parameters, script)) {
+            setRunningScript(false);
+        }
     }
 
     function appendToHistory() {
@@ -109,7 +114,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         toAppend = [];
     }
 
-    function runCommand(command: string, parameters: string[], script?: string) {
+    function runCommand(command: string, parameters: string[], script?: string) : boolean {
+        let result = false;
         switch (command) {
             case 'select':
                 if (!started) {
@@ -125,6 +131,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setSelected(parameters[0]));
                     toAppend.push(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -138,6 +145,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setSelected(''));
                     toAppend.push(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -153,6 +161,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         toAppend.push('An invalid move was given.');
                     } else {
                         toAppend.push(playMove(parameters[1], parameters[0]));
+                        result = true;
                     }
                 } else {
                     if (!selected) {
@@ -163,6 +172,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         toAppend.push('An invalid move was given.');
                     } else {
                         toAppend.push(playMove(parameters[0]));
+                        result = true;
                     }
                 }
                 appendToHistory();
@@ -181,6 +191,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         toAppend.push('There is no piece to take at the given square');
                     } else {
                         toAppend.push(playMove(parameters[1], parameters[0]));
+                        result = true;
                     }
                 } else {
                     if (!selected) {
@@ -193,6 +204,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         toAppend.push('There is no piece to take at the given square');
                     } else {
                         toAppend.push(playMove(parameters[0]));
+                        result = true;
                     }
                 }
                 appendToHistory();
@@ -218,6 +230,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                             toAppend.push('The first square given must contain one of your own pieces.');
                         } else {
                             toAppend.push(`${isValidMove(parameters[0], parameters[1])}`);
+                            result = true;
                         }
                     }
                 }
@@ -237,9 +250,11 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         toAppend.push('There is no piece on the given square.');
                     } else {
                         toAppend.push('[' + getValidMoves(parameters[0]).toString() + ']');
+                        result = true;
                     }
                 } else {
                     toAppend.push('[' + getValidMoves().toString() + ']');
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -259,11 +274,13 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         const possibleMoves = getValidMoves(parameters[0]);
                         dispatch(setValidMoves(possibleMoves));
                         toAppend.push('[' + possibleMoves.toString() + ']');
+                        result = true;
                     }
                 } else {
                     const possibleMoves = getValidMoves();
                     dispatch(setValidMoves(possibleMoves));
                     toAppend.push('[' + possibleMoves.toString() + ']');
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -276,6 +293,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('No valid moves are currently showing.');
                 } else {
                     dispatch(setValidMoves([]));
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -286,6 +304,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The showMoveHistory function expects 0 parameters.');
                 } else {
                     toAppend.push(formatMoves(''));
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -296,6 +315,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The showWhiteMoves function expects 0 parameters.');
                 } else {
                     toAppend.push(formatMoves(WHITE));
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -306,6 +326,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The showBlackMoves function expects 0 parameters.');
                 } else {
                     toAppend.push(formatMoves(BLACK));
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -320,7 +341,9 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     dispatch(setStarted(true));
                     if (singlePlayer && playingAs === BLACK) {
                         toAppend.push(playAiMove());
+                    } else {
                     }
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -334,6 +357,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setStarted(false));
                     toAppend.push('Draw was accepted.');
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -345,6 +369,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setStarted(false));
                     toAppend.push(`${playingAs === WHITE ? 'Black' : 'White'} wins!`);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -357,6 +382,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     dispatch(setFEN(defaultFEN));
                     dispatch(clearShowing());
                     toAppend.push(defaultFEN);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -365,6 +391,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The getFEN function expects 0 parameters.');
                 } else {
                     toAppend.push(fen);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -373,13 +400,13 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('You can\'t set the position while in game.');
                 } else if (parameters.length !== 1) {
                     toAppend.push('The setFromFEN function expects 1 parameter.');
-                } else if (/^([1-8PNBRQK]+\/){7}[1-8PNBRQK]+$/gim.test(parameters[0])) {
-                    // TODO: need a better regex
+                } else if (!/^((([pnbrqkPNBRQK1-8]{1,8})\/?){8})\s+(b|w)\s+(-|K?Q?k?q)\s+(-|[a-h][3-6])\s+(\d+)\s+(\d+)\s*$/.test(parameters[0])) {
                     toAppend.push('Invalid FEN formatted string.');
                 } else {
                     dispatch(setFEN(parameters[0]));
                     setEnteredFEN(parameters[0]);
                     toAppend.push(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -389,8 +416,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else if (!/^[a-zA-Z0-9]*$/.test(parameters[0])) {
                     toAppend.push('Invalid script name given.');
                 } else {
-                    scriptInterpreter.loadScript(parameters[0]);
-                    setRunningScript(true);
+                    result = scriptInterpreter.runScript(parameters[0]);
+                    setRunningScript(result);
                 }
                 appendToHistory();
                 break;
@@ -410,6 +437,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                         toAppend.push('Testing script...');
                         setRunningScript(true);
                     }
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -420,6 +448,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     dispatch(setFEN(enteredFEN));
                     dispatch(setStarted(false));
                     dispatch(clearShowing());
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -434,6 +463,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('Invalid script name given.');
                 } else {
                     toAppend.push(scriptInterpreter.saveScript(parameters[0], script));
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -446,6 +476,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('Invalid script name given.');
                 } else {
                     toAppend.push(scriptInterpreter.loadScript(parameters[0]));
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -458,6 +489,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('Invalid script name given.');
                 } else {
                     scriptInterpreter.removeScript(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -466,6 +498,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                     toAppend.push('The removeScript function expects 0 parameters.');
                 } else {
                     toAppend.push(scriptInterpreter.listScripts());
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -477,6 +510,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setBoardTheme(parameters[0]));
                     toAppend.push(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -490,6 +524,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setAIDepth(Number(parameters[0])));
                     toAppend.push(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -503,6 +538,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     dispatch(setPlayingAs(parameters[0]));
                     toAppend.push(parameters[0]);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -512,8 +548,9 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else if (!DocLookup.map(e => e.key).includes(parameters[0])) {
                     toAppend.push(command + ' is not a valid function name.');
                 } else {
-                    const result: string[] = formatHelp(parameters[0]);
-                    toAppend.push(...result);
+                    const commandData: string[] = formatHelp(parameters[0]);
+                    toAppend.push(...commandData);
+                    result = true;
                 }
                 appendToHistory();
                 break;
@@ -523,12 +560,14 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
                 } else {
                     setHistory([]);
                     toAppend = [];
+                    result = true;
                 }
                 break;
             default:
                 toAppend.push('Command not recognized.');
                 appendToHistory();
         }
+        return result;
     }
 
     // Helper Functions
@@ -565,13 +604,15 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         dispatch(setValidMoves([]));
 
         let tempHistory: Move[] = [...moveHistory];
-        tempHistory.push({from: selected, to: to})
+        console.log({from: from ? from : selected, to: to});
+        tempHistory.push({from: from ? from : selected, to: to})
         dispatch(setMoveHistory(tempHistory));
         
         if (status(nextPosition).isFinished) {
             dispatch(setStarted(false));
             toAppend.push(finishGame(nextPosition));
         } else if (singlePlayer) {
+            console.log(result)
             result += ' ' + playAiMove(nextPosition);
         }
 

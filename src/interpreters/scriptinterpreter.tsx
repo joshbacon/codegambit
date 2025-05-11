@@ -33,6 +33,15 @@ class ScriptInterpreter {
         //console.log(script.split('\n').map(p => p.trim()).filter(p => p != '' && !p.startsWith('//')));
     }
 
+    public runScript(script: string) : boolean {
+        if (this.loadScript(script) === script) {
+            this.resetScript();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public testScript(script: string) : boolean {
         this.parseScript(script);
         return true;
@@ -55,6 +64,7 @@ class ScriptInterpreter {
     public loadScript(name: string) : string {
         const storage: string | null = localStorage.getItem('scripts');
         if (storage) {
+            localStorage.setItem("recentScript", name);
             const scripts: { [key: string]: any } = JSON.parse(storage);
             this.parseScript(scripts[name]);
             this.dispatch(setScript(scripts[name]));
