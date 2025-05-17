@@ -4,6 +4,7 @@
     
     { "key": "move",             "id": 1, "cid": 0 },
     { "key": "take",             "id": 1, "cid": 2 },
+    { "key": "promote",          "id": 1, "cid": 4 },
     
     { "key": "isValidMove",      "id": 2, "cid": 0 },
     { "key": "getValidMoves",    "id": 2, "cid": 2 },

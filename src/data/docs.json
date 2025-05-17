@@ -13,9 +13,11 @@
     "name": "Movement",
     "commands": [
         {"cid":0, "name":"move(to)", "params":"to - destination square", "description":"moves the currently selected piece to the given position iff it is a valid move and false otherwise. *only works when a piece is selected", "example":"move(E4)"},
-        {"cid":1, "name":"move(to, from)", "params":"to - destination square", "description":"moves the given piece to the given position iff it is a valid move and false otherwise.", "example":"move(E2,E4)"},
+        {"cid":1, "name":"move(from, to)", "params":"from - source square, to - destination square, source", "description":"moves the given piece to the given position iff it is a valid move and false otherwise.", "example":"move(E2,E4)"},
         {"cid":2, "name":"take(to)", "params":"to - destination square", "description":"like move but only works when said move captures another piece. *only works when a piece is selected", "example":"take(D3)"},
-        {"cid":3, "name":"take(to, from)", "params":"to - destination square", "description":"like move but only works when said move captures another piece.", "example":"take(C2,D3)"}
+        {"cid":3, "name":"take(from, to)", "params":"from - source square, to - destination square", "description":"like move but only works when said move captures another piece.", "example":"take(C2,D3)"},
+        {"cid":4, "name":"promote(to, piece)", "params":"to - destination square, piece - desired promotion piece", "description":"like move but only works when said move promotes a pawn. * if you use the move() or take() functions, pawn will automatically promote to a queen.", "example":"promote(A8)"},
+        {"cid":5, "name":"promote(from, to, piece)", "params":"from - source square, to - destination square, piece - desired promotion piece", "description":"like move but only works when said move promotes a pawn. * if you use the move() or take() functions, pawn will automatically promote to a queen.", "example":"promote(H2,H1)"}
     ]
 },
 {
