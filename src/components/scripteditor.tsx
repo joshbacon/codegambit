@@ -136,17 +136,44 @@ const exampleScript: string = `//
 // Think of the script editor as the terminal that
 // won't run the commands until you tell it to.
 // 
-// This means any command available to you in the
+// This means any command* available to you in the
 // terminal can be used in your script.
 // Including an extra Termination command.
 //
-// Use the command exitScript() to cancel a script
+//  - Use the command exitScript() to cancel a script
 //
 // This can be use to avoid a losing position if
 // your opponent makes an unexpected move.
 //
+// * some commands listed under Gameplay are not
+//    available while scripting:
+//   - startGame()
+//   - setFromFEN()
+//   - resetBoard()
 //
-// You also have access to a function
+//
+// You also have access to some built in variables.
+//
+//    OPPLASTMOVE - allows you to check how your
+//               opponent responded to your last move
+//
+//
+//
+// Error Codes:
+//
+// When you load a script, a number will be returned
+// indicating the success/failure of the build process.
+//
+// - 0: indicates the script was loaded successfully
+// - 1: indicates there is no script saved under that name
+// - 2: indicates an invalid function was found
+// - 3: indicates a syntax error in a conditional block
+// - 4: indicates a syntax error in a loop
+//
+// Note parameters are not checked during the load process.
+// Parameters are checked during runtime so be sure to
+// test your scripts!
+//
 
 
 //
@@ -154,20 +181,24 @@ const exampleScript: string = `//
 // Ponziani variation.
 //
 
-// Setup initial sctructure
+// Start with E4 then bring your knight out
 select(E2)
 move(E4)
 select(G1)
 move(F3)
+
+// Check opponents response
+if (OPPLASTMOVE == [D5,E4]) {
+  move(F3,E5)
+  exitScript()
+}
+
 select(C2)
 move(C3)
 select(D2)
 move(D4)
 
-// Check opponents response
-//if () {
-//
-//}
+
 
 `;
 
