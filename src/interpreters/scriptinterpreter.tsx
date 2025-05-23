@@ -3,20 +3,24 @@ import DocData from '../data/docs.json';
 import { setScript } from "../reducers/script";
 import { useAppDispatch } from '../store/hooks';
 import CommandCategory from "../models/commandcategory";
+import CommandBlock from "../models/commandblock";
+import Move from "../models/move";
 
 class ScriptInterpreter {
+
+    getLastMove?: () => Move;
     
     dispatch = useAppDispatch();
 
     _blockIndex: number = 0;
     _commandIndex: number = 0;
-    _commandBlocks: string[][] = [];
+    _commandBlocks: CommandBlock[] = [];
     _variables: ScriptVariable[] = [];
 
     _commandList: string[] = [];
     _editingEnabled: boolean = false;
 
-    constructor(editing: boolean) {
+    constructor(editing: boolean, callback?: Function) {
         const tempList = [];
         const data: CommandCategory[] = DocData;
         for (let i=0; i < data.length; i++) {
@@ -30,13 +34,16 @@ class ScriptInterpreter {
         tempList.push('exitScript') // Add the extra scripting function
         this._commandList = tempList;
         this._editingEnabled = editing;
+        if (callback) {
+            this.getLastMove = () => callback();
+        }
     }
 
     get commands() : string[] {
-        return this._commandBlocks[this._blockIndex];
+        return this._commandBlocks[this._blockIndex].commands;
     }
 
-    get blocks() : string[][] {
+    get blocks() : CommandBlock[] {
         return this._commandBlocks;
     }
 
@@ -49,76 +56,34 @@ class ScriptInterpreter {
 
     private parseScript(script: string) : number {
         
-        let errorFound : number = 0;
-        let blocks : string[][] = [];
-        const lines : string[] = this.cleanScript(script);
+        let blocks: CommandBlock[] = [];
+        const lines: string[] = this.cleanScript(script);
 
-        for (let i=0; i < lines.length; i++) {
-
-            // put all the "outside conditional commands" in one block each?
-            // so like the example script would be 3 blocks (setup, conditional, secondary pawn moves) instead of 9 blocks
-            // - then we could attach a "condition result" to each one
-            // -- "outside conditional" command blocks would just be set to true
-            // -- and conditional blocks would have the given condition
-            // * this would make the 'else if' functionality easier too... just attach the next condition to it.
-            //   no need to track indicies because they would all still run sequentially, just skipping some
-            //   (until we add loops at least, but we can probably hoist that functionality when we need to)
-            //   The 'else' functionality would be tricky though, would have to NOT all the leading IF conditions
-
-            // ok yeah do that...
-            // would need to create a CommandBlock data type
-            // this.condition: boolean
-            // this.commands: string[]
-            // 
-            // then change _commanBlocks to a type of CommandBlock[]
-            
-            // Will need a function to test the condition, then call it in nextCommand() and
-            //  keep incrementing this._blockIndex while the conditions are false until a true conditions is found or the script ends
-
-            // NOTE: current implementation does not handle nested conditionals properly (just )
-
-            // Add a new block for the next round of commands
-            blocks.push([]);
-            
-            // Check if it's the start of a conditional block
+        let i: number = 0;
+        if (!/^\s*if\s*\(/.test(lines[i])) blocks.push({condition: '', commands: []} as CommandBlock)
+        while (i < lines.length) {
             if (/^\s*if\s*\(/.test(lines[i])) {
-                // Add all the subsequent commands to one block
-                while (!lines[++i].includes('}')) {
-                    if (i === lines.length) {
-                        errorFound = 3; // error code for improper conditional syntax
-                        break;
-                    } else if (this.isNotCommand(lines[i])) {
-                        errorFound = 2; // error code for invalid function
-                        i = lines.length;
-                        break;
-                    }
-                    blocks[blocks.length-1].push(lines[i]);
+                let condition: string = lines[i];
+                try {
+                    condition = condition.split('(')[1].split(')')[0];
+                } catch (e) {
+                    return 3; // error code for invalid conditional syntax
                 }
+                blocks.push({condition: condition, commands: []} as CommandBlock);
+            } else if (lines[i].includes('}') && i < lines.length - 2 && !/^\s*if\s*\(/.test(lines[i+1])) {
+                blocks.push({condition: '', commands: []} as CommandBlock);
             } else {
                 if (this.isNotCommand(lines[i])) {
-                    errorFound = 2; // error code for invalid function
-                    break;
+                    return 2; // error code for invalid function
                 }
-                // Otherwise, add the single command to its own block
-                blocks[blocks.length-1].push(lines[i]);
+                blocks[blocks.length-1].commands.push(lines[i]);
             }
-
+            i++;
         }
-        console.log(blocks)
+        // console.log(blocks.filter((b: CommandBlock) => b.commands.length > 0));
+        this._commandBlocks = blocks.filter((b: CommandBlock) => b.commands.length > 0);
 
-        if (errorFound === 0) {
-            this._commandBlocks = blocks;
-        }
-
-        return errorFound;
-    }
-
-    private isNotCommand(command: string) : boolean {
-        return !this._commandList.includes(command.split('(')[0]);
-    }
-
-    private cleanScript(script: string) : string[] {
-        return script.split('\n').filter(p => p != '' && !p.startsWith('//')).map(p => p.trim());
+        return 0;
     }
 
     public runScript(script: string) : boolean {
@@ -190,24 +155,92 @@ class ScriptInterpreter {
         return 'No saved scripts.';
     }
 
+
+    // Helper Functions
+
+    private cleanScript(script: string) : string[] {
+        return script.split('\n').filter(p => p != '' && !p.startsWith('//')).map(p => p.trim());
+    }
+
+    private isNotCommand(command: string) : boolean {
+        return !this._commandList.includes(command.split('(')[0]);
+    }
+
+    private evaluateCondition(condition: string) : boolean {
+        if (condition === '') return true;
+
+        if (condition.includes('&&')) {
+            const temp = condition.split('&&').map(c => c.trim());
+            return this.evaluateCondition(temp[0] && temp[1]);
+        }
+
+        if (condition.includes('||')) {
+            const temp = condition.split('||').map(c => c.trim());
+            return this.evaluateCondition(temp[0] || temp[1]);
+        }
+
+        // TODO: lastMove doesn't seem to be coming through (but it's now tracking properly at least)
+
+        if (condition.includes('==')) {
+            const temp = condition.split('==').map(c => c.trim());
+            console.log(`temp ${temp}`);
+            console.log(this.getLastMove);
+            if (this.getLastMove) {
+                console.log(`lastMove ${this.getLastMove()}`);
+                const opA = temp[0].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[0].replace(/\s/g, "");
+                const opB = temp[1].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[1].replace(/\s/g, "");
+                return opA === opB;
+            }
+            return false;
+        }
+
+        if (condition.includes('!=')) {
+            const temp = condition.split('!=').map(c => c.trim());
+            console.log(`temp ${temp}`);
+            if (this.getLastMove) {
+                console.log(`lastMove ${this.getLastMove()}`);
+                const opA = temp[0].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[0].replace(/\s/g, "");
+                const opB = temp[1].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[1].replace(/\s/g, "");
+                return opA === opB;
+            }
+            return false;
+        }
+
+        return false;
+    }
+
+
     // Runtime functions
 
     public hasNextCommand() : boolean {
-        return this._commandIndex < this._commandBlocks[this._blockIndex].length;
+        // If at end of current block
+        if (this._commandIndex === this._commandBlocks[this._blockIndex].commands.length) {
+            // See if there is another block with a true condition
+            let counter: number = 0;
+            do {
+                if (this._blockIndex + counter === this.blocks.length) return false;
+                counter++;
+            } while (
+                !this.evaluateCondition(this.blocks[this._blockIndex + counter].condition)
+            );
+        }
+        return true; // Else, there are more commands to run in the current block
     }
 
     public nextCommand() : string {
         
         if (this._commandBlocks.length === 0) return 'No script loaded.'; // empty script error message
 
-        if (this._commandIndex === this._commandBlocks[this._blockIndex].length) {
+        if (this._commandIndex === this._commandBlocks[this._blockIndex].commands.length) {
             this._commandIndex = 0;
-            this._blockIndex++;
+            do {
+                this._blockIndex++;
+            } while (!this.evaluateCondition(this.blocks[this._blockIndex].condition));
         }
 
         if (this._blockIndex === this._commandBlocks.length) return 'End of script.'; // no more commands
 
-        return this._commandBlocks[this._blockIndex][this._commandIndex++];
+        return this._commandBlocks[this._blockIndex].commands[this._commandIndex++];
     }
 
     public checkCondition(condition: string) : boolean {

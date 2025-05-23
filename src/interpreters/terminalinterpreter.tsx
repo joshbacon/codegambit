@@ -32,7 +32,7 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
 
     // Script variables
 
-    const [scriptInterpreter, setScriptInterpreter] = useState<ScriptInterpreter>(new ScriptInterpreter(editorEnabled));
+    const [scriptInterpreter, setScriptInterpreter] = useState<ScriptInterpreter>(new ScriptInterpreter(editorEnabled, getLastMove));
 
     const [runningScript, setRunningScript] = useState<boolean>(false);
 
@@ -634,15 +634,16 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         dispatch(setSelected(''));
         dispatch(setValidMoves([]));
 
-        let tempHistory: Move[] = [...moveHistory];
-        tempHistory.push({from: from ? from : selected, to: to})
-        dispatch(setMoveHistory(tempHistory));
+        const lastMove: Move = {from: from ? from : selected, to: to};
         
         if (status(nextPosition).isFinished) {
+            let tempHistory: Move[] = [...moveHistory];
+            tempHistory.push(lastMove);
+            dispatch(setMoveHistory(tempHistory));
             dispatch(setStarted(false));
             toAppend.push(finishGame(nextPosition));
         } else if (singlePlayer) {
-            result += ' ' + playAiMove(nextPosition);
+            result += ' ' + playAiMove(nextPosition, lastMove);
         }
 
         return result;
@@ -691,21 +692,22 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         dispatch(setSelected(''));
         dispatch(setValidMoves([]));
 
-        let tempHistory: Move[] = [...moveHistory];
-        tempHistory.push({from: from ? from : selected, to: to})
-        dispatch(setMoveHistory(tempHistory));
+        let lastMove: Move = {from: from ? from : selected, to: to};
         
         if (status(nextPosition).isFinished) {
+            let tempHistory: Move[] = [...moveHistory];
+            tempHistory.push(lastMove);
+            dispatch(setMoveHistory(tempHistory));
             dispatch(setStarted(false));
             toAppend.push(finishGame(nextPosition));
         } else if (singlePlayer) {
-            result += ' ' + playAiMove(nextPosition);
+            result += ' ' + playAiMove(nextPosition, lastMove);
         }
 
         return result;
     }
 
-    function playAiMove(position: string = fen) {
+    function playAiMove(position: string = fen, lastMove?: Move) {
         const result = Object.entries(aiMove(position, aiDepth))[0];
         const from: string = result[0];
         const to: any = result[1];
@@ -713,7 +715,10 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
         const nextPosition = move(position, from, to);
 
         let tempHistory: Move[] = [...moveHistory];
-        tempHistory.push({from: from, to: to})
+        if (lastMove) {
+            tempHistory.push(lastMove);
+        }
+        tempHistory.push({from: from, to: to});
         dispatch(setMoveHistory(tempHistory));
 
         dispatch(setFEN(nextPosition));
@@ -774,6 +779,11 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
             result = moveHistory.map((move: Move) => '[' + move.from + ',' + move.to + ']');
         }
         return '['+result.join(' ')+']';
+    }
+
+    function getLastMove() {
+        if (moveHistory.length === 0) return '';
+        return moveHistory[moveHistory.length-1];
     }
 
     function formatHelp(command: string) {

@@ -31,7 +31,7 @@ function ScriptEditor() {
 
     const scrollRef = useRef<null | HTMLTableRowElement>(null);
     
-    const [currentCommand, setCurrentCommand] = useState<string>("");
+    const [currentCommand, setCurrentCommand] = useState<string>("testScript()");
     const [partialCommand, setPartialCommand] = useState<string>("");
     const [commandSearchIndex, setCommandSearchIndex] =  useState<number>(interpreter.commandHistory().length);
 
