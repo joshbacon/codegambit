@@ -32,7 +32,8 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
 
     // Script variables
 
-    const [scriptInterpreter, setScriptInterpreter] = useState<ScriptInterpreter>(new ScriptInterpreter(editorEnabled, getLastMove));
+    const scriptInterpreter = ScriptInterpreter();
+    // const [scriptInterpreter, setScriptInterpreter] = useState<ScriptInterpreter>(new ScriptInterpreter(editorEnabled, getLastMove));
 
     const [runningScript, setRunningScript] = useState<boolean>(false);
 
@@ -779,11 +780,6 @@ const TerminalInterpreter = (editorEnabled: boolean, historyPretext: string) => 
             result = moveHistory.map((move: Move) => '[' + move.from + ',' + move.to + ']');
         }
         return '['+result.join(' ')+']';
-    }
-
-    function getLastMove() {
-        if (moveHistory.length === 0) return '';
-        return moveHistory[moveHistory.length-1];
     }
 
     function formatHelp(command: string) {

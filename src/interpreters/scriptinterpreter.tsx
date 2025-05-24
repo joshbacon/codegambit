@@ -1,26 +1,24 @@
 import ScriptVariable from "../models/scriptvariable";
 import DocData from '../data/docs.json';
-import { setScript } from "../reducers/script";
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import CommandCategory from "../models/commandcategory";
 import CommandBlock from "../models/commandblock";
-import Move from "../models/move";
+import { useEffect, useState } from "react";
+import { setScript } from "../reducers/script";
 
-class ScriptInterpreter {
+const ScriptInterpreter = () => {
 
-    getLastMove?: () => Move;
-    
-    dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
+    const {  moveHistory } = useAppSelector(state => state.game);
 
-    _blockIndex: number = 0;
-    _commandIndex: number = 0;
-    _commandBlocks: CommandBlock[] = [];
-    _variables: ScriptVariable[] = [];
+    const  [blockIndex, setBlockIndex] = useState<number>(0);
+    const  [commandIndex, setCommandIndex] = useState<number>(0);
+    const  [commandBlocks, setCommandBlocks] = useState<CommandBlock[]>([]);
+    const  [variables, setVariables] = useState<ScriptVariable[]>([]);
 
-    _commandList: string[] = [];
-    _editingEnabled: boolean = false;
+    const  [validCommandList, setValidCommandList] = useState<string[]>([]);
 
-    constructor(editing: boolean, callback?: Function) {
+    useEffect(() => {
         const tempList = [];
         const data: CommandCategory[] = DocData;
         for (let i=0; i < data.length; i++) {
@@ -32,32 +30,20 @@ class ScriptInterpreter {
             }
         }
         tempList.push('exitScript') // Add the extra scripting function
-        this._commandList = tempList;
-        this._editingEnabled = editing;
-        if (callback) {
-            this.getLastMove = () => callback();
-        }
-    }
-
-    get commands() : string[] {
-        return this._commandBlocks[this._blockIndex].commands;
-    }
-
-    get blocks() : CommandBlock[] {
-        return this._commandBlocks;
-    }
+        setValidCommandList(tempList);
+    }, []);
 
     // Handling functions
 
-    public resetScript() {
-        this._blockIndex = 0;
-        this._commandIndex = 0;
+    function resetScript() {
+        setBlockIndex(0);
+        setCommandIndex(0);
     }
 
-    private parseScript(script: string) : number {
+    function parseScript(script: string) : number {
         
         let blocks: CommandBlock[] = [];
-        const lines: string[] = this.cleanScript(script);
+        const lines: string[] = cleanScript(script);
 
         let i: number = 0;
         if (!/^\s*if\s*\(/.test(lines[i])) blocks.push({condition: '', commands: []} as CommandBlock)
@@ -73,7 +59,7 @@ class ScriptInterpreter {
             } else if (lines[i].includes('}') && i < lines.length - 2 && !/^\s*if\s*\(/.test(lines[i+1])) {
                 blocks.push({condition: '', commands: []} as CommandBlock);
             } else {
-                if (this.isNotCommand(lines[i])) {
+                if (isNotCommand(lines[i])) {
                     return 2; // error code for invalid function
                 }
                 blocks[blocks.length-1].commands.push(lines[i]);
@@ -81,26 +67,26 @@ class ScriptInterpreter {
             i++;
         }
         // console.log(blocks.filter((b: CommandBlock) => b.commands.length > 0));
-        this._commandBlocks = blocks.filter((b: CommandBlock) => b.commands.length > 0);
+        setCommandBlocks(blocks.filter((b: CommandBlock) => b.commands.length > 0));
 
         return 0;
     }
 
-    public runScript(script: string) : boolean {
-        if (this.loadScript(script) === script) {
-            this.resetScript();
+    function runScript(script: string) : boolean {
+        if (loadScript(script) === script) {
+            resetScript();
             return true;
         } else {
             return false;
         }
     }
 
-    public testScript(script: string) : boolean {
-        this.parseScript(script);
+    function testScript(script: string) : boolean {
+        parseScript(script);
         return true;
     }
 
-    public saveScript(name: string, script: string) : string {
+    function saveScript(name: string, script: string) : string {
         const scripts: { [key: string]: any } = {};
         const storage: string | null = localStorage.getItem('scripts');
         if (storage) {
@@ -114,20 +100,20 @@ class ScriptInterpreter {
         return `Script saved under ${name}.`;
     }
 
-    public loadScript(name: string) : string {
+    function loadScript(name: string) : string {
         const storage: string | null = localStorage.getItem('scripts');
         if (storage) {
             localStorage.setItem("recentScript", name);
             const scripts: { [key: string]: any } = JSON.parse(storage);
-            const parseResult = this.parseScript(scripts[name]);
-            this.dispatch(setScript(scripts[name]));
+            const parseResult = parseScript(scripts[name]);
+            dispatch(setScript(scripts[name]));
             return `Script load result ${parseResult}`;
         } else {
             return 'Script load result 1';
         }
     }
 
-    public removeScript(name: string) : string {
+    function removeScript(name: string) : string {
         const scripts: { [key: string]: any } = {};
         const storage: string | null = localStorage.getItem('scripts');
         if (storage) {
@@ -144,7 +130,7 @@ class ScriptInterpreter {
         return `Script ${name} deleted.`;
     }
 
-    public listScripts() : string {
+    function listScripts() : string {
         const storage: string | null = localStorage.getItem('scripts');
         if (storage) {
             const temp: { [key: string]: any } = JSON.parse(storage);
@@ -158,37 +144,32 @@ class ScriptInterpreter {
 
     // Helper Functions
 
-    private cleanScript(script: string) : string[] {
+    function cleanScript(script: string) : string[] {
         return script.split('\n').filter(p => p != '' && !p.startsWith('//')).map(p => p.trim());
     }
 
-    private isNotCommand(command: string) : boolean {
-        return !this._commandList.includes(command.split('(')[0]);
+    function isNotCommand(command: string) : boolean {
+        return !validCommandList.includes(command.split('(')[0]);
     }
 
-    private evaluateCondition(condition: string) : boolean {
+    function evaluateCondition(condition: string) : boolean {
         if (condition === '') return true;
 
         if (condition.includes('&&')) {
             const temp = condition.split('&&').map(c => c.trim());
-            return this.evaluateCondition(temp[0] && temp[1]);
+            return evaluateCondition(temp[0]) && evaluateCondition(temp[1]);
         }
 
         if (condition.includes('||')) {
             const temp = condition.split('||').map(c => c.trim());
-            return this.evaluateCondition(temp[0] || temp[1]);
+            return evaluateCondition(temp[0]) || evaluateCondition(temp[1]);
         }
-
-        // TODO: lastMove doesn't seem to be coming through (but it's now tracking properly at least)
 
         if (condition.includes('==')) {
             const temp = condition.split('==').map(c => c.trim());
-            console.log(`temp ${temp}`);
-            console.log(this.getLastMove);
-            if (this.getLastMove) {
-                console.log(`lastMove ${this.getLastMove()}`);
-                const opA = temp[0].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[0].replace(/\s/g, "");
-                const opB = temp[1].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[1].replace(/\s/g, "");
+            if (getLastMove) {
+                const opA = temp[0].trim() === 'OPPLASTMOVE' ? getLastMove() : temp[0].replace(/\s/g, "");
+                const opB = temp[1].trim() === 'OPPLASTMOVE' ? getLastMove() : temp[1].replace(/\s/g, "");
                 return opA === opB;
             }
             return false;
@@ -196,12 +177,10 @@ class ScriptInterpreter {
 
         if (condition.includes('!=')) {
             const temp = condition.split('!=').map(c => c.trim());
-            console.log(`temp ${temp}`);
-            if (this.getLastMove) {
-                console.log(`lastMove ${this.getLastMove()}`);
-                const opA = temp[0].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[0].replace(/\s/g, "");
-                const opB = temp[1].trim() === 'OPPLASTMOVE' ? `[${this.getLastMove().from},${this.getLastMove().to}]` : temp[1].replace(/\s/g, "");
-                return opA === opB;
+            if (getLastMove) {
+                const opA = temp[0].trim() === 'OPPLASTMOVE' ? getLastMove() : temp[0].replace(/\s/g, "");
+                const opB = temp[1].trim() === 'OPPLASTMOVE' ? getLastMove() : temp[1].replace(/\s/g, "");
+                return opA !== opB;
             }
             return false;
         }
@@ -209,46 +188,64 @@ class ScriptInterpreter {
         return false;
     }
 
+    function getLastMove() : string {
+        if (moveHistory.length === 0) return '';
+        return `[${moveHistory[moveHistory.length-1].from},${moveHistory[moveHistory.length-1].to}]`;
+    }
+
 
     // Runtime functions
 
-    public hasNextCommand() : boolean {
+    function hasNextCommand() : boolean {
         // If at end of current block
-        if (this._commandIndex === this._commandBlocks[this._blockIndex].commands.length) {
+        if (commandIndex === commandBlocks[blockIndex].commands.length) {
             // See if there is another block with a true condition
             let counter: number = 0;
             do {
-                if (this._blockIndex + counter === this.blocks.length) return false;
                 counter++;
+                if (blockIndex + counter >= commandBlocks.length) {
+                    return false;
+                }
             } while (
-                !this.evaluateCondition(this.blocks[this._blockIndex + counter].condition)
+                !evaluateCondition(commandBlocks[blockIndex + counter].condition)
             );
         }
         return true; // Else, there are more commands to run in the current block
     }
 
-    public nextCommand() : string {
+    function nextCommand() : string {
         
-        if (this._commandBlocks.length === 0) return 'No script loaded.'; // empty script error message
+        if (commandBlocks.length === 0) return 'No script loaded.'; // empty script error message
 
-        if (this._commandIndex === this._commandBlocks[this._blockIndex].commands.length) {
-            this._commandIndex = 0;
+        let nextBlockIndex: number = blockIndex;
+        let nextCommandIndex: number = commandIndex;
+
+        if (nextCommandIndex >= commandBlocks[blockIndex].commands.length) {
+            nextCommandIndex = 0;
             do {
-                this._blockIndex++;
-            } while (!this.evaluateCondition(this.blocks[this._blockIndex].condition));
+                nextBlockIndex++;
+            } while (nextBlockIndex < commandBlocks.length && !evaluateCondition(commandBlocks[nextBlockIndex].condition));
         }
 
-        if (this._blockIndex === this._commandBlocks.length) return 'End of script.'; // no more commands
+        if (nextBlockIndex === commandBlocks.length) return 'End of script.'; // no more commands
 
-        return this._commandBlocks[this._blockIndex].commands[this._commandIndex++];
+        const result: string = commandBlocks[nextBlockIndex].commands[nextCommandIndex];
+        setBlockIndex(nextBlockIndex);
+        setCommandIndex(nextCommandIndex+1);
+        return result;
     }
 
-    public checkCondition(condition: string) : boolean {
-        if (condition) return false;
-        return false;
+    return {
+        resetScript: () => { resetScript() },
+        runScript: (script: string) => { return runScript(script) },
+        testScript: (script: string) => { return testScript(script) },
+        saveScript: (name: string, script: string) => { return saveScript(name, script) },
+        loadScript: (name: string) => { return loadScript(name) },
+        removeScript: (name: string) => { return removeScript(name) },
+        listScripts: () => { return listScripts() },
+        hasNextCommand: () => { return hasNextCommand() },
+        nextCommand: () => { return nextCommand() },
     }
-
 }
-
 
 export default ScriptInterpreter;
