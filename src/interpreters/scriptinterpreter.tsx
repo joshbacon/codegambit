@@ -56,6 +56,8 @@ const ScriptInterpreter = () => {
                     return 3; // error code for invalid conditional syntax
                 }
                 blocks.push({condition: condition, commands: []} as CommandBlock);
+            } else if (/^\s*}\s*else\s*{\s*$/.test(lines[i])) {
+                blocks.push({condition: 'else', commands: []} as CommandBlock);
             } else if (lines[i].includes('}') && i < lines.length - 2 && !/^\s*if\s*\(/.test(lines[i+1])) {
                 blocks.push({condition: '', commands: []} as CommandBlock);
             } else {
@@ -152,17 +154,18 @@ const ScriptInterpreter = () => {
         return !validCommandList.includes(command.split('(')[0]);
     }
 
-    function evaluateCondition(condition: string) : boolean {
+    function evaluateCondition(index: number, condition: string) : boolean {
         if (condition === '') return true;
+        if (condition === 'else' && index > 0) return !evaluateCondition(index-1, commandBlocks[index-1].condition);
 
         if (condition.includes('&&')) {
             const temp = condition.split('&&').map(c => c.trim());
-            return evaluateCondition(temp[0]) && evaluateCondition(temp[1]);
+            return evaluateCondition(index, temp[0]) && evaluateCondition(index, temp[1]);
         }
 
         if (condition.includes('||')) {
             const temp = condition.split('||').map(c => c.trim());
-            return evaluateCondition(temp[0]) || evaluateCondition(temp[1]);
+            return evaluateCondition(index, temp[0]) || evaluateCondition(index, temp[1]);
         }
 
         if (condition.includes('==')) {
@@ -207,7 +210,7 @@ const ScriptInterpreter = () => {
                     return false;
                 }
             } while (
-                !evaluateCondition(commandBlocks[blockIndex + counter].condition)
+                !evaluateCondition(blockIndex+counter, commandBlocks[blockIndex + counter].condition)
             );
         }
         return true; // Else, there are more commands to run in the current block
@@ -224,7 +227,7 @@ const ScriptInterpreter = () => {
             nextCommandIndex = 0;
             do {
                 nextBlockIndex++;
-            } while (nextBlockIndex < commandBlocks.length && !evaluateCondition(commandBlocks[nextBlockIndex].condition));
+            } while (nextBlockIndex < commandBlocks.length && !evaluateCondition(nextBlockIndex, commandBlocks[nextBlockIndex].condition));
         }
 
         if (nextBlockIndex === commandBlocks.length) return 'End of script.'; // no more commands
