@@ -11,10 +11,11 @@ const ScriptInterpreter = () => {
     const dispatch = useAppDispatch();
     const {  moveHistory } = useAppSelector(state => state.game);
 
-    const  [blockIndex, setBlockIndex] = useState<number>(0);
-    const  [commandIndex, setCommandIndex] = useState<number>(0);
-    const  [commandBlocks, setCommandBlocks] = useState<CommandBlock[]>([]);
-    const  [variables, setVariables] = useState<ScriptVariable[]>([]);
+    const [blockIndex, setBlockIndex] = useState<number>(0);
+    const [commandIndex, setCommandIndex] = useState<number>(0);
+    const [commandBlocks, setCommandBlocks] = useState<CommandBlock[]>([]);
+    const [elseCondition, setElseCondition] = useState<boolean>(true);
+    const [variables, setVariables] = useState<ScriptVariable[]>([]);
 
     const  [validCommandList, setValidCommandList] = useState<string[]>([]);
 
@@ -48,7 +49,7 @@ const ScriptInterpreter = () => {
         let i: number = 0;
         if (!/^\s*if\s*\(/.test(lines[i])) blocks.push({condition: '', commands: []} as CommandBlock)
         while (i < lines.length) {
-            if (/^\s*if\s*\(/.test(lines[i])) {
+            if (/\s*if\s*\(/.test(lines[i])) {
                 let condition: string = lines[i];
                 try {
                     condition = condition.split('(')[1].split(')')[0];
@@ -156,7 +157,7 @@ const ScriptInterpreter = () => {
 
     function evaluateCondition(index: number, condition: string) : boolean {
         if (condition === '') return true;
-        if (condition === 'else' && index > 0) return !evaluateCondition(index-1, commandBlocks[index-1].condition);
+        if (condition === 'else' && index > 0) return elseCondition;
 
         if (condition.includes('&&')) {
             const temp = condition.split('&&').map(c => c.trim());
@@ -225,13 +226,17 @@ const ScriptInterpreter = () => {
 
         if (nextCommandIndex >= commandBlocks[blockIndex].commands.length) {
             nextCommandIndex = 0;
+            let nextCondition = false;
             do {
                 nextBlockIndex++;
-            } while (nextBlockIndex < commandBlocks.length && !evaluateCondition(nextBlockIndex, commandBlocks[nextBlockIndex].condition));
+                nextCondition = !evaluateCondition(nextBlockIndex, commandBlocks[nextBlockIndex].condition);
+                setElseCondition(elseCondition && nextCondition);
+            } while (nextBlockIndex < commandBlocks.length && nextCondition);
         }
 
         if (nextBlockIndex === commandBlocks.length) return 'End of script.'; // no more commands
 
+        if (commandBlocks[nextBlockIndex].condition === 'else') setElseCondition(false);
         const result: string = commandBlocks[nextBlockIndex].commands[nextCommandIndex];
         setBlockIndex(nextBlockIndex);
         setCommandIndex(nextCommandIndex+1);
